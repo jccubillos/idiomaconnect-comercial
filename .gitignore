@@ -33,3 +33,10 @@ respaldo/
 
 # Personal family context (NEVER commit)
 family-data.json
+
+# Notas personales con claves (NUNCA committear)
+*Notas*.txt
+Notas Project Idiomaconnect APP comercial.txt
+
+# Settings locales de Claude (máquina-local)
+.claude/settings.local.json
