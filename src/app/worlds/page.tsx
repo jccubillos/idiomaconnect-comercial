@@ -65,7 +65,31 @@ export default async function WorldsPage({ searchParams }: PageProps) {
     .filter((s) => !hasExam || (s.created_at && new Date(s.created_at).getTime() > (lastExamAt as number)))
     .reduce((sum, s) => sum + (s.duration_seconds ?? 0), 0);
   const retestDue = hasExam && daysSinceExam >= 30 && practiceSecondsSinceExam >= 3 * 3600;
-  const showExamBanner = !hasExam || retestDue;
+  const daysAgo = Math.max(0, Math.floor(daysSinceExam));
+  // Banner del diagnóstico — SIEMPRE accesible, con 3 estados según el progreso.
+  const examBanner = retestDue
+    ? {
+        emoji: "🔔",
+        title: "¡Es hora de volver a medir tu nivel!",
+        sub: "Ya practicaste bastante — un nuevo test ajustará tus lecciones.",
+        border: "border-neon-green/50 hover:border-neon-green",
+        cta: "text-neon-green",
+      }
+    : !hasExam
+    ? {
+        emoji: "🎓",
+        title: "Mide tu nivel de inglés",
+        sub: "Test rápido (2-3 min) que ajusta las lecciones a tu nivel real",
+        border: "border-neon-purple/30 hover:border-neon-purple/60",
+        cta: "text-neon-purple",
+      }
+    : {
+        emoji: "🎓",
+        title: "Re-medir tu nivel",
+        sub: `Último diagnóstico hace ${daysAgo} día${daysAgo === 1 ? "" : "s"} — puedes repetirlo cuando quieras`,
+        border: "border-white/10 hover:border-neon-purple/40",
+        cta: "text-neon-purple/80",
+      };
 
   const personalWorld = buildPersonalWorld({
     kidName: kid.name,
@@ -141,39 +165,21 @@ export default async function WorldsPage({ searchParams }: PageProps) {
           <div className="text-xs text-ink-dim mt-1.5">{cefr.nextLabel}</div>
         </GlassCard>
 
-        {/* Acceso al examen diagnóstico — adaptativo: invita a re-medir cada ~mes */}
-        {showExamBanner && (
-          <Link href={`/exam?kid=${kid.id}`}>
-            <GlassCard
-              className={`mb-6 p-4 flex items-center justify-between border transition-colors ${
-                retestDue
-                  ? "border-neon-green/50 hover:border-neon-green"
-                  : "border-neon-purple/30 hover:border-neon-purple/60"
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <div className="text-3xl">{retestDue ? "🔔" : "🎓"}</div>
-                <div>
-                  <div className="font-bold text-sm">
-                    {retestDue ? "¡Es hora de volver a medir tu nivel!" : "Mide tu nivel de inglés"}
-                  </div>
-                  <div className="text-xs text-ink-dim">
-                    {retestDue
-                      ? "Ya practicaste bastante — un nuevo test ajustará tus lecciones."
-                      : "Test rápido (2-3 min) que ajusta las lecciones a tu nivel real"}
-                  </div>
-                </div>
+        {/* Acceso al examen diagnóstico — siempre visible, mensaje adaptativo (3 estados) */}
+        <Link href={`/exam?kid=${kid.id}`}>
+          <GlassCard
+            className={`mb-6 p-4 flex items-center justify-between border transition-colors ${examBanner.border}`}
+          >
+            <div className="flex items-center gap-3">
+              <div className="text-3xl">{examBanner.emoji}</div>
+              <div>
+                <div className="font-bold text-sm">{examBanner.title}</div>
+                <div className="text-xs text-ink-dim">{examBanner.sub}</div>
               </div>
-              <span
-                className={`text-sm font-bold whitespace-nowrap ${
-                  retestDue ? "text-neon-green" : "text-neon-purple"
-                }`}
-              >
-                Empezar →
-              </span>
-            </GlassCard>
-          </Link>
-        )}
+            </div>
+            <span className={`text-sm font-bold whitespace-nowrap ${examBanner.cta}`}>Empezar →</span>
+          </GlassCard>
+        </Link>
 
         <div className="flex flex-col gap-4">
           {/* Personal world — always first, always unlocked */}
