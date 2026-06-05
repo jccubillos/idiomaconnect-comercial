@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { generateLesson } from "@/lib/groq/lesson";
 import { getCefrInfo } from "@/lib/content/cefr";
 import { getUniversalWorld, buildPersonalWorld } from "@/lib/content/worlds";
+import { pickCurriculumUnit } from "@/lib/content/curriculum";
 import { enforceLimit } from "@/lib/rate-limit";
 import { log } from "@/lib/logging/logger";
 
@@ -90,7 +91,16 @@ export async function POST(req: Request) {
 
   const cefr = getCefrInfo(kid.total_xp);
 
-  // 6. Call Groq
+  // Currículum (columna vertebral): elige la unidad a enseñar según el nivel y el
+  // nº de lecciones clásicas hechas, para avanzar EN ORDEN por el plan de estudios.
+  const { count: lessonCount } = await supabase
+    .from("lesson_sessions")
+    .select("id", { count: "exact", head: true })
+    .eq("kid_id", kid.id)
+    .eq("lesson_type", "lesson");
+  const objective = pickCurriculumUnit(cefr.code, lessonCount ?? 0);
+
+  // 6. Call Groq (objetivo CURADO + entrega personalizada por IA = híbrido)
   const result = await generateLesson({
     kid: {
       name: kid.name,
@@ -114,6 +124,7 @@ export async function POST(req: Request) {
     world: { key: world.key, name: world.name, tagline: world.tagline },
     topic: body.topicOverride ?? world.topic,
     customContext: body.customContext ?? null,
+    objective,
   });
 
   if (!result.ok) {

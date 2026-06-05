@@ -6,6 +6,7 @@
  */
 
 import type { CEFRLevel } from "@/lib/supabase/database.types";
+import type { CurriculumUnit } from "@/lib/content/curriculum";
 
 export interface KidPromptInput {
   name: string;
@@ -141,6 +142,7 @@ function buildFamilyContextBlock(members: KidPromptInput["familyMembers"]): stri
 export function buildLessonSystemPrompt(
   kid: KidPromptInput,
   world: WorldPromptInput,
+  objective?: CurriculumUnit | null,
 ): string {
   const pronoun = kid.gender === "niña" ? "ella" : kid.gender === "niño" ? "él" : "él/ella";
   const seg = ageSegment(kid.ageDesc, kid.gender);
@@ -186,6 +188,18 @@ estructura NUEVA — no repitas los mismos ejemplos. Si es un mundo nuevo para e
 comienza con fundamentos.`
     : "";
 
+  const objectiveBlock = objective
+    ? `
+
+════════════════════════════════════════
+OBJETIVO CURRICULAR DE HOY (OBLIGATORIO):
+════════════════════════════════════════
+- META (can-do): ${objective.canDo}
+- GRAMÁTICA A ENSEÑAR: ${objective.grammar}
+- VOCABULARIO META: ${objective.vocab}
+La lección Y el quiz DEBEN centrarse en este objetivo gramatical/léxico, ambientado en ${world.name} y personalizado con ${kid.name} (familia, hobbies). NO te desvíes a otro tema.`
+    : "";
+
   return `Eres un tutor de inglés experto y motivador, diseñado exclusivamente para ${kid.name}, ${seg.descriptor} de ${kid.ageDesc}${gradeClause}.
 A ${pronoun} le apasiona: ${hobbies}.
 Tu tono debe ser: ${tone}.
@@ -195,7 +209,7 @@ NIVEL ESTIMADO DEL/LA ALUMNO/A: ${kid.cefrCode} (${kid.cefrName})
 GUÍA DE COMPLEJIDAD (${kid.cefrCode}): ${complexity}
 
 Adapta vocabulario, gramática y longitud de oraciones a este nivel. Si subes la complejidad, hazlo gradualmente; nunca brinques 2 niveles de un solo tirón.
-${familyBlock}${worldBlock}${memoryBlock}
+${objectiveBlock}${familyBlock}${worldBlock}${memoryBlock}
 
 ════════════════════════════════════════
 INSTRUCCIÓN CRÍTICA DE FORMATO JSON:
@@ -249,6 +263,12 @@ EXTENSA, CLARA y PEDAGÓGICA. Mínimo 300 palabras. Markdown con 4 partes:
 ════════════════════════════════════════
 INSTRUCCIONES PARA "mc" Y "fitb":
 ════════════════════════════════════════
-- "mc": 5-8 preguntas BASADAS DIRECTAMENTE en la lección. Las opciones incorrectas deben representar errores reales, no absurdos.
-- "fitb": 5 oraciones EN INGLÉS con EXACTAMENTE un "___". "answer" en minúsculas sin tildes. "hint" es OBLIGATORIO: traducción al español completa de la oración ya completa.`;
+- "mc": 5-8 preguntas BASADAS DIRECTAMENTE en la lección.
+  ⚠️ REGLA DE ORO (CRÍTICA): cada pregunta tiene UNA y SOLO UNA opción correcta.
+  - Las otras 3 opciones deben ser CLARAMENTE incorrectas (errores reales de hispanohablantes), NUNCA también válidas ni sinónimas.
+  - PROHIBIDO que dos o más opciones puedan ser correctas a la vez.
+  - PROHIBIDO que la respuesta correcta NO aparezca entre las opciones.
+  - "answer" debe ser el TEXTO EXACTO (carácter por carácter) de una de las "options".
+  - El enunciado debe tener un único sentido, sin ambigüedad.
+- "fitb": 5 oraciones EN INGLÉS con EXACTAMENTE un "___". Solo UNA palabra completa correctamente el hueco. "answer" en minúsculas sin tildes. "hint" es OBLIGATORIO: traducción al español completa de la oración ya completa.`;
 }

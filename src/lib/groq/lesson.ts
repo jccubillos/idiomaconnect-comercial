@@ -8,6 +8,8 @@
 import { z } from "zod";
 import { getGroqClient, GROQ_DEFAULTS, GROQ_MODELS } from "./client";
 import { buildLessonSystemPrompt, type KidPromptInput, type WorldPromptInput } from "./prompts";
+import { filterValidMC, filterValidFITB } from "@/lib/content/validate-exercise";
+import type { CurriculumUnit } from "@/lib/content/curriculum";
 
 const MCQuestionSchema = z.object({
   q: z.string().min(1),
@@ -42,10 +44,11 @@ export async function generateLesson(args: {
   world: WorldPromptInput;
   topic: string;
   customContext?: string | null;
+  objective?: CurriculumUnit | null;
 }): Promise<LessonResult> {
-  const { kid, world, topic, customContext } = args;
+  const { kid, world, topic, customContext, objective } = args;
   const groq = getGroqClient();
-  const system = buildLessonSystemPrompt(kid, world);
+  const system = buildLessonSystemPrompt(kid, world, objective);
 
   const safeTopic = (topic || "Aventura Diaria").trim().slice(0, 300);
   const safeCustom = customContext?.trim().slice(0, 500);
@@ -87,9 +90,22 @@ export async function generateLesson(args: {
       };
     }
 
+    // CAPA DE VALIDACIÓN: descarta preguntas ambiguas, con respuesta ausente o
+    // con opciones repetidas ANTES de mostrarlas al alumno.
+    const validMc = filterValidMC(result.data.mc);
+    const validFitb = filterValidFITB(result.data.fitb);
+    if (validMc.length < 3 || validFitb.length < 3) {
+      return {
+        ok: false,
+        code: "validation",
+        error: "El quiz no pasó la validación de calidad. Intenta de nuevo.",
+      };
+    }
+    const data = { ...result.data, mc: validMc, fitb: validFitb };
+
     return {
       ok: true,
-      data: result.data,
+      data,
       tokensUsed: response.usage?.total_tokens ?? 0,
     };
   } catch (err) {
