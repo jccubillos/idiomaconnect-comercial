@@ -1,16 +1,18 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
-import { generateExam } from "@/lib/groq/exam";
-import { getCefrInfo } from "@/lib/content/cefr";
+import { buildPlacementExam } from "@/lib/content/exam-bank";
 import { parseBody } from "@/lib/api/parse-body";
-import { enforceLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
 
 const Body = z.object({ kidId: z.string().uuid() });
 
+/**
+ * Devuelve un examen diagnóstico CEFR desde el BANCO CURADO (no IA).
+ * Cada pregunta tiene una sola respuesta correcta verificada; las opciones
+ * vienen barajadas y el set de 15 (3 por nivel) varía en cada intento.
+ */
 export async function POST(req: Request) {
   const body = await parseBody(req, Body);
   if (body instanceof NextResponse) return body;
@@ -19,18 +21,5 @@ export async function POST(req: Request) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const rl = enforceLimit(user.id, "llmGenerate");
-  if (!rl.ok) return NextResponse.json({ error: "Cuota alcanzada", code: "rate_limit" }, { status: 429 });
-
-  const { data: kid } = await supabase.from("kid_profiles").select("*").eq("id", body.kidId).single();
-  if (!kid) return NextResponse.json({ error: "Kid not found" }, { status: 404 });
-
-  const cefr = getCefrInfo(kid.total_xp);
-  const r = await generateExam({
-    name: kid.name, gender: null, ageDesc: "adolescente",
-    grade: kid.grade, hobbies: kid.hobbies, tone: kid.tone,
-    familyMembers: [], cefrCode: cefr.code, cefrName: cefr.name, recentTopics: [],
-  });
-  if (!r.ok) return NextResponse.json({ error: r.error }, { status: 502 });
-  return NextResponse.json({ questions: r.questions });
+  return NextResponse.json({ questions: buildPlacementExam() });
 }

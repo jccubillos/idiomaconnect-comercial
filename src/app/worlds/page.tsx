@@ -33,7 +33,7 @@ export default async function WorldsPage({ searchParams }: PageProps) {
   // Per-world progress: count completed sessions per world_key
   const { data: sessions = [] } = await supabase
     .from("lesson_sessions")
-    .select("world_key, score_pct")
+    .select("world_key, score_pct, lesson_type, created_at, duration_seconds")
     .eq("kid_id", kid.id);
 
   const worldStats: Record<string, { sessions: number; avgScore: number }> = {};
@@ -50,6 +50,23 @@ export default async function WorldsPage({ searchParams }: PageProps) {
   }
 
   const cefr = getCefrInfo(kid.total_xp);
+
+  // Estado del diagnóstico: ¿nunca lo hizo? ¿toca re-medir el nivel?
+  // Se invita a re-test tras >=30 días desde el último examen Y >=3 h de práctica.
+  const DAY_MS = 86_400_000;
+  const examDates = (sessions ?? [])
+    .filter((s) => s.lesson_type === "exam" && s.created_at)
+    .map((s) => new Date(s.created_at as string).getTime());
+  const lastExamAt = examDates.length ? Math.max(...examDates) : null;
+  const hasExam = lastExamAt !== null;
+  const daysSinceExam = hasExam ? (Date.now() - lastExamAt) / DAY_MS : Infinity;
+  const practiceSecondsSinceExam = (sessions ?? [])
+    .filter((s) => s.lesson_type !== "exam")
+    .filter((s) => !hasExam || (s.created_at && new Date(s.created_at).getTime() > (lastExamAt as number)))
+    .reduce((sum, s) => sum + (s.duration_seconds ?? 0), 0);
+  const retestDue = hasExam && daysSinceExam >= 30 && practiceSecondsSinceExam >= 3 * 3600;
+  const showExamBanner = !hasExam || retestDue;
+
   const personalWorld = buildPersonalWorld({
     kidName: kid.name,
     hobbies: kid.hobbies,
@@ -77,7 +94,15 @@ export default async function WorldsPage({ searchParams }: PageProps) {
           <div>
             <div className="text-xs text-ink-dim">Welcome back,</div>
             <div className="font-bold text-sm group-hover:text-neon-cyan transition-colors">
-              {kid.name} · {cefr.code}
+              {kid.name}
+            </div>
+            {/* Insignia de nivel — reconocimiento permanente bajo el nombre */}
+            <div
+              className="mt-0.5 inline-flex items-center gap-1 text-[10px] font-extrabold px-1.5 py-0.5 rounded-full"
+              style={{ background: `${kid.color_hex}22`, color: kid.color_hex, border: `1px solid ${kid.color_hex}55` }}
+              title={`Nivel de inglés: ${cefr.code} ${cefr.name}`}
+            >
+              🎖️ {cefr.code} · {cefr.name}
             </div>
           </div>
         </Link>
@@ -116,21 +141,39 @@ export default async function WorldsPage({ searchParams }: PageProps) {
           <div className="text-xs text-ink-dim mt-1.5">{cefr.nextLabel}</div>
         </GlassCard>
 
-        {/* Acceso al examen diagnóstico — mide y ajusta el nivel real */}
-        <Link href={`/exam?kid=${kid.id}`}>
-          <GlassCard className="mb-6 p-4 flex items-center justify-between border border-neon-purple/30 hover:border-neon-purple/60 transition-colors">
-            <div className="flex items-center gap-3">
-              <div className="text-3xl">🎓</div>
-              <div>
-                <div className="font-bold text-sm">Mide tu nivel de inglés</div>
-                <div className="text-xs text-ink-dim">
-                  Test rápido (2-3 min) que ajusta las lecciones a tu nivel real
+        {/* Acceso al examen diagnóstico — adaptativo: invita a re-medir cada ~mes */}
+        {showExamBanner && (
+          <Link href={`/exam?kid=${kid.id}`}>
+            <GlassCard
+              className={`mb-6 p-4 flex items-center justify-between border transition-colors ${
+                retestDue
+                  ? "border-neon-green/50 hover:border-neon-green"
+                  : "border-neon-purple/30 hover:border-neon-purple/60"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div className="text-3xl">{retestDue ? "🔔" : "🎓"}</div>
+                <div>
+                  <div className="font-bold text-sm">
+                    {retestDue ? "¡Es hora de volver a medir tu nivel!" : "Mide tu nivel de inglés"}
+                  </div>
+                  <div className="text-xs text-ink-dim">
+                    {retestDue
+                      ? "Ya practicaste bastante — un nuevo test ajustará tus lecciones."
+                      : "Test rápido (2-3 min) que ajusta las lecciones a tu nivel real"}
+                  </div>
                 </div>
               </div>
-            </div>
-            <span className="text-neon-purple text-sm font-bold whitespace-nowrap">Empezar →</span>
-          </GlassCard>
-        </Link>
+              <span
+                className={`text-sm font-bold whitespace-nowrap ${
+                  retestDue ? "text-neon-green" : "text-neon-purple"
+                }`}
+              >
+                Empezar →
+              </span>
+            </GlassCard>
+          </Link>
+        )}
 
         <div className="flex flex-col gap-4">
           {/* Personal world — always first, always unlocked */}
