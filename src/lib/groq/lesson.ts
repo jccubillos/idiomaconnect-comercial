@@ -9,7 +9,7 @@ import { z } from "zod";
 import { getGroqClient, GROQ_DEFAULTS, GROQ_MODELS } from "./client";
 import { buildLessonSystemPrompt, type KidPromptInput, type WorldPromptInput } from "./prompts";
 import { filterValidMC, filterValidFITB } from "@/lib/content/validate-exercise";
-import type { CurriculumUnit } from "@/lib/content/curriculum";
+import type { WorldObjective } from "@/lib/content/world-tracks";
 
 const MCQuestionSchema = z.object({
   q: z.string().min(1),
@@ -44,7 +44,7 @@ export async function generateLesson(args: {
   world: WorldPromptInput;
   topic: string;
   customContext?: string | null;
-  objective?: CurriculumUnit | null;
+  objective?: WorldObjective | null;
 }): Promise<LessonResult> {
   const { kid, world, topic, customContext, objective } = args;
   const groq = getGroqClient();

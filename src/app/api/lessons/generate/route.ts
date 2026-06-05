@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { generateLesson } from "@/lib/groq/lesson";
 import { getCefrInfo } from "@/lib/content/cefr";
 import { getUniversalWorld, buildPersonalWorld } from "@/lib/content/worlds";
-import { pickCurriculumUnit } from "@/lib/content/curriculum";
+import { pickWorldObjective } from "@/lib/content/world-tracks";
 import { enforceLimit } from "@/lib/rate-limit";
 import { log } from "@/lib/logging/logger";
 
@@ -91,14 +91,15 @@ export async function POST(req: Request) {
 
   const cefr = getCefrInfo(kid.total_xp);
 
-  // Currículum (columna vertebral): elige la unidad a enseñar según el nivel y el
-  // nº de lecciones clásicas hechas, para avanzar EN ORDEN por el plan de estudios.
+  // Objetivo SEGÚN EL MUNDO: cada mundo enseña su propio enfoque/tema (gramática,
+  // vocabulario, sonido, conversación, etc.). El nº de lecciones hace rotar los temas
+  // y avanzar en orden por el currículum en los mundos de gramática.
   const { count: lessonCount } = await supabase
     .from("lesson_sessions")
     .select("id", { count: "exact", head: true })
     .eq("kid_id", kid.id)
-    .eq("lesson_type", "lesson");
-  const objective = pickCurriculumUnit(cefr.code, lessonCount ?? 0);
+    .eq("world_key", world.key);
+  const objective = pickWorldObjective(world.key, cefr.code, lessonCount ?? 0);
 
   // 6. Call Groq (objetivo CURADO + entrega personalizada por IA = híbrido)
   const result = await generateLesson({

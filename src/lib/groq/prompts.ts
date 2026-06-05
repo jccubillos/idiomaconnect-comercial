@@ -6,7 +6,7 @@
  */
 
 import type { CEFRLevel } from "@/lib/supabase/database.types";
-import type { CurriculumUnit } from "@/lib/content/curriculum";
+import type { WorldObjective } from "@/lib/content/world-tracks";
 
 export interface KidPromptInput {
   name: string;
@@ -142,7 +142,7 @@ function buildFamilyContextBlock(members: KidPromptInput["familyMembers"]): stri
 export function buildLessonSystemPrompt(
   kid: KidPromptInput,
   world: WorldPromptInput,
-  objective?: CurriculumUnit | null,
+  objective?: WorldObjective | null,
 ): string {
   const pronoun = kid.gender === "niña" ? "ella" : kid.gender === "niño" ? "él" : "él/ella";
   const seg = ageSegment(kid.ageDesc, kid.gender);
@@ -192,12 +192,13 @@ comienza con fundamentos.`
     ? `
 
 ════════════════════════════════════════
-OBJETIVO CURRICULAR DE HOY (OBLIGATORIO):
+ENFOQUE DEL MUNDO "${world.name}" (OBLIGATORIO):
 ════════════════════════════════════════
+- ENFOQUE / HABILIDAD: ${objective.focus}
+- TEMA DE HOY: ${objective.theme}
 - META (can-do): ${objective.canDo}
-- GRAMÁTICA A ENSEÑAR: ${objective.grammar}
-- VOCABULARIO META: ${objective.vocab}
-La lección Y el quiz DEBEN centrarse en este objetivo gramatical/léxico, ambientado en ${world.name} y personalizado con ${kid.name} (familia, hobbies). NO te desvíes a otro tema.`
+- LA LECCIÓN Y EL QUIZ DEBEN: ${objective.teach}${objective.avoid ? `\n- EVITA EXPLÍCITAMENTE: ${objective.avoid}` : ""}
+Céntrate EXCLUSIVAMENTE en el enfoque de este mundo. Personaliza con ${kid.name} (familia, hobbies), pero NO cambies de tema. Cada mundo debe sentirse distinto y fiel a su temática.`
     : "";
 
   return `Eres un tutor de inglés experto y motivador, diseñado exclusivamente para ${kid.name}, ${seg.descriptor} de ${kid.ageDesc}${gradeClause}.
