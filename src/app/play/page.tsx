@@ -4,8 +4,9 @@ import { createClient } from "@/lib/supabase/server";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Avatar } from "@/components/ui/Avatar";
 import { BottomNav } from "@/components/ui/BottomNav";
-import { UNLOCKED_MODES } from "@/lib/content/modes";
+import { UNLOCKED_MODES, MODES, type LessonMode, type ModeMeta } from "@/lib/content/modes";
 import { getUniversalWorld, buildPersonalWorld } from "@/lib/content/worlds";
+import { RECOMMENDED_MODES, WORLD_FOCUS_LABEL } from "@/lib/content/world-tracks";
 
 interface PageProps {
   searchParams: { kid?: string; world?: string };
@@ -34,6 +35,12 @@ export default async function PlayPage({ searchParams }: PageProps) {
       ? buildPersonalWorld({ kidName: kid.name, hobbies: kid.hobbies, color: kid.color_hex, emoji: kid.emoji })
       : getUniversalWorld(worldKey) ?? getUniversalWorld("vocab")!;
 
+  // Modos destacados de este mundo (van primero) + el resto.
+  const recommended = (RECOMMENDED_MODES[worldKey] ?? []) as LessonMode[];
+  const featured = recommended.map((k) => MODES[k]).filter((m) => m && m.unlocked);
+  const featuredKeys = new Set(featured.map((m) => m.key));
+  const rest = UNLOCKED_MODES.filter((m) => !featuredKeys.has(m.key));
+
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-40 glass-strong px-5 py-3 flex justify-between items-center">
@@ -47,29 +54,51 @@ export default async function PlayPage({ searchParams }: PageProps) {
       </header>
 
       <main className="pt-24 pb-32 px-5 max-w-2xl mx-auto relative z-10">
-        <div className="text-center mb-6">
+        {/* Hero TEMÁTICO del mundo (color + enfoque) — hace que cada mundo se sienta distinto */}
+        <div
+          className="text-center mb-6 rounded-2xl p-5 border"
+          style={{
+            borderColor: `${world.accent}66`,
+            background: `radial-gradient(ellipse at 50% 0%, ${world.accent}1f 0%, transparent 70%)`,
+          }}
+        >
           <div className="text-5xl mb-2">{world.emoji}</div>
-          <h1 className="text-2xl font-extrabold mb-1">{world.name}</h1>
-          <p className="text-sm text-ink-dim">{world.tagline}</p>
+          <h1 className="text-2xl font-extrabold mb-1" style={{ color: world.accent }}>
+            {world.name}
+          </h1>
+          <p className="text-sm text-ink-dim mb-3">{world.tagline}</p>
+          {WORLD_FOCUS_LABEL[worldKey] && (
+            <span
+              className="inline-block text-xs font-bold px-3 py-1 rounded-full"
+              style={{ background: `${world.accent}22`, color: world.accent, border: `1px solid ${world.accent}55` }}
+            >
+              🎯 {WORLD_FOCUS_LABEL[worldKey]}
+            </span>
+          )}
         </div>
 
-        <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3 text-center">
-          ¿Cómo quieres practicar hoy?
-        </div>
+        {/* Modos DESTACADOS para este mundo */}
+        {featured.length > 0 && (
+          <>
+            <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3">
+              ⭐ Recomendado en {world.name}
+            </div>
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              {featured.map((mode) => (
+                <ModeCard key={mode.key} mode={mode} kidId={kid.id} worldKey={worldKey} accent={world.accent} featured />
+              ))}
+            </div>
+          </>
+        )}
 
+        {/* Resto de los modos */}
+        <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3">
+          {featured.length > 0 ? "Otros modos" : "¿Cómo quieres practicar hoy?"}
+        </div>
         <div className="grid grid-cols-2 gap-3">
-          {UNLOCKED_MODES.map((mode) => {
-            const href = `/${routeFor(mode.key)}?kid=${kid.id}&world=${worldKey}`;
-            return (
-              <Link key={mode.key} href={href}>
-                <GlassCard className="p-4 h-full hover:scale-[1.02] transition-transform border border-white/10 hover:border-neon-cyan/40">
-                  <div className="text-3xl mb-2">{mode.emoji}</div>
-                  <h3 className="font-bold text-sm mb-1">{mode.name}</h3>
-                  <p className="text-xs text-ink-dim">{mode.short}</p>
-                </GlassCard>
-              </Link>
-            );
-          })}
+          {rest.map((mode) => (
+            <ModeCard key={mode.key} mode={mode} kidId={kid.id} worldKey={worldKey} accent={world.accent} />
+          ))}
         </div>
       </main>
       <BottomNav />
@@ -97,4 +126,36 @@ function routeFor(modeKey: string): string {
     case "memory_match": return "memory-match";
     default: return "lesson";
   }
+}
+
+function ModeCard({
+  mode,
+  kidId,
+  worldKey,
+  accent,
+  featured = false,
+}: {
+  mode: ModeMeta;
+  kidId: string;
+  worldKey: string;
+  accent: string;
+  featured?: boolean;
+}) {
+  const href = `/${routeFor(mode.key)}?kid=${kidId}&world=${worldKey}`;
+  return (
+    <Link href={href}>
+      <GlassCard
+        className="p-4 h-full hover:scale-[1.02] transition-transform border"
+        style={
+          featured
+            ? { borderColor: `${accent}80`, background: `${accent}0f` }
+            : { borderColor: "rgba(255,255,255,0.10)" }
+        }
+      >
+        <div className="text-3xl mb-2">{mode.emoji}</div>
+        <h3 className="font-bold text-sm mb-1">{mode.name}</h3>
+        <p className="text-xs text-ink-dim">{mode.short}</p>
+      </GlassCard>
+    </Link>
+  );
 }

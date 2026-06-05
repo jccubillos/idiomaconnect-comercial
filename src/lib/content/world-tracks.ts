@@ -94,6 +94,33 @@ const TRACKS: Record<string, ThemedTrack> = {
   },
 };
 
+/**
+ * Modos DESTACADOS por mundo: se muestran primero en el hub para que cada mundo
+ * guíe al alumno a la práctica propia de su enfoque (y se sienta distinto).
+ */
+export const RECOMMENDED_MODES: Record<string, string[]> = {
+  grammar: ["lesson", "sentence_builder", "story_fill", "battle"],
+  vocab: ["flashcards", "memory_match", "srs_review", "battle"],
+  sound: ["pronunciation", "minimal_pairs", "listen_id", "shadow_speaking"],
+  chat: ["conversation", "speaking_journal", "lesson", "listen_id"],
+  writing: ["translate_inverse", "describe_scene", "story_fill", "lesson"],
+  london_hub: ["lesson", "conversation", "listen_id", "battle"],
+  cyber_tokyo: ["lesson", "story_fill", "translate_inverse", "battle"],
+  personal: ["lesson", "battle", "flashcards", "conversation"],
+};
+
+/** Etiqueta corta de qué entrena cada mundo (para mostrar en el hub). */
+export const WORLD_FOCUS_LABEL: Record<string, string> = {
+  grammar: "Entrena: gramática y estructuras",
+  vocab: "Entrena: vocabulario nuevo",
+  sound: "Entrena: pronunciación y oído",
+  chat: "Entrena: conversación real",
+  writing: "Entrena: escritura",
+  london_hub: "Entrena: inglés para viajar",
+  cyber_tokyo: "Entrena: gramática avanzada e idioms",
+  personal: "Entrena: tus intereses",
+};
+
 function fromUnit(u: CurriculumUnit, advanced = false): WorldObjective {
   return {
     focus: advanced
