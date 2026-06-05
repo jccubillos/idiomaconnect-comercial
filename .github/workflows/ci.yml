@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    name: Typecheck + Tests + Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci --no-audit --no-fund
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+        env:
+          # Build needs these to be truthy strings; values can be fake for CI.
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiJ9.fake.fake
+          SUPABASE_SERVICE_ROLE_KEY: eyJhbGciOiJIUzI1NiJ9.fake.fake
+          GROQ_API_KEY: gsk_fake_for_ci
+          OPENAI_API_KEY: sk-fake-for-ci
+          LEMONSQUEEZY_API_KEY: ls_fake_for_ci
+          LEMONSQUEEZY_STORE_ID: "0"
+          LEMONSQUEEZY_WEBHOOK_SECRET: lswebhook_fake
+          NEXT_PUBLIC_LS_VARIANT_MONTHLY: "0"
+          NEXT_PUBLIC_LS_VARIANT_YEARLY: "0"
+          RESEND_API_KEY: re_fake
+          RESEND_FROM_EMAIL: ci@example.com
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+          PARENT_DASHBOARD_PASSWORD: ci-test
+          CRON_SECRET: ci-secret

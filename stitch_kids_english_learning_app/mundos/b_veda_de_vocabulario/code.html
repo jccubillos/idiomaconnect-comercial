@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bóveda de Vocabulario</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Source+Sans+3:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#ffb3ae",
+                      "surface": "#101417",
+                      "on-primary-fixed": "#410004",
+                      "inverse-primary": "#bb1522",
+                      "secondary": "#d3fbff",
+                      "surface-bright": "#363a3d",
+                      "primary-fixed-dim": "#ffb3ae",
+                      "error": "#ffb4ab",
+                      "on-secondary-fixed": "#002022",
+                      "tertiary-fixed-dim": "#e5b4ff",
+                      "on-secondary-fixed-variant": "#004f54",
+                      "on-surface-variant": "#e4bdba",
+                      "tertiary-container": "#c464ff",
+                      "primary-fixed": "#ffdad7",
+                      "on-error-container": "#ffdad6",
+                      "tertiary-fixed": "#f5d9ff",
+                      "surface-container-low": "#191c1f",
+                      "primary-container": "#ff5351",
+                      "surface-dim": "#101417",
+                      "background": "#101417",
+                      "inverse-on-surface": "#2d3134",
+                      "secondary-fixed-dim": "#00dbe9",
+                      "surface-container-highest": "#323538",
+                      "error-container": "#93000a",
+                      "secondary-container": "#00eefc",
+                      "outline": "#ab8886",
+                      "on-background": "#e0e2e6",
+                      "outline-variant": "#5b403e",
+                      "on-tertiary-fixed-variant": "#7000a7",
+                      "on-tertiary-fixed": "#30004b",
+                      "on-secondary-container": "#00686f",
+                      "on-surface": "#e0e2e6",
+                      "on-primary-container": "#5c0008",
+                      "on-secondary": "#00363a",
+                      "on-tertiary": "#4f0077",
+                      "on-primary-fixed-variant": "#930014",
+                      "surface-variant": "#323538",
+                      "secondary-fixed": "#7df4ff",
+                      "on-error": "#690005",
+                      "surface-container-lowest": "#0b0f11",
+                      "surface-container-high": "#272a2d",
+                      "primary": "#ffb3ae",
+                      "on-primary": "#68000b",
+                      "surface-container": "#1d2023",
+                      "tertiary": "#e5b4ff",
+                      "inverse-surface": "#e0e2e6",
+                      "on-tertiary-container": "#450069"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "sm": "8px",
+                      "container-margin": "20px",
+                      "xs": "4px",
+                      "lg": "24px",
+                      "md": "16px",
+                      "xl": "32px",
+                      "unit": "4px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Source Sans 3"
+                      ],
+                      "label-bold": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "display-hero": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Source Sans 3"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-bold": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "display-hero": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pt-[72px] pb-[88px] md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant/20 shadow-[0_4px_20px_rgba(0,0,0,0.5)] fixed top-0 w-full z-50">
+<div class="flex justify-between items-center px-container-margin py-sm w-full">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden border border-outline-variant/50">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A futuristic cyberpunk avatar portrait of a young individual with neon lit accents. The setting is a dark tech environment illuminated by vibrant pink and cyan lights, fitting the Electric Academic aesthetic. The lighting creates glowing highlights on their face, emphasizing a modern, high-tech vibe. Deep shadows contrast with intense luminous accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCcidnmCY_m46fx2m1aD8VebyYR3YNpUp95ssApSWWLqs0-lGpTY33MX-kW0C4pjwcLHcqWdrg0ETKYjb29d6njMtgueJyLYuJKT4tREdLQYMURu2VGHIuVBPv8It72K17Xr5NeVIv21xacB5aDha09JTUocIV_kM1yfOJ_sQtyvEuxIH6rJIiHu2p5XdL9I6cg2JfqdeO55hGn_IyffIEMDMHYLUMr6nUm7dHRgLb8O5IPoPfxe3nuItq68-oqKIDFlR8TDiFt6yg"/>
+</div>
+<h1 class="font-display-hero text-headline-md tracking-tighter text-primary dark:text-primary-fixed-dim drop-shadow-[0_0_8px_rgba(255,179,174,0.6)]">CYBER-LINGUIST</h1>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-primary dark:text-primary-fixed-dim hover:bg-surface-variant/50 transition-colors duration-300 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</button>
+</div>
+</header>
+<main class="px-container-margin py-xl max-w-7xl mx-auto space-y-xl">
+<!-- Dashboard Header & CTA -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-md mb-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-sm">Bóveda de Vocabulario</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Tus registros de léxico encriptado.</p>
+</div>
+<button class="bg-[#FF4B4B] hover:bg-primary-container text-white px-lg py-sm rounded-lg font-label-bold text-label-bold flex items-center gap-sm shadow-[0_0_8px_rgba(255,75,75,0.4)] active:scale-95 transition-all w-full md:w-auto justify-center">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+                Escanear Nuevas Palabras
+            </button>
+</div>
+<!-- Search Bar -->
+<div class="relative mb-lg w-full">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-highest border border-outline-variant/30 rounded-lg py-md pl-12 pr-4 text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-secondary-fixed-dim focus:ring-1 focus:ring-secondary-fixed-dim transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)]" placeholder="Buscar palabras, traducciones o etiquetas..." type="text"/>
+</div>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+<!-- Study Feed / Vocabulary List (Spans 8 cols on desktop) -->
+<div class="md:col-span-8 space-y-md">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-secondary-fixed-dim">menu_book</span>
+                    Módulos de Estudio
+                </h3>
+<div class="flex flex-col gap-sm">
+<!-- Dictionary Entry 1 -->
+<div class="bg-surface-container border border-outline-variant/20 hover:border-secondary-fixed-dim/40 rounded-xl p-md flex flex-col sm:flex-row justify-between items-start sm:items-center gap-md transition-all hover:shadow-[0_4px_12px_rgba(0,219,233,0.05)]">
+<div class="flex-1">
+<div class="flex items-center gap-sm mb-xs">
+<h4 class="font-headline-md text-headline-md text-on-surface">Ephemeral</h4>
+<span class="bg-surface-variant px-xs py-[2px] rounded-full text-[10px] text-on-surface-variant font-label-bold uppercase tracking-wider">Adj.</span>
+</div>
+<p class="font-body-md text-body-md text-secondary-fixed-dim italic mb-xs">/ɪˈfem.ər.əl/</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Dura por un tiempo muy corto; efímero.</p>
+</div>
+<div class="flex flex-row sm:flex-col gap-sm w-full sm:w-auto mt-sm sm:mt-0">
+<button class="flex-1 sm:flex-none border border-outline-variant/50 hover:bg-surface-variant text-on-surface px-md py-sm rounded-lg font-label-bold text-label-bold flex items-center justify-center gap-xs transition-colors">
+<span class="material-symbols-outlined text-sm">volume_up</span> Pronunciar
+                                </button>
+<button class="flex-1 sm:flex-none bg-secondary-fixed-dim/10 text-secondary-fixed-dim hover:bg-secondary-fixed-dim/20 px-md py-sm rounded-lg font-label-bold text-label-bold flex items-center justify-center gap-xs transition-colors">
+<span class="material-symbols-outlined text-sm">bookmark_add</span> Guardar
+                                </button>
+</div>
+</div>
+<!-- Dictionary Entry 2 -->
+<div class="bg-surface-container border border-outline-variant/20 hover:border-primary-container/40 rounded-xl p-md flex flex-col sm:flex-row justify-between items-start sm:items-center gap-md transition-all hover:shadow-[0_4px_12px_rgba(255,75,75,0.05)]">
+<div class="flex-1">
+<div class="flex items-center gap-sm mb-xs">
+<h4 class="font-headline-md text-headline-md text-on-surface">Obfuscate</h4>
+<span class="bg-surface-variant px-xs py-[2px] rounded-full text-[10px] text-on-surface-variant font-label-bold uppercase tracking-wider">Verb</span>
+</div>
+<p class="font-body-md text-body-md text-primary-container italic mb-xs">/ˈɒb.fʌs.keɪt/</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Hacer que algo sea menos claro y más difícil de entender, a menudo de forma intencionada; ofuscar.</p>
+</div>
+<div class="flex flex-row sm:flex-col gap-sm w-full sm:w-auto mt-sm sm:mt-0">
+<button class="flex-1 sm:flex-none border border-outline-variant/50 hover:bg-surface-variant text-on-surface px-md py-sm rounded-lg font-label-bold text-label-bold flex items-center justify-center gap-xs transition-colors">
+<span class="material-symbols-outlined text-sm">volume_up</span> Pronunciar
+                                </button>
+<button class="flex-1 sm:flex-none bg-primary-container/10 text-primary-container hover:bg-primary-container/20 px-md py-sm rounded-lg font-label-bold text-label-bold flex items-center justify-center gap-xs transition-colors">
+<span class="material-symbols-outlined text-sm">bookmark_added</span> Guardado
+                                </button>
+</div>
+</div>
+<!-- Dictionary Entry 3 -->
+<div class="bg-surface-container border border-outline-variant/20 hover:border-tertiary-fixed-dim/40 rounded-xl p-md flex flex-col sm:flex-row justify-between items-start sm:items-center gap-md transition-all hover:shadow-[0_4px_12px_rgba(229,180,255,0.05)]">
+<div class="flex-1">
+<div class="flex items-center gap-sm mb-xs">
+<h4 class="font-headline-md text-headline-md text-on-surface">Ubiquitous</h4>
+<span class="bg-surface-variant px-xs py-[2px] rounded-full text-[10px] text-on-surface-variant font-label-bold uppercase tracking-wider">Adj.</span>
+</div>
+<p class="font-body-md text-body-md text-tertiary-fixed-dim italic mb-xs">/juːˈbɪk.wɪ.təs/</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Parecer estar en todas partes; omnipresente.</p>
+</div>
+<div class="flex flex-row sm:flex-col gap-sm w-full sm:w-auto mt-sm sm:mt-0">
+<button class="flex-1 sm:flex-none border border-outline-variant/50 hover:bg-surface-variant text-on-surface px-md py-sm rounded-lg font-label-bold text-label-bold flex items-center justify-center gap-xs transition-colors">
+<span class="material-symbols-outlined text-sm">volume_up</span> Pronunciar
+                                </button>
+<button class="flex-1 sm:flex-none bg-secondary-fixed-dim/10 text-secondary-fixed-dim hover:bg-secondary-fixed-dim/20 px-md py-sm rounded-lg font-label-bold text-label-bold flex items-center justify-center gap-xs transition-colors">
+<span class="material-symbols-outlined text-sm">bookmark_add</span> Guardar
+                                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar / Stats (Spans 4 cols on desktop) -->
+<div class="md:col-span-4 flex flex-col gap-lg">
+<!-- Stats Overview -->
+<div class="bg-[#121212]/80 backdrop-blur-[15px] border border-outline-variant/20 rounded-xl p-lg flex flex-col gap-md">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary">bar_chart</span>
+                        Estadísticas de Estudio
+                    </h3>
+<div class="grid grid-cols-2 gap-sm">
+<div class="bg-surface-container-high p-md rounded-lg flex flex-col gap-xs">
+<span class="text-on-surface-variant font-body-md text-sm">Palabras Aprendidas</span>
+<span class="text-headline-md font-headline-md text-on-surface">1,204</span>
+</div>
+<div class="bg-surface-container-high p-md rounded-lg flex flex-col gap-xs">
+<span class="text-on-surface-variant font-body-md text-sm">Racha Actual</span>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[#FF4B4B] text-sm" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="text-headline-md font-headline-md text-[#FF4B4B] drop-shadow-[0_0_8px_rgba(255,75,75,0.4)]">14 Días</span>
+</div>
+</div>
+</div>
+<div class="space-y-xs mt-sm">
+<div class="flex justify-between font-label-bold text-label-bold text-sm">
+<span class="text-on-surface-variant">Retención General</span>
+<span class="text-secondary-fixed-dim">87%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary-fixed-dim w-[87%] shadow-[0_0_8px_#00dbe9]"></div>
+</div>
+</div>
+</div>
+<!-- Repaso Diario Action -->
+<div class="bg-surface-container-high border border-primary/20 rounded-xl p-lg text-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent"></div>
+<div class="relative z-10">
+<div class="w-12 h-12 mx-auto bg-surface-container rounded-full flex items-center justify-center border border-primary/30 mb-md relative">
+<span class="material-symbols-outlined text-primary text-xl">psychology</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs text-lg">Repaso Diario</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md text-sm">42 palabras requieren atención</p>
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary px-lg py-sm rounded-lg font-label-bold text-label-bold transition-all shadow-[0_0_8px_rgba(255,179,174,0.4)]">
+                        Iniciar Repaso
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden bg-surface-container/80 dark:bg-surface-container/80 backdrop-blur-xl border-t border-outline-variant/20 shadow-[0_-4px_24px_rgba(0,0,0,0.6)] fixed bottom-0 w-full z-50 rounded-t-xl">
+<div class="flex justify-around items-center w-full px-4 pb-4 pt-2">
+<button class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined mb-1">map</span>
+<span class="font-label-bold text-label-bold">Mapa</span>
+</button>
+<!-- Active State -->
+<button class="flex flex-col items-center justify-center bg-primary-container/20 text-primary dark:text-primary-fixed-dim rounded-xl px-4 py-2 ring-1 ring-primary/40 shadow-[0_0_12px_rgba(255,179,174,0.3)] active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+<span class="font-label-bold text-label-bold">Bóveda</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined mb-1">person_filled</span>
+<span class="font-label-bold text-label-bold">Perfil</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined mb-1">settings</span>
+<span class="font-label-bold text-label-bold">Ajustes</span>
+</button>
+</div>
+</nav>
+</body></html>

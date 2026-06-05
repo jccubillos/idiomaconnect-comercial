@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cyber-Linguist Educational Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Source+Sans+3:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#ffb3ae",
+                        "surface": "#101417",
+                        "on-primary-fixed": "#410004",
+                        "inverse-primary": "#bb1522",
+                        "secondary": "#d3fbff",
+                        "surface-bright": "#363a3d",
+                        "primary-fixed-dim": "#ffb3ae",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed": "#002022",
+                        "tertiary-fixed-dim": "#e5b4ff",
+                        "on-secondary-fixed-variant": "#004f54",
+                        "on-surface-variant": "#e4bdba",
+                        "tertiary-container": "#c464ff",
+                        "primary-fixed": "#ffdad7",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed": "#f5d9ff",
+                        "surface-container-low": "#191c1f",
+                        "primary-container": "#ff5351",
+                        "surface-dim": "#101417",
+                        "background": "#101417",
+                        "inverse-on-surface": "#2d3134",
+                        "secondary-fixed-dim": "#00dbe9",
+                        "surface-container-highest": "#323538",
+                        "error-container": "#93000a",
+                        "secondary-container": "#00eefc",
+                        "outline": "#ab8886",
+                        "on-background": "#e0e2e6",
+                        "outline-variant": "#5b403e",
+                        "on-tertiary-fixed-variant": "#7000a7",
+                        "on-tertiary-fixed": "#30004b",
+                        "on-secondary-container": "#00686f",
+                        "on-surface": "#e0e2e6",
+                        "on-primary-container": "#5c0008",
+                        "on-secondary": "#00363a",
+                        "on-tertiary": "#4f0077",
+                        "on-primary-fixed-variant": "#930014",
+                        "surface-variant": "#323538",
+                        "secondary-fixed": "#7df4ff",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#0b0f11",
+                        "surface-container-high": "#272a2d",
+                        "primary": "#ffb3ae",
+                        "on-primary": "#68000b",
+                        "surface-container": "#1d2023",
+                        "tertiary": "#e5b4ff",
+                        "inverse-surface": "#e0e2e6",
+                        "on-tertiary-container": "#450069"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "container-margin": "20px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "unit": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Source Sans 3"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display-hero": ["Plus Jakarta Sans"],
+                        "body-lg": ["Source Sans 3"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-bold": ["14px", { "lineHeight": "1.0", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "display-hero": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 238, 252, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        .neon-text-primary {
+            text-shadow: 0 0 8px rgba(255, 179, 174, 0.6);
+        }
+        .neon-text-secondary {
+            text-shadow: 0 0 8px rgba(0, 238, 252, 0.6);
+        }
+        .neon-text-tertiary {
+            text-shadow: 0 0 8px rgba(196, 100, 255, 0.6);
+        }
+        .neon-border-primary {
+            box-shadow: 0 0 12px rgba(255, 179, 174, 0.3);
+        }
+        .glass-panel-content {
+            background: rgba(30, 33, 36, 0.85);
+            border: 1px solid rgba(228, 189, 186, 0.1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md overflow-x-hidden selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant/20 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+<div class="flex justify-between items-center px-container-margin py-sm w-full">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-secondary/30 flex items-center justify-center overflow-hidden flex-shrink-0 cursor-pointer hover:bg-surface-variant/50 transition-colors duration-300 active:scale-95 transition-transform">
+<img alt="User Pilot Avatar" class="w-full h-full object-cover" data-alt="A highly detailed close-up portrait of a futuristic pilot avatar in a dark, cyberpunk setting. The character wears sleek, high-tech headgear with subtle violet and cyan neon accents reflecting off the visor. The lighting is dramatic, with sharp contrasts between deep shadows and vivid colored rim lights. The overall style is realistic 3D render, embodying a high-octane 'Electric Academic' aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJWahTY1DvoWTZXu3WJ8a-dTPPW32mxzvaYhSun16EDP8ScXa2xR_P4qyvO2tB_iBzcfUWtPMwysKQYvUI017pHYnYYwHzE6fPm7AKBlHRowwj7duZOKugBZbKU5ifgMDFldTRRY5mbZiyb7Gm-J42q3SnI3hIx_7q0BFTCnk--tE96DbSda7G7w2M8clm7P6pYzffNUpIiwd85ldl3qx-AGJuCyZfuZSI6DsPGLiHGSDl5nYLoSIz80acj83lBawKBZOBT-dTOv13"/>
+</div>
+<h1 class="font-display-hero text-headline-md tracking-tighter text-primary dark:text-primary-fixed-dim drop-shadow-[0_0_8px_rgba(255,179,174,0.6)]">CYBER-LINGUIST</h1>
+</div>
+<button aria-label="bolt" class="w-10 h-10 rounded-full flex items-center justify-center text-primary dark:text-primary-fixed-dim hover:bg-surface-variant/50 transition-colors duration-300 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">bolt</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-[80px] pb-[100px] md:pb-xl px-container-margin max-w-7xl mx-auto space-y-lg">
+<!-- Breadcrumb & Header Section -->
+<section class="mt-md">
+<div class="flex items-center gap-xs text-on-surface-variant font-label-bold text-xs uppercase tracking-wider mb-sm">
+<span>Module 01</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-tertiary">Galaxia Gramatical</span>
+</div>
+<h2 class="font-display-hero text-headline-lg md:text-display-hero text-on-surface mb-xs">Present Continuous</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl">Analyze actions occurring in the immediate temporal vector. Master the 'to be' auxiliary + verb-ing construct.</p>
+</section>
+<!-- Two Column Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Lesson Content Area (Spans 8 cols on lg) -->
+<div class="lg:col-span-8 flex flex-col gap-lg">
+<!-- Grammar Rule Block -->
+<div class="glass-card rounded-xl p-md border-t border-t-tertiary/40">
+<div class="flex items-center gap-sm border-b border-outline-variant/20 pb-sm mb-sm">
+<span class="material-symbols-outlined text-tertiary neon-text-tertiary">menu_book</span>
+<h3 class="font-headline-md text-body-lg md:text-headline-md text-on-surface">Syntax Rule: Formation</h3>
+</div>
+<div class="glass-panel-content rounded-lg p-md">
+<p class="font-body-md text-on-surface mb-md">The Present Continuous tense is constructed using the appropriate present tense form of the verb <strong>'to be'</strong> combined with the <strong>present participle</strong> (-ing form) of the main verb.</p>
+<div class="bg-surface-container-highest rounded border border-outline-variant/30 p-sm font-label-bold text-center text-secondary tracking-widest text-sm overflow-x-auto whitespace-nowrap">
+SUBJECT + [AM / IS / ARE] + VERB-ING
+</div>
+</div>
+</div>
+<!-- Examples Block -->
+<div class="glass-card rounded-xl p-md border-t border-t-secondary/40">
+<div class="flex items-center gap-sm border-b border-outline-variant/20 pb-sm mb-sm">
+<span class="material-symbols-outlined text-secondary neon-text-secondary">data_object</span>
+<h3 class="font-headline-md text-body-lg md:text-headline-md text-on-surface">Data Fragments: Examples</h3>
+</div>
+<div class="space-y-sm">
+<!-- Example 1 -->
+<div class="glass-panel-content rounded-lg p-sm border-l-4 border-l-secondary flex flex-col sm:flex-row sm:items-center justify-between gap-xs">
+<div class="font-body-md text-on-surface">I <span class="text-secondary font-bold">am transmitting</span> the data now.</div>
+<div class="text-xs font-label-bold text-on-surface-variant bg-surface px-2 py-1 rounded">Action in progress</div>
+</div>
+<!-- Example 2 -->
+<div class="glass-panel-content rounded-lg p-sm border-l-4 border-l-tertiary flex flex-col sm:flex-row sm:items-center justify-between gap-xs">
+<div class="font-body-md text-on-surface">The systems <span class="text-tertiary font-bold">are failing</span> rapidly.</div>
+<div class="text-xs font-label-bold text-on-surface-variant bg-surface px-2 py-1 rounded">Temporary situation</div>
+</div>
+<!-- Example 3 -->
+<div class="glass-panel-content rounded-lg p-sm border-l-4 border-l-primary flex flex-col sm:flex-row sm:items-center justify-between gap-xs">
+<div class="font-body-md text-on-surface"><span class="text-primary font-bold">Are</span> you <span class="text-primary font-bold">initiating</span> the sequence?</div>
+<div class="text-xs font-label-bold text-on-surface-variant bg-surface px-2 py-1 rounded">Interrogative form</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive/HUD Panel (Spans 4 cols on lg) -->
+<div class="lg:col-span-4 flex flex-col gap-lg sticky top-[100px]">
+<!-- Progress/Status Card -->
+<div class="glass-card rounded-xl p-md border-t border-t-primary/40 relative overflow-hidden">
+<div class="absolute -right-10 -top-10 w-32 h-32 bg-primary/5 rounded-full blur-2xl"></div>
+<h3 class="font-label-bold text-label-bold text-primary tracking-wider uppercase mb-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">radar</span> Module Status
+</h3>
+<div class="space-y-md relative z-10">
+<div>
+<div class="flex justify-between font-label-bold text-xs mb-1">
+<span class="text-on-surface-variant">Comprehension Sync</span>
+<span class="text-secondary neon-text-secondary">45%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden border border-outline-variant/30">
+<div class="h-full bg-gradient-to-r from-tertiary to-secondary w-[45%] rounded-full relative">
+<div class="absolute right-0 top-0 bottom-0 w-2 bg-white/50 blur-[1px]"></div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div class="bg-surface-container p-sm rounded-lg border border-outline-variant/20 text-center">
+<div class="text-on-surface-variant text-[10px] uppercase tracking-wider mb-1">Items Reviewed</div>
+<div class="font-headline-md text-on-surface">3/8</div>
+</div>
+<div class="bg-surface-container p-sm rounded-lg border border-outline-variant/20 text-center">
+<div class="text-on-surface-variant text-[10px] uppercase tracking-wider mb-1">XP Gained</div>
+<div class="font-headline-md text-tertiary">+150</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Call -->
+<div class="glass-card rounded-xl p-md flex flex-col gap-sm border border-outline-variant/30 text-center items-center">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center border border-outline-variant/50 mb-xs">
+<span class="material-symbols-outlined text-on-surface">psychology</span>
+</div>
+<h4 class="font-headline-md text-body-lg text-on-surface">Ready to test?</h4>
+<p class="font-body-md text-sm text-on-surface-variant mb-sm">Engage the combat simulator to apply these rules in active scenarios.</p>
+<button class="w-full py-3 bg-primary text-on-primary rounded-lg font-label-bold text-label-bold hover:bg-primary-fixed transition-colors shadow-[0_0_12px_rgba(255,179,174,0.3)] flex justify-center items-center gap-xs uppercase tracking-wider">
+<span class="material-symbols-outlined text-[18px]">sports_esports</span> Enter Arena
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container/80 dark:bg-surface-container/80 backdrop-blur-xl shadow-[0_-4px_24px_rgba(0,0,0,0.6)]">
+<div class="flex justify-around items-center w-full px-4 pb-4 pt-2">
+<!-- Active -->
+<button class="flex flex-col items-center justify-center bg-tertiary-container/20 text-tertiary dark:text-tertiary-fixed-dim rounded-xl px-4 py-2 ring-1 ring-tertiary/40 shadow-[0_0_12px_rgba(196,100,255,0.2)] active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+<span class="font-label-bold text-label-bold text-[10px]">Learn</span>
+</button>
+<!-- Inactive -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90 transition-transform duration-150 group">
+<span class="material-symbols-outlined mb-1 group-hover:text-primary">swords</span>
+<span class="font-label-bold text-label-bold text-[10px]">Arena</span>
+</button>
+<!-- Inactive -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90 transition-transform duration-150 group">
+<span class="material-symbols-outlined mb-1 group-hover:text-primary">person_filled</span>
+<span class="font-label-bold text-label-bold text-[10px]">Profile</span>
+</button>
+<!-- Inactive -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90 transition-transform duration-150 group">
+<span class="material-symbols-outlined mb-1 group-hover:text-primary">settings</span>
+<span class="font-label-bold text-label-bold text-[10px]">Settings</span>
+</button>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,60 @@
+# Documentación de Exportación: IdiomaConnect - Cyber-Linguist HUD
+
+## 1. Visión General del Proyecto
+**IdiomaConnect** es una plataforma de aprendizaje de inglés gamificada diseñada para adolescentes. Utiliza una estética "Cyber-Linguist HUD" inspirada en interfaces futuristas y videojuegos de alta fidelidad para transformar el estudio académico en una experiencia inmersiva de "hackeo lingüístico".
+
+---
+
+## 2. Aspectos Gráficos y Estética (Design System)
+
+### Identidad Visual
+*   **Concepto:** "Cyber-Linguist HUD". Una mezcla de estética Cyberpunk, interfaces de usuario de ciencia ficción (FUI) y elementos de RPG.
+*   **Paleta de Colores:**
+    *   **Fondo (Surface):** `#101417` (Oscuro profundo para contraste máximo).
+    *   **Primario (Action/Hero):** `#FF4B4B` (Coral vibrante para llamadas a la acción y elementos de energía).
+    *   **Secundario (Progress/Cyber):** Tonos cian y violeta neón para barras de progreso y efectos de brillo.
+    *   **Acentos de Estado:** Verde neón para éxitos (`+XP`), rojo neón para errores (`-HP`).
+*   **Tipografía:** `Plus Jakarta Sans`. Se utiliza con pesos variables (Bold para encabezados, Regular para cuerpo) para mantener la legibilidad dentro de una interfaz densa en datos.
+*   **Efectos:**
+    *   **Glow/Bloom:** Resplandores exteriores en botones y tarjetas activas para simular pantallas holográficas.
+    *   **Glassmorphism:** Paneles con desenfoque de fondo (`backdrop-blur`) para capas de profundidad.
+    *   **Bordes de Neón:** Contornos delgados en cian o coral para definir secciones clave.
+
+---
+
+## 3. Funcionamiento de las Pantallas Principales
+
+### A. Mundos de Aprendizaje (Map/Hub)
+*   **Mecánica:** Estructura de mapa de campaña. Las unidades de aprendizaje se presentan como "Hubs" geográficos o temáticos (ej. London Hub, Cyber-Tokyo).
+*   **Progreso:** Cada mundo muestra un porcentaje de completitud. Los mundos avanzados están bloqueados por requisitos de nivel (ej. "Req. Lvl 15").
+*   **Acción:** Botón "Resume Quest" que lleva directamente a la lección activa del usuario.
+
+### B. Arena de Competición (Social/PvP)
+*   **Mecánica:** Centro multijugador para fomentar la retención.
+*   **Duelos de Vocabulario:** Desafíos sincrónicos donde los usuarios compiten por velocidad y precisión para ganar "Elo Rating" y XP.
+*   **Hall of Fame:** Tabla de clasificación local que muestra el nombre, avatar, nivel de maestría (A1, B2, etc.) y XP total de los competidores.
+*   **Live Network:** Indicador visual de estado en línea para emparejamiento rápido.
+
+### C. Batalla de Vocabulario (Learning Engine)
+*   **Mecánica:** Gamificación del ejercicio de opción múltiple o traducción.
+*   **HUD de Combate:** Barra de salud del "Estudiante" vs. barra de salud del "Virus de Sintaxis" (el error).
+*   **Input:** El usuario selecciona comandos (Train, Travel, Talk, Try) que corresponden a diferentes tipos de ejercicios lingüísticos. Responder correctamente "daña" al virus; fallar resta vida al estudiante.
+
+### D. Perfil de Maestría (Stats/Identity)
+*   **Mecánica:** Dashboard de análisis de datos personales.
+*   **Nivel de Maestría:** Clasificación basada en el marco CEFR (A1 a C2).
+*   **Skill Breakdown:** Gráficos de barras que detallan el rendimiento individual en las 4 habilidades: *Speaking, Listening, Reading, Writing*.
+*   **Trophies:** Galería de logros desbloqueables (ej. "Streak Master", "Grammar Guru") que validan el progreso académico.
+
+---
+
+## 4. Componentes Globales
+*   **Top Bar:** Muestra el logo de la app, el avatar del usuario y un indicador de energía/rayo.
+*   **Bottom Navigation:** Acceso rápido a las cuatro áreas principales mediante iconos estilizados: *Map, Arena, Profile, Settings*.
+
+---
+
+## 5. Especificaciones Técnicas para Implementación
+*   **Framework:** HTML5 / Tailwind CSS.
+*   **Interactividad:** Animaciones de transición suave (`transition-all`), efectos de escala en interacción (`active:scale-95`) y estados de hover con cambios de opacidad en los neones.
+*   **Adaptabilidad:** Diseño Mobile-first optimizado para pantallas táctiles con áreas de clic generosas.

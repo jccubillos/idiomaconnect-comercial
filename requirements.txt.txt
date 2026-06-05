@@ -1,0 +1,256 @@
+import streamlit as st
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+from groq import Groq
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import datetime
+from audio_recorder_streamlit import audio_recorder
+import os
+
+# ==========================================
+# 1. CONFIGURACIÓN DE PÁGINA Y ESTILOS
+# ==========================================
+st.set_page_config(page_title="Idiomaconnect", page_icon="✨", layout="centered")
+
+# CSS inspirado en Google Stitch (Moderno, fluido, bordes redondeados)
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
+    html, body, [class*="css"] {
+        font-family: 'Outfit', sans-serif;
+    }
+    .stButton>button {
+        border-radius: 24px;
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        font-weight: 600;
+        padding: 10px 24px;
+    }
+    .stButton>button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    .profile-card {
+        padding: 20px;
+        border-radius: 16px;
+        text-align: center;
+        color: white;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    /* Ocultar elementos por defecto de Streamlit */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    </style>
+""", unsafe_allow_html=True)
+
+# ==========================================
+# 2. CONTEXTO FAMILIAR Y PERFILES
+# ==========================================
+FAMILY_CONTEXT = """
+Contexto de la familia de la alumna (Usa esta información para crear ejemplos, historias y ejercicios):
+- Padres: Juan Carlos y Daniela (Divorciados. Usar "Dad's house" y "Mom's house").
+- Pareja del papá: Camila.
+- Hermano menor: Amaro (10.5 meses de edad).
+- Abuelos maternos: Regina y Jorge Hernán. Abuelos paternos: Silvia y Mario.
+- Tíos: Carlos, Natalia, Pamela. Primos: Agustín, Máximo, Luciana, Julián.
+- Mascotas (7 en total): Gatos (Rosita, Toribio, Blanca, León). Perros (Pink - poodle, Alma - doberman, Odin - doberman).
+"""
+
+PROFILES = {
+    "Antonia": {
+        "color": "#9b59b6", # Morado (Creativo)
+        "hobbies": "Tenis y pintura",
+        "tone": "Creativo e inspirador, usa metáforas visuales y de deporte."
+    },
+    "Belén": {
+        "color": "#3498db", # Azul (Armonioso)
+        "hobbies": "Piano y música",
+        "tone": "Armonioso y rítmico, usa analogías musicales y melodiosas."
+    },
+    "Sofía": {
+        "color": "#e67e22", # Naranja (Dinámico)
+        "hobbies": "Gimnasia",
+        "tone": "Dinámico, energético y enfocado en la superación física y el movimiento."
+    }
+}
+
+# ==========================================
+# 3. CONEXIONES A APIS (Groq & GSheets)
+# ==========================================
+# NOTA: Debes configurar .streamlit/secrets.toml con GROQ_API_KEY y credenciales de Google
+try:
+    groq_client = Groq(api_key=st.secrets["GROQ_API_KEY"])
+except:
+    groq_client = None
+
+def get_db_connection():
+    try:
+        scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["gcp_service_account"], scope)
+        client = gspread.authorize(creds)
+        sheet = client.open("Idiomaconnect_DB").sheet1
+        return sheet
+    except Exception as e:
+        return None
+
+# ==========================================
+# 4. FUNCIONES PRINCIPALES DE LA IA Y APP
+# ==========================================
+def generate_lesson(profile_name, topic, custom_audio_text=None):
+    if not groq_client:
+        return "⚠️ API de Groq no configurada. Por favor, añade tu API Key en secrets."
+    
+    profile = PROFILES[profile_name]
+    
+    system_prompt = f"""
+    Eres un tutor de inglés experto, cariñoso y motivador, diseñado exclusivamente para {profile_name}, una niña de 13 años (nacida el 24/Sept/2012).
+    A ella le apasiona: {profile['hobbies']}.
+    Tu tono debe ser: {profile['tone']}.
+    
+    {FAMILY_CONTEXT}
+    
+    INSTRUCCIONES:
+    - Crea una lección corta, interactiva y gamificada.
+    - Integra al menos 1 o 2 miembros de su familia o mascotas en los ejemplos en inglés.
+    - Incluye un pequeño desafío o pregunta al final para que gane XP.
+    - Mantén el formato limpio, usando viñetas y emojis. Escribe en Spanglish (explicaciones en español, vocabulario en inglés).
+    """
+    
+    user_prompt = f"El tema de hoy es: {topic}."
+    if custom_audio_text:
+        user_prompt += f" La alumna ha dicho por voz: '{custom_audio_text}'. Adapta la lección a esto."
+
+    response = groq_client.chat.completions.create(
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+        ],
+        model="llama3-8b-8192",
+        temperature=0.7,
+        max_tokens=1000,
+    )
+    return response.choices[0].message.content
+
+def send_weekly_report():
+    # Lógica de envío de correo (solo los viernes)
+    today = datetime.datetime.now()
+    if today.weekday() == 4: # 4 = Viernes
+        try:
+            msg = MIMEMultipart()
+            msg['From'] = st.secrets["email_sender"]
+            msg['To'] = "jccubillos@gmail.com"
+            msg['Subject'] = "Reporte Semanal Idiomaconnect 🚀"
+            
+            # Aquí idealmente leeríamos de GSheets, esto es un mockup de los datos
+            body = f"¡Hola Juan Carlos!\n\nEste es el progreso de las trillizas esta semana:\n- Antonia: 150 XP ganados.\n- Belén: 120 XP ganados.\n- Sofía: 180 XP ganados.\n\n¡Van excelente!"
+            msg.attach(MIMEText(body, 'plain'))
+            
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()
+            server.login(st.secrets["email_sender"], st.secrets["email_password"])
+            text = msg.as_string()
+            server.sendmail(st.secrets["email_sender"], "jccubillos@gmail.com", text)
+            server.quit()
+        except Exception as e:
+            pass # Falla silenciosa si no hay credenciales
+
+# ==========================================
+# 5. MANEJO DE ESTADO (Session State)
+# ==========================================
+if 'current_user' not in st.session_state:
+    st.session_state.current_user = None
+if 'xp' not in st.session_state:
+    st.session_state.xp = 0
+if 'lesson_content' not in st.session_state:
+    st.session_state.lesson_content = None
+
+# ==========================================
+# 6. INTERFAZ DE USUARIO (FLUJO)
+# ==========================================
+
+# Pantalla de Login / Selección de Perfil
+if st.session_state.current_user is None:
+    st.markdown("<h1 style='text-align: center; color: #2c3e50;'>✨ IdiomaConnect</h1>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align: center; color: #7f8c8d;'>¿Quién está lista para aprender hoy?</h3>", unsafe_allow_html=True)
+    
+    st.write("---")
+    cols = st.columns(3)
+    
+    for i, (name, data) in enumerate(PROFILES.items()):
+        with cols[i]:
+            st.markdown(f"""
+                <div class='profile-card' style='background-color: {data["color"]};'>
+                    <h2>{name}</h2>
+                    <p>Pasión: {data["hobbies"]}</p>
+                </div>
+            """, unsafe_allow_html=True)
+            if st.button(f"Entrar como {name}", key=f"btn_{name}", use_container_width=True):
+                st.session_state.current_user = name
+                st.rerun()
+
+# Pantalla Principal (Dashboard)
+else:
+    user = st.session_state.current_user
+    color = PROFILES[user]["color"]
+    
+    # Encabezado personalizado
+    st.markdown(f"""
+        <div style='background-color: {color}; padding: 15px; border-radius: 12px; color: white; display: flex; justify-content: space-between; align-items: center;'>
+            <h2 style='margin: 0;'>¡Hola, {user}! 👋</h2>
+            <h3 style='margin: 0;'>⭐ XP: {st.session_state.xp}</h3>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("Cerrar Sesión / Cambiar Usuario", type="secondary"):
+        st.session_state.current_user = None
+        st.session_state.lesson_content = None
+        st.rerun()
+
+    st.write("---")
+    st.markdown("### ¿Qué quieres hacer hoy?")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("🗺️ Que la IA me guíe", use_container_width=True):
+            with st.spinner('Creando tu aventura de hoy...'):
+                st.session_state.lesson_content = generate_lesson(user, "Aventura Diaria (Vocabulario general y gramática divertida)")
+    
+    with col2:
+        st.write("🗣️ **Tema Escolar / Personalizado**")
+        st.write("Graba un audio contándome qué estás aprendiendo:")
+        audio_bytes = audio_recorder(text="Clic para hablar", recording_color="#e74c3c", neutral_color="#95a5a6", icon_size="2x")
+        
+        if audio_bytes and groq_client:
+            with st.spinner("Escuchando y preparando tu lección..."):
+                # Guardar temporalmente para Whisper
+                with open("temp_audio.wav", "wb") as f:
+                    f.write(audio_bytes)
+                
+                # Transcribir con Groq Whisper
+                with open("temp_audio.wav", "rb") as file:
+                    transcription = groq_client.audio.transcriptions.create(
+                        file=("temp_audio.wav", file.read()),
+                        model="whisper-large-v3",
+                    )
+                st.success(f"Te escuché decir: *'{transcription.text}'*")
+                st.session_state.lesson_content = generate_lesson(user, "Tema del Colegio", transcription.text)
+
+    # Mostrar la lección si existe
+    if st.session_state.lesson_content:
+        st.write("---")
+        st.markdown("### 📚 Tu Lección de Hoy")
+        st.markdown(f"<div style='background-color: #f8f9fa; padding: 25px; border-radius: 15px; border-left: 5px solid {color};'>{st.session_state.lesson_content}</div>", unsafe_allow_html=True)
+        
+        st.write("")
+        if st.button("✅ ¡Completé esta lección! (Ganar 50 XP)", use_container_width=True):
+            st.session_state.xp += 50
+            st.balloons()
+            st.success("¡Increíble trabajo! Has ganado 50 XP y un nuevo Sticker virtual. 🏆")
+            # Aquí iría la lógica para guardar el XP en get_db_connection() (GSheets)
+
+# Disparador silencioso del reporte semanal
+send_weekly_report()

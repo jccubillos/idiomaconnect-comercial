@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cyber-Linguist Arena</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&amp;family=Source+Sans+3:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-high": "#272a2d",
+                      "surface-tint": "#ffb3ae",
+                      "tertiary-fixed-dim": "#e5b4ff",
+                      "surface-bright": "#363a3d",
+                      "outline-variant": "#5b403e",
+                      "inverse-primary": "#bb1522",
+                      "on-surface-variant": "#e4bdba",
+                      "surface-dim": "#101417",
+                      "on-secondary-fixed": "#002022",
+                      "surface": "#101417",
+                      "on-tertiary-fixed-variant": "#7000a7",
+                      "on-primary-container": "#5c0008",
+                      "inverse-surface": "#e0e2e6",
+                      "secondary": "#d3fbff",
+                      "on-primary": "#68000b",
+                      "error": "#ffb4ab",
+                      "primary": "#ffb3ae",
+                      "on-tertiary-container": "#450069",
+                      "surface-variant": "#323538",
+                      "surface-container": "#1d2023",
+                      "primary-fixed": "#ffdad7",
+                      "on-secondary-fixed-variant": "#004f54",
+                      "primary-fixed-dim": "#ffb3ae",
+                      "on-primary-fixed-variant": "#930014",
+                      "surface-container-lowest": "#0b0f11",
+                      "tertiary-fixed": "#f5d9ff",
+                      "on-error": "#690005",
+                      "error-container": "#93000a",
+                      "secondary-fixed-dim": "#00dbe9",
+                      "on-tertiary-fixed": "#30004b",
+                      "secondary-fixed": "#7df4ff",
+                      "surface-container-highest": "#323538",
+                      "on-background": "#e0e2e6",
+                      "on-surface": "#e0e2e6",
+                      "tertiary-container": "#c464ff",
+                      "secondary-container": "#00eefc",
+                      "primary-container": "#ff5351",
+                      "inverse-on-surface": "#2d3134",
+                      "on-primary-fixed": "#410004",
+                      "tertiary": "#e5b4ff",
+                      "on-secondary": "#00363a",
+                      "on-secondary-container": "#00686f",
+                      "surface-container-low": "#191c1f",
+                      "outline": "#ab8886",
+                      "background": "#101417",
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary": "#4f0077"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "sm": "8px",
+                      "xl": "32px",
+                      "lg": "24px",
+                      "container-margin": "20px",
+                      "xs": "4px",
+                      "unit": "4px",
+                      "md": "16px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "display-hero": ["Plus Jakarta Sans"],
+                      "body-md": ["Source Sans 3"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "body-lg": ["Source Sans 3"],
+                      "label-bold": ["Plus Jakarta Sans"],
+                      "headline-md": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "display-hero": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-bold": ["14px", {"lineHeight": "1.0", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body { background-color: #101417; } /* Midnight Navy Base */
+        .glass-panel {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(211, 251, 255, 0.1);
+            border-left: 1px solid rgba(211, 251, 255, 0.1);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 12px rgba(255, 83, 81, 0.4);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md text-body-md min-h-screen pb-32 pt-24 overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant/20 shadow-[0_4px_20px_rgba(0,0,0,0.5)] flex justify-between items-center px-container-margin py-sm w-full">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-secondary/30">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A sleek, stylized cyberpunk avatar of a young female competitor in an electric academic setting. She wears a high-tech augmented reality headset with neon pink and cyan accents reflecting in the visor. The background is a dark, blurred glassmorphism environment indicative of a digital lobby. The lighting is moody and dramatic, utilizing a color palette of deep midnight navy and vibrant pinks to match the platform's UI aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUbZ_l4gjHH-LRRIgoC92ELiqnEZ6i_DO0tEahehjqlhZAj_GnLUsAEWhiIOk8sJtPSitOYZVIHrBt6hb3JvxfoCmG274GklhgwLR83tStvc8I-M0Y6mzsca5qn-i6ybukrl6C5ueTl6nKIswGNdQi0jpZsyQpe9Pw0gaxrZbPYEQSx5a2Lohs0vWoPdeU8hbXf7rB2y5opn3edAkQzmkdWMr2ZtSzL3JjxLTfWShXIiiPCjcH-Dotm--RILdiqTL6jEdo5hv1S-fg"/>
+</div>
+<h1 class="font-display-hero text-headline-md tracking-tighter text-primary dark:text-primary-fixed-dim drop-shadow-[0_0_8px_rgba(255,179,174,0.6)]">CYBER-LINGUIST</h1>
+</div>
+<!-- Desktop Nav Cluster (Hidden on Mobile per rules) -->
+<nav class="hidden md:flex gap-lg items-center">
+<a class="font-label-bold text-label-bold text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Map</a>
+<a class="font-label-bold text-label-bold text-primary border-b-2 border-primary pb-1" href="#">Arena</a>
+<a class="font-label-bold text-label-bold text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Profile</a>
+<a class="font-label-bold text-label-bold text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Settings</a>
+</nav>
+<button class="text-primary dark:text-primary-fixed-dim hover:bg-surface-variant/50 transition-colors duration-300 active:scale-95 transition-transform p-sm rounded-full">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="max-w-7xl mx-auto px-container-margin md:grid md:grid-cols-12 gap-xl">
+<!-- Game Modes Section (Bento Grid) -->
+<section class="col-span-12 lg:col-span-8 flex flex-col gap-lg mb-xl md:mb-0">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Battle Terminals</h2>
+<span class="bg-secondary/10 border border-secondary/30 text-secondary px-3 py-1 rounded-full font-label-bold text-label-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">signal_cellular_alt</span> Live Network
+                </span>
+</div>
+<!-- Bento Grid Container -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg h-full">
+<!-- Vocabulary Duels (Primary) -->
+<div class="md:col-span-2 relative rounded-xl overflow-hidden glass-panel group min-h-[300px] flex flex-col justify-end p-lg">
+<!-- Background Image with Gradient Overlay -->
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A dynamic, high-octane digital arena environment designed for language battles. The scene features glowing holographic text elements floating in a vast, dark cyber-space constructed of translucent glass panels. Intense beams of cyan and neon red light cut through the deep navy background, creating a sense of competitive energy and technological advancement. The overall style is modern cyberpunk infused with premium social media UI aesthetics." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDxKViFp4km_lYGkC3JudipTiYDFcGkH3Jaf9ICIdsEkLG2ikNH6nTZVWqLG1dG21lCo7twP8Tb-g8e9hsozu0w4OQdTp_L8z1umivzmWdHQwp7WcTjM7pJUnDp0g4d2_6jWd4EwCcIWRJ88c1nJuwGCjysFykn7Bw4tqbYHO7ewj-rkpc58gwr4aA_LUWGxJJOpqHxtIuiPKwwhR7BpdUeiS7Ne_ArM1LRMp8OqvKT2KnZ__GVpacZtxIKD_eFNSE6EVnCwOC2a7e5');"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/80 to-transparent"></div>
+<div class="relative z-10">
+<div class="bg-primary/20 backdrop-blur-md border border-primary/50 w-12 h-12 rounded-lg flex items-center justify-center mb-md neon-glow-primary">
+<span class="material-symbols-outlined text-primary text-[28px]">swords</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-white mb-xs tracking-tight">Vocabulary Duels</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-lg max-w-md">Enter the live arena. Match words to concepts faster than your opponent to steal their elo rating.</p>
+<button class="bg-[#FF4B4B] text-white font-label-bold text-label-bold px-lg py-3 rounded-lg shadow-[0_0_12px_rgba(255,75,75,0.6)] hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2 w-max">
+                            Join Duel <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Grammar Sprints (Secondary) -->
+<div class="glass-panel rounded-xl p-lg flex flex-col justify-between min-h-[220px] relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full blur-3xl -mr-10 -mt-10 transition-transform duration-500 group-hover:scale-150"></div>
+<div>
+<div class="bg-surface-variant border border-outline-variant/30 w-10 h-10 rounded-lg flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-secondary">timer</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Grammar Sprints</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Time-attack sentence structuring. Prove your syntactic dominance.</p>
+</div>
+<button class="bg-transparent border border-[#00eefc] text-[#00eefc] font-label-bold text-label-bold px-md py-2 rounded-lg hover:bg-[#00eefc]/10 active:scale-95 transition-all w-full text-center shadow-[0_0_8px_rgba(0,238,252,0.2)]">
+                        Weekly Challenge
+                    </button>
+</div>
+<!-- Stats / Activity Mini Card -->
+<div class="glass-panel rounded-xl p-lg flex flex-col justify-center min-h-[220px] relative">
+<h3 class="font-label-bold text-label-bold text-on-surface-variant tracking-wider uppercase mb-md">Your Current Form</h3>
+<div class="flex items-end gap-sm mb-sm">
+<span class="font-display-hero text-display-hero text-primary leading-none">1,240</span>
+<span class="font-body-md text-body-md text-primary/70 pb-1">XP</span>
+</div>
+<div class="w-full bg-surface-variant h-2 rounded-full overflow-hidden mt-2 border border-outline-variant/20">
+<div class="h-full bg-gradient-to-r from-secondary to-primary w-[65%] rounded-full relative">
+<div class="absolute right-0 top-0 bottom-0 w-4 bg-white/50 blur-[2px]"></div>
+</div>
+</div>
+<p class="font-label-bold text-label-bold text-on-surface-variant mt-3 text-right">360 XP to next tier</p>
+</div>
+</div>
+</section>
+<!-- Leaderboard Section -->
+<section class="col-span-12 lg:col-span-4 flex flex-col h-full">
+<div class="glass-panel rounded-xl p-lg flex-1 border-t-2 border-t-primary/30 flex flex-col">
+<div class="flex justify-between items-center mb-xl border-b border-outline-variant/20 pb-md">
+<h2 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary">social_leaderboard</span> Hall of Fame
+                    </h2>
+<span class="font-label-bold text-label-bold text-secondary">Local</span>
+</div>
+<div class="flex flex-col gap-md flex-1">
+<!-- Leaderboard Item: Antonia -->
+<div class="flex items-center gap-md p-sm rounded-lg hover:bg-surface-variant/30 transition-colors group">
+<span class="font-label-bold text-label-bold text-primary w-4 text-center">1</span>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-primary/50 group-hover:shadow-[0_0_8px_rgba(255,179,174,0.5)] transition-shadow">
+<img alt="Antonia Avatar" class="w-full h-full object-cover" data-alt="A striking portrait of a teenage girl serving as a player avatar in a competitive learning app. She is illuminated by soft, directional neon red lighting against a deep black background, creating a high-contrast, cyberpunk aesthetic. The image is crisp, reflecting a premium social media visual language mixed with gaming culture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2067Lt4KaNXuqVe9a8au0DK5gOE5jV87Ex2wxxeP5izq0gduI6vTHlmE0MTaANVRz-s2nERFewpbNKYmtwloLyrO4t5jwpKzkP5SFOEPoPziL4UASUpy-i80zXMg9StFLnu-gN_d-utKTxucgAiQmhczmBQXP5FIucthqw4NYpbZsnhq6Ffj2K_BLlpmf7seQetd5AwioXF8ti1a7Z-k_Td3p2k7AL6TVQk3aTno19cttRXnXLChkwXZHGMkkOSVnT4nLYxjLZB3O"/>
+</div>
+<div class="flex-1">
+<h4 class="font-label-bold text-label-bold text-on-surface">Antonia</h4>
+<span class="bg-secondary/10 border border-secondary/50 text-secondary px-2 py-0.5 rounded-full font-label-bold text-[10px] inline-block mt-1 tracking-widest">B2</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary transition-colors">4.2k XP</span>
+</div>
+<!-- Leaderboard Item: Belen -->
+<div class="flex items-center gap-md p-sm rounded-lg hover:bg-surface-variant/30 transition-colors group">
+<span class="font-label-bold text-label-bold text-secondary w-4 text-center">2</span>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/50">
+<img alt="Belen Avatar" class="w-full h-full object-cover" data-alt="A professional yet edgy portrait of a young female competitor. The avatar image is styled with a subtle glassmorphism filter, blurring the dark indigo background. Slight cyan edge-lighting highlights her profile, adhering to the 'Electric Academic' brand identity. The overall tone is focused and modern." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtq05c7FTwCyoPjp0gEAVzL0vgNVVYebCD0WowPsV7R5NGAeWwE5v5xBN4l6bCwXnwubJMrGZt1llQ47CI54El5EUQV3uzlnbJrORZsetgXcmFBhC1RyUX8W3Tfk1HIf7tqV46tB2KykQbfBaan5p2ZcI6HdF1Lv7pxTfO3ddIdBKLvAOwvdz6j8bgkDRK6kWLyep8pi5aiROpGkhF6oLWUtPZ7ghXrI7_DV7sqWZbNV4JpHILIIzylfl81pEbCvjNunkc4MQxlQ8Y"/>
+</div>
+<div class="flex-1">
+<h4 class="font-label-bold text-label-bold text-on-surface">Belen</h4>
+<span class="bg-secondary/10 border border-secondary/50 text-secondary px-2 py-0.5 rounded-full font-label-bold text-[10px] inline-block mt-1 tracking-widest">B2</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-secondary transition-colors">3.8k XP</span>
+</div>
+<!-- Leaderboard Item: Sofia -->
+<div class="flex items-center gap-md p-sm rounded-lg hover:bg-surface-variant/30 transition-colors group">
+<span class="font-label-bold text-label-bold text-tertiary w-4 text-center">3</span>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/50">
+<img alt="Sofia Avatar" class="w-full h-full object-cover" data-alt="An energetic avatar image of a female student in a digital environment. The background is a wash of deep midnight navy with faint, glowing geometric wireframes. She looks directly at the camera, embodying confidence. The image quality mimics a high-end social media profile picture with a gamified twist." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUxljKZTE0fQvwisoHy0wbJJvnRlzO33UcHNq2FqwwTlzOBKenWLbA04IBAQ1fO6w45-zD7DvfkNSRTZvZHB77wsjwRwdsr62CCD1bzW_tQLBI-Az-9V059iuWCajpTe5UfhdfSTxz2-dEQ2Uv3NWesTlNOOC5KyBDKxeImkF7NhiVywUYph5Rhcy_3Y3eAPrBKy7vRgn_oiOaqfDhJBOtnV64dFgxFGbWs6KnfY7_DOOTMilTmTXhVP39r_wJE1aGmnWR1CM2zEA7"/>
+</div>
+<div class="flex-1">
+<h4 class="font-label-bold text-label-bold text-on-surface">Sofia</h4>
+<span class="bg-secondary/10 border border-secondary/50 text-secondary px-2 py-0.5 rounded-full font-label-bold text-[10px] inline-block mt-1 tracking-widest">A1</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-tertiary transition-colors">2.9k XP</span>
+</div>
+<!-- Leaderboard Item: Agustin -->
+<div class="flex items-center gap-md p-sm rounded-lg hover:bg-surface-variant/30 transition-colors group">
+<span class="font-label-bold text-label-bold text-on-surface-variant w-4 text-center">4</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant/50 flex items-center justify-center text-on-surface-variant font-label-bold text-label-bold">
+                             Ag
+                        </div>
+<div class="flex-1">
+<h4 class="font-label-bold text-label-bold text-on-surface">Agustin</h4>
+<span class="bg-secondary/10 border border-secondary/50 text-secondary px-2 py-0.5 rounded-full font-label-bold text-[10px] inline-block mt-1 tracking-widest">A1</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant">2.1k XP</span>
+</div>
+<!-- Leaderboard Item: Maximo -->
+<div class="flex items-center gap-md p-sm rounded-lg hover:bg-surface-variant/30 transition-colors group">
+<span class="font-label-bold text-label-bold text-on-surface-variant w-4 text-center">5</span>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/50">
+<img alt="Maximo Avatar" class="w-full h-full object-cover" data-alt="A sleek, moody avatar portrait of a male competitor. The scene is lit with striking dual-tone lighting—cyan on one side, deep red on the other—set against a pitch-black background. This creates a highly dramatic, cyberpunk visual aesthetic suitable for a high-tech learning application's leaderboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3hi_nVE6Pht1ZC2EJ6arhUlSnHSFpb_ni-HlogwmgEA9mfLzBh95v9Jj3RJQEAk10w8UY1Qp4flMGWTEHIiWiDdrlrF9q8q0haQjBJjVM0jbiwn8ClUqd_YH8S-E6dMg4tZeHT-1zjBxLTyxnX4YEY9yMMdiXBc2Cy-dSGpRkdpGQ_q-N0WYKN-xjKz33Dyrj_yQ2SR_rq29GaW6pBtPQXjNVh0JeHcS07vJVt-4lDT9oxTTlfDXbvO1RIEYYk6frYBWPzt9dsJKZ"/>
+</div>
+<div class="flex-1">
+<h4 class="font-label-bold text-label-bold text-on-surface">Maximo</h4>
+<span class="bg-secondary/10 border border-secondary/50 text-secondary px-2 py-0.5 rounded-full font-label-bold text-[10px] inline-block mt-1 tracking-widest">A1</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant">1.8k XP</span>
+</div>
+<!-- Leaderboard Item: Antonela -->
+<div class="flex items-center gap-md p-sm rounded-lg hover:bg-surface-variant/30 transition-colors group">
+<span class="font-label-bold text-label-bold text-on-surface-variant w-4 text-center">6</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant/50 flex items-center justify-center text-on-surface-variant font-label-bold text-label-bold">
+                             An
+                        </div>
+<div class="flex-1">
+<h4 class="font-label-bold text-label-bold text-on-surface">Antonela</h4>
+<span class="bg-secondary/10 border border-secondary/50 text-secondary px-2 py-0.5 rounded-full font-label-bold text-[10px] inline-block mt-1 tracking-widest">A1</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant">1.5k XP</span>
+</div>
+</div>
+<button class="w-full mt-lg py-sm border-t border-outline-variant/20 font-label-bold text-label-bold text-primary hover:text-primary-fixed transition-colors text-center">
+                    View Full Rankings
+                </button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container/80 dark:bg-surface-container/80 backdrop-blur-xl border-t border-outline-variant/20 shadow-[0_-4px_24px_rgba(0,0,0,0.6)] flex justify-around items-center w-full px-4 pb-4 pt-2">
+<!-- Map (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90 transition-transform duration-150 group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:-translate-y-1 transition-transform">map</span>
+<span class="font-label-bold text-label-bold text-[10px]">Map</span>
+</a>
+<!-- Arena (Active - Semantic Match) -->
+<a class="flex flex-col items-center justify-center bg-primary-container/20 text-primary dark:text-primary-fixed-dim rounded-xl px-4 py-2 ring-1 ring-primary/40 shadow-[0_0_12px_rgba(255,179,174,0.3)] active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">swords</span>
+<span class="font-label-bold text-label-bold text-[10px]">Arena</span>
+</a>
+<!-- Profile (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90 transition-transform duration-150 group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:-translate-y-1 transition-transform">person_filled</span>
+<span class="font-label-bold text-label-bold text-[10px]">Profile</span>
+</a>
+<!-- Settings (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90 transition-transform duration-150 group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:-translate-y-1 transition-transform">settings</span>
+<span class="font-label-bold text-label-bold text-[10px]">Settings</span>
+</a>
+</nav>
+</body></html>

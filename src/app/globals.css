@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   CYBER-LINGUIST HUD — design tokens + base
+   ============================================================ */
+
+@layer base {
+  :root {
+    --surface: #101417;
+    --surface-low: #191c1f;
+    --surface-mid: #1d2023;
+    --surface-high: #272a2d;
+    --glass: rgba(29, 32, 35, 0.6);
+    --glass-strong: rgba(29, 32, 35, 0.85);
+    --border-soft: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.12);
+
+    --primary: #ff4b4b;
+    --primary-light: #ffb3ae;
+    --secondary: #00eefc;
+    --tertiary: #c464ff;
+    --success: #39ff14;
+    --warning: #ffd400;
+    --danger: #ff5351;
+
+    --on-surface: #e0e2e6;
+    --on-surface-dim: #a8aab0;
+  }
+
+  html {
+    color-scheme: dark;
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    font-family: "Source Sans 3", system-ui, sans-serif;
+    background: var(--surface);
+    color: var(--on-surface);
+    min-height: 100dvh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at top, rgba(0, 238, 252, 0.08), transparent 50%),
+      radial-gradient(ellipse at bottom, rgba(255, 75, 75, 0.05), transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  /* Glassmorphism panels */
+  .glass {
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--border-soft);
+  }
+  .glass-strong {
+    background: var(--glass-strong);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-strong);
+  }
+
+  /* Text neon glow */
+  .text-glow-red { text-shadow: 0 0 12px rgba(255, 75, 75, 0.7); }
+  .text-glow-cyan { text-shadow: 0 0 12px rgba(0, 238, 252, 0.7); }
+  .text-glow-purple { text-shadow: 0 0 12px rgba(196, 100, 255, 0.7); }
+  .text-glow-green { text-shadow: 0 0 12px rgba(57, 255, 20, 0.7); }
+
+  /* Progress bar with leading-edge glow */
+  .progress-track {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 9999px;
+    overflow: hidden;
+    height: 8px;
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 9999px;
+    position: relative;
+    transition: width 0.4s ease;
+  }
+  .progress-fill::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 12px;
+    background: rgba(255, 255, 255, 0.6);
+    filter: blur(4px);
+  }
+
+  /* Skill gradients */
+  .skill-reading { background: linear-gradient(90deg, #00eefc 0%, #7df4ff 100%); }
+  .skill-listening { background: linear-gradient(90deg, #c464ff 0%, #e5b4ff 100%); }
+  .skill-writing { background: linear-gradient(90deg, #ffb3ae 0%, #ff4b4b 100%); }
+  .skill-speaking { background: linear-gradient(90deg, #39ff14 0%, #7df4ff 100%); }
+
+  /* HP bars (battle) */
+  .hp-player { background: linear-gradient(90deg, #00eefc, #39ff14); box-shadow: 0 0 8px rgba(0, 238, 252, 0.6); }
+  .hp-enemy { background: linear-gradient(90deg, #ff4b4b, #ffb3ae); box-shadow: 0 0 8px rgba(255, 75, 75, 0.6); }
+
+  /* Avatar wrapper with neon ring */
+  .avatar-ring {
+    position: relative;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--surface-high), var(--surface-low));
+    overflow: hidden;
+  }
+  .avatar-ring::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: var(--ring-color, var(--primary));
+    z-index: -1;
+    filter: blur(6px);
+    opacity: 0.6;
+  }
+
+  /* Bottom navigation */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(16, 20, 23, 0.85);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 75, 75, 0.15);
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.6);
+    padding: 12px 16px max(12px, env(safe-area-inset-bottom));
+    z-index: 50;
+  }
+
+  /* Hide scrollbars but keep scroll */
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { scrollbar-width: none; }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .world-locked { opacity: 0.45; filter: grayscale(0.6); }
+}

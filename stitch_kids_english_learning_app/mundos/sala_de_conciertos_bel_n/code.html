@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CYBER-LINGUIST - Belén's Lyric Lab</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&amp;family=Source+Sans+3:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#ffb3ae",
+                    "surface": "#101417",
+                    "on-primary-fixed": "#410004",
+                    "inverse-primary": "#bb1522",
+                    "secondary": "#d3fbff",
+                    "surface-bright": "#363a3d",
+                    "primary-fixed-dim": "#ffb3ae",
+                    "error": "#ffb4ab",
+                    "on-secondary-fixed": "#002022",
+                    "tertiary-fixed-dim": "#e5b4ff",
+                    "on-secondary-fixed-variant": "#004f54",
+                    "on-surface-variant": "#e4bdba",
+                    "tertiary-container": "#c464ff",
+                    "primary-fixed": "#ffdad7",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-fixed": "#f5d9ff",
+                    "surface-container-low": "#191c1f",
+                    "primary-container": "#ff5351",
+                    "surface-dim": "#101417",
+                    "background": "#101417",
+                    "inverse-on-surface": "#2d3134",
+                    "secondary-fixed-dim": "#00dbe9",
+                    "surface-container-highest": "#323538",
+                    "error-container": "#93000a",
+                    "secondary-container": "#00eefc",
+                    "outline": "#ab8886",
+                    "on-background": "#e0e2e6",
+                    "outline-variant": "#5b403e",
+                    "on-tertiary-fixed-variant": "#7000a7",
+                    "on-tertiary-fixed": "#30004b",
+                    "on-secondary-container": "#00686f",
+                    "on-surface": "#e0e2e6",
+                    "on-primary-container": "#5c0008",
+                    "on-secondary": "#00363a",
+                    "on-tertiary": "#4f0077",
+                    "on-primary-fixed-variant": "#930014",
+                    "surface-variant": "#323538",
+                    "secondary-fixed": "#7df4ff",
+                    "on-error": "#690005",
+                    "surface-container-lowest": "#0b0f11",
+                    "surface-container-high": "#272a2d",
+                    "primary": "#ffb3ae",
+                    "on-primary": "#68000b",
+                    "surface-container": "#1d2023",
+                    "tertiary": "#e5b4ff",
+                    "inverse-surface": "#e0e2e6",
+                    "on-tertiary-container": "#450069"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "container-margin": "20px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "md": "16px",
+                    "xl": "32px",
+                    "unit": "4px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "body-md": [
+                            "Source Sans 3"
+                    ],
+                    "label-bold": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-lg": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-md": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "display-hero": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body-lg": [
+                            "Source Sans 3"
+                    ]
+            },
+            "fontSize": {
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-bold": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.0",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "display-hero": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "800"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #0A0B1E; } /* Midnight Navy foundation */
+        .glass-panel {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(196, 100, 255, 0.2); /* Neon Violet tint */
+        }
+        .neon-glow-violet {
+            box-shadow: 0 0 15px rgba(196, 100, 255, 0.4);
+        }
+        .neon-glow-pink {
+            box-shadow: 0 0 15px rgba(255, 83, 81, 0.4);
+        }
+        .text-gradient {
+            background: linear-gradient(90deg, #c464ff, #ff5351);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hud-border {
+            border: 1px solid rgba(196, 100, 255, 0.3);
+            position: relative;
+        }
+        .hud-border::before, .hud-border::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border: 1px solid #c464ff;
+        }
+        .hud-border::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+        .hud-border::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col pt-20 pb-24 md:pb-0 relative overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant/20 shadow-[0_4px_20px_rgba(0,0,0,0.5)] flex justify-between items-center px-container-margin py-sm">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-tertiary-container/50">
+<img alt="User Pilot Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2yy9Mwtb8RoRWyNhRhWwcHEnNDcafotCLqRacenSt_dhFpEcgFTjXvKBOF662c15U_l7LiTGD6iOCN7XPX3pB2iXUhCHH_SKHGRSi01zAUZoPtatjGpBqC-ANk8D8cGMkr-BThk-EqhiZCKF_INjCobZz0AvF2ZeyKOERHCEyRr4gXfnbNYx7jcUchfmM6mOdHbWoJ0B5VhKHOu1HjsKetVtzp1QsRhX4zxJ4NUzM5yeMMsgw0TBWiSWm3m8hhQLSk9Xehae8oaH7"/>
+</div>
+<h1 class="font-display-hero text-headline-md tracking-tighter text-primary dark:text-primary-fixed-dim drop-shadow-[0_0_8px_rgba(255,179,174,0.6)]">CYBER-LINGUIST</h1>
+</div>
+<!-- Web Nav (Hidden on Mobile) -->
+<nav class="hidden md:flex items-center gap-lg">
+<a class="font-label-bold text-label-bold text-on-surface-variant hover:text-tertiary-container transition-colors duration-300 flex items-center gap-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">map</span>
+                Map
+            </a>
+<a class="font-label-bold text-label-bold flex items-center gap-sm text-tertiary-container drop-shadow-[0_0_8px_rgba(196,100,255,0.6)] border-b-2 border-tertiary-container pb-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+                Academy
+            </a>
+<a class="font-label-bold text-label-bold text-on-surface-variant hover:text-tertiary-container transition-colors duration-300 flex items-center gap-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">person_filled</span>
+                Profile
+            </a>
+<a class="font-label-bold text-label-bold text-on-surface-variant hover:text-tertiary-container transition-colors duration-300 flex items-center gap-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+                Settings
+            </a>
+</nav>
+<button class="text-primary dark:text-primary-fixed-dim hover:bg-surface-variant/50 transition-colors duration-300 p-2 rounded-full active:scale-95 transition-transform md:hidden">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-container-margin w-full max-w-7xl mx-auto flex flex-col gap-xl">
+<!-- Hero / Context Header -->
+<section class="mt-lg relative rounded-xl overflow-hidden glass-panel p-lg md:p-xl flex flex-col md:flex-row items-center gap-lg border-l-4 border-l-tertiary-container">
+<!-- Decorative background glow -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-tertiary-container/20 rounded-full blur-[80px] -z-10"></div>
+<div class="absolute bottom-0 left-0 w-64 h-64 bg-primary-container/20 rounded-full blur-[80px] -z-10"></div>
+<div class="flex-1 space-y-md z-10">
+<div class="inline-flex items-center gap-sm px-3 py-1 rounded-full bg-surface-container/50 border border-tertiary-container/30">
+<span class="material-symbols-outlined text-tertiary-container text-sm" style="font-variation-settings: 'FILL' 1;">lyrics</span>
+<span class="font-label-bold text-label-bold text-tertiary-fixed-dim uppercase tracking-wider">Module 4: Lyric Analysis</span>
+</div>
+<h2 class="font-display-hero text-display-hero text-on-surface leading-tight">
+<span class="text-gradient">Belén's</span> Lyric Lab
+                </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                    Master English syntax through song. Analyze lyrical structures, identify tenses, and improve listening comprehension with our premium audio tools.
+                </p>
+<div class="flex gap-md pt-sm">
+<button class="bg-primary-container text-on-primary-container font-label-bold px-6 py-3 rounded-lg neon-glow-pink hover:bg-primary transition-all active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined">play_lesson</span>
+                        START LESSON
+                    </button>
+</div>
+</div>
+<div class="w-full md:w-1/3 aspect-video rounded-xl border border-tertiary-container/50 flex flex-col justify-between p-4 relative bg-surface-container-lowest/80 backdrop-blur-md overflow-hidden">
+<!-- Premium Audio Player Mockup -->
+<div class="absolute inset-0 bg-gradient-to-br from-tertiary-container/10 to-primary-container/10 pointer-events-none"></div>
+<div class="flex justify-between items-start z-10">
+<div>
+<h4 class="font-headline-md text-on-surface">Neon Skyline</h4>
+<p class="font-body-md text-on-surface-variant text-sm">Grammar Focus: Present Continuous</p>
+</div>
+<span class="material-symbols-outlined text-tertiary-container text-3xl">album</span>
+</div>
+<div class="z-10 mt-auto">
+<div class="flex justify-between text-xs text-on-surface-variant mb-1 font-body-md">
+<span>01:24</span>
+<span>03:45</span>
+</div>
+<div class="h-2 bg-surface-container-highest rounded-full overflow-hidden cursor-pointer group">
+<div class="h-full bg-gradient-to-r from-tertiary-container to-primary-container w-1/3 relative group-hover:neon-glow-violet transition-shadow">
+<div class="absolute right-0 top-0 bottom-0 w-2 bg-white rounded-full scale-0 group-hover:scale-100 transition-transform"></div>
+</div>
+</div>
+<div class="flex justify-center items-center gap-md mt-4">
+<button class="text-on-surface-variant hover:text-tertiary-container transition-colors"><span class="material-symbols-outlined">skip_previous</span></button>
+<button class="w-12 h-12 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center hover:bg-tertiary-fixed transition-colors shadow-lg"><span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">pause</span></button>
+<button class="text-on-surface-variant hover:text-tertiary-container transition-colors"><span class="material-symbols-outlined">skip_next</span></button>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid Layout -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-md auto-rows-min">
+<!-- Lyric Reader (Wide Card) -->
+<div class="md:col-span-8 glass-panel rounded-xl p-lg flex flex-col gap-md hud-border">
+<div class="flex justify-between items-center border-b border-outline-variant/30 pb-sm">
+<h3 class="font-headline-md text-headline-md text-tertiary-fixed flex items-center gap-xs">
+<span class="material-symbols-outlined text-tertiary-container">subject</span>
+                        Interactive Lyrics
+                    </h3>
+<div class="flex gap-2">
+<span class="font-label-bold text-xs text-primary-fixed-dim bg-primary-container/20 px-2 py-1 rounded border border-primary-container/30">Highlight Tenses</span>
+<span class="font-label-bold text-xs text-tertiary-fixed-dim bg-tertiary-container/20 px-2 py-1 rounded border border-tertiary-container/30">Translate</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest/50 rounded-lg p-md relative overflow-hidden flex-1 min-h-[300px] border border-surface-variant font-body-lg text-body-lg text-on-surface leading-loose space-y-4">
+<p class="opacity-50 transition-opacity hover:opacity-100">
+                        The city lights <span class="bg-primary-container/20 text-primary border-b border-primary-container px-1 rounded cursor-help" title="Present Continuous">are shining</span> bright,
+                    </p>
+<p class="opacity-100 font-medium border-l-2 border-tertiary-container pl-4 -ml-[18px]">
+                        We <span class="bg-primary-container/20 text-primary border-b border-primary-container px-1 rounded cursor-help" title="Present Continuous">are moving</span> through the neon night,
+                    </p>
+<p class="opacity-50 transition-opacity hover:opacity-100">
+                        The bass <span class="bg-primary-container/20 text-primary border-b border-primary-container px-1 rounded cursor-help" title="Present Continuous">is pulsing</span> in my veins,
+                    </p>
+<p class="opacity-50 transition-opacity hover:opacity-100">
+                        Forget the sorrow, lose the chains.
+                    </p>
+<div class="absolute bottom-4 right-4 flex items-center gap-2 bg-surface/80 backdrop-blur p-2 rounded-lg border border-surface-variant">
+<span class="material-symbols-outlined text-tertiary-container text-sm">auto_awesome</span>
+<span class="font-label-bold text-xs text-on-surface-variant">AI Tutor Active: Tap highlighted verbs for explanations</span>
+</div>
+</div>
+</div>
+<!-- Vocabulary List (Tall Card) -->
+<div class="md:col-span-4 glass-panel rounded-xl p-lg flex flex-col gap-md">
+<h3 class="font-headline-md text-headline-md text-primary-fixed flex items-center gap-xs border-b border-outline-variant/30 pb-sm">
+<span class="material-symbols-outlined text-primary-container">menu_book</span>
+                    Song Vocabulary
+                </h3>
+<div class="flex flex-col gap-sm flex-1 overflow-y-auto pr-2 custom-scrollbar">
+<!-- Vocab Item 1 -->
+<div class="group flex items-center gap-sm p-sm rounded-lg bg-surface-container/40 border border-transparent hover:border-tertiary-container/50 transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded bg-tertiary-container/10 flex items-center justify-center text-tertiary-container group-hover:neon-glow-violet">
+<span class="material-symbols-outlined">lightbulb</span>
+</div>
+<div>
+<p class="font-label-bold text-on-surface">Neon</p>
+<p class="font-body-md text-sm text-on-surface-variant">Brightly glowing colored light.</p>
+</div>
+</div>
+<!-- Vocab Item 2 -->
+<div class="group flex items-center gap-sm p-sm rounded-lg bg-surface-container/40 border border-transparent hover:border-tertiary-container/50 transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded bg-tertiary-container/10 flex items-center justify-center text-tertiary-container group-hover:neon-glow-violet">
+<span class="material-symbols-outlined">favorite</span>
+</div>
+<div>
+<p class="font-label-bold text-on-surface">Pulse</p>
+<p class="font-body-md text-sm text-on-surface-variant">A rhythmic throbbing or beating.</p>
+</div>
+</div>
+<!-- Vocab Item 3 -->
+<div class="group flex items-center gap-sm p-sm rounded-lg bg-surface-container/40 border border-transparent hover:border-tertiary-container/50 transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded bg-tertiary-container/10 flex items-center justify-center text-tertiary-container group-hover:neon-glow-violet">
+<span class="material-symbols-outlined">link_off</span>
+</div>
+<div>
+<p class="font-label-bold text-on-surface">Chains</p>
+<p class="font-body-md text-sm text-on-surface-variant">Metaphor for restrictions or burdens.</p>
+</div>
+</div>
+</div>
+<button class="w-full py-2 bg-transparent border border-tertiary-container text-tertiary-container font-label-bold rounded hover:bg-tertiary-container/10 transition-colors text-sm">
+                    VIEW FULL GLOSSARY
+                </button>
+</div>
+<!-- Comprehension Check (Span full) -->
+<div class="md:col-span-12 glass-panel rounded-xl p-lg flex flex-col md:flex-row gap-lg items-center border-t-2 border-primary-container">
+<div class="flex-1 space-y-md">
+<div class="inline-flex items-center gap-1 text-primary-container font-label-bold text-xs uppercase tracking-widest">
+<span class="material-symbols-outlined text-sm">quiz</span>
+                        Comprehension Check
+                    </div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Fill in the Blank</h3>
+<p class="font-body-md text-body-lg text-on-surface-variant leading-relaxed">
+                        "The system <span class="inline-block border-b-2 border-tertiary-container px-4 text-tertiary-fixed min-w-[100px] text-center bg-tertiary-container/10">______</span> my heartbeat while we are dancing."
+                    </p>
+<div class="flex gap-sm mt-md">
+<button class="px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant hover:border-tertiary-container hover:text-tertiary-fixed transition-colors font-label-bold">is tracking</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant hover:border-tertiary-container hover:text-tertiary-fixed transition-colors font-label-bold">tracks</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant hover:border-tertiary-container hover:text-tertiary-fixed transition-colors font-label-bold">tracked</button>
+</div>
+</div>
+<div class="w-full md:w-auto flex flex-col items-center justify-center p-md bg-surface-container-highest/50 rounded-xl border border-surface-variant cursor-pointer hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-4xl text-primary-container drop-shadow-[0_0_10px_rgba(255,83,81,0.5)] mb-2" style="font-variation-settings: 'FILL' 1;">replay_10</span>
+<span class="font-label-bold text-on-surface-variant text-xs uppercase tracking-widest">Replay Audio</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container/80 dark:bg-surface-container/80 backdrop-blur-xl shadow-[0_-4px_24px_rgba(0,0,0,0.6)] flex justify-around items-center px-4 pb-4 pt-2">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">map</span>
+<span class="font-label-bold text-[10px] mt-1">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container/20 text-primary dark:text-primary-fixed-dim rounded-xl px-4 py-2 ring-1 ring-primary/40 shadow-[0_0_12px_rgba(255,179,174,0.3)] active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-label-bold text-[10px] mt-1">Academy</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">person_filled</span>
+<span class="font-label-bold text-[10px] mt-1">Profile</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+<span class="font-label-bold text-[10px] mt-1">Settings</span>
+</a>
+</nav>
+</body></html>

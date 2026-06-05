@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+<meta charset="UTF-8">
+<title>IdiomaConnect v2 — Mock Cyber-Linguist HUD</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=Source+Sans+3:wght@400;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --surface: #101417;
+    --surface-container: #1d2023;
+    --surface-container-low: #191c1f;
+    --surface-container-high: #272a2d;
+    --primary: #FF4B4B;
+    --primary-light: #ffb3ae;
+    --secondary: #00EEFC;
+    --tertiary: #C464FF;
+    --success: #39FF14;
+    --on-surface: #e0e2e6;
+    --on-surface-variant: #a8aab0;
+  }
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--surface);
+    color: var(--on-surface);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at top, rgba(0,238,252,0.08), transparent 50%),
+      radial-gradient(ellipse at bottom, rgba(255,75,75,0.05), transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  h1, h2, h3, h4, h5, h6, .display, .headline, .label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400; }
+
+  .glass {
+    background: rgba(29, 32, 35, 0.6);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .glass-strong {
+    background: rgba(29, 32, 35, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .neon-red { box-shadow: 0 0 16px rgba(255,75,75,0.5); }
+  .neon-cyan { box-shadow: 0 0 16px rgba(0,238,252,0.5); }
+  .neon-purple { box-shadow: 0 0 16px rgba(196,100,255,0.5); }
+  .neon-green { box-shadow: 0 0 16px rgba(57,255,20,0.5); }
+  .text-glow-red { text-shadow: 0 0 12px rgba(255,75,75,0.7); }
+  .text-glow-cyan { text-shadow: 0 0 12px rgba(0,238,252,0.7); }
+  .text-glow-purple { text-shadow: 0 0 12px rgba(196,100,255,0.7); }
+  .text-glow-green { text-shadow: 0 0 12px rgba(57,255,20,0.7); }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 0 16px rgba(255,75,75,0.4);
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { transform: scale(1.02); filter: brightness(1.1); }
+  .btn-primary:active { transform: scale(0.96); }
+
+  .btn-ghost-cyan {
+    background: transparent;
+    border: 1.5px solid var(--secondary);
+    color: var(--secondary);
+    transition: all 0.2s;
+  }
+  .btn-ghost-cyan:hover { background: rgba(0,238,252,0.1); }
+
+  /* Progress bar with trailing glow */
+  .progress-track {
+    background: rgba(255,255,255,0.08);
+    border-radius: 9999px;
+    overflow: hidden;
+    height: 8px;
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 9999px;
+    position: relative;
+  }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0; width: 12px;
+    background: rgba(255,255,255,0.6);
+    filter: blur(4px);
+  }
+
+  .skill-bar-reading { background: linear-gradient(90deg, #00EEFC 0%, #7df4ff 100%); }
+  .skill-bar-listening { background: linear-gradient(90deg, #C464FF 0%, #e5b4ff 100%); }
+  .skill-bar-writing { background: linear-gradient(90deg, #ffb3ae 0%, #FF4B4B 100%); }
+  .skill-bar-speaking { background: linear-gradient(90deg, #39FF14 0%, #7df4ff 100%); }
+
+  /* HP bars for battle */
+  .hp-player { background: linear-gradient(90deg, #00EEFC, #39FF14); box-shadow: 0 0 8px rgba(0,238,252,0.6); }
+  .hp-enemy { background: linear-gradient(90deg, #FF4B4B, #ffb3ae); box-shadow: 0 0 8px rgba(255,75,75,0.6); }
+
+  /* Avatar emoji wrapper */
+  .avatar {
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--surface-container-high), var(--surface-container-low));
+    position: relative;
+  }
+  .avatar::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: var(--ring-color, var(--primary));
+    z-index: -1;
+    filter: blur(6px);
+    opacity: 0.6;
+  }
+
+  /* Animations */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .float { animation: float 3s ease-in-out infinite; }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 8px rgba(255,75,75,0.4); }
+    50% { box-shadow: 0 0 24px rgba(255,75,75,0.8); }
+  }
+  .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .slide-up { animation: slide-up 0.4s ease both; }
+
+  /* Bottom nav */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(16,20,23,0.85);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255,75,75,0.15);
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.6);
+    padding: 12px 16px 24px;
+    z-index: 50;
+  }
+
+  .nav-tab {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    padding: 8px 12px;
+    color: var(--on-surface-variant);
+    opacity: 0.6;
+    transition: all 0.2s;
+    cursor: pointer;
+    border-radius: 12px;
+  }
+  .nav-tab.active {
+    color: var(--primary-light);
+    opacity: 1;
+    background: rgba(255,179,174,0.08);
+    box-shadow: 0 0 12px rgba(255,179,174,0.2);
+    text-shadow: 0 0 8px rgba(255,179,174,0.6);
+  }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* Top selector for the mock */
+  .mock-selector {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(16,20,23,0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    z-index: 100;
+    padding: 8px 16px;
+    display: flex; gap: 6px;
+    overflow-x: auto;
+    font-size: 12px;
+  }
+  .mock-selector button {
+    padding: 6px 12px; border-radius: 8px;
+    background: transparent;
+    color: var(--on-surface-variant);
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+  .mock-selector button.active {
+    background: rgba(255,75,75,0.15);
+    color: var(--primary-light);
+    border-color: rgba(255,75,75,0.4);
+  }
+
+  .world-locked { opacity: 0.45; filter: grayscale(0.6); }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+  .stat-card {
+    background: rgba(29,32,35,0.6);
+    border: 1px solid rgba(255,255,255,0.06);
+    backdrop-filter: blur(10px);
+    border-radius: 14px;
+    padding: 14px;
+  }
+
+  .trophy {
+    aspect-ratio: 1;
+    border-radius: 16px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 8px;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.3s;
+  }
+  .trophy.unlocked { background: rgba(57,255,20,0.08); border-color: rgba(57,255,20,0.4); box-shadow: 0 0 12px rgba(57,255,20,0.15); }
+  .trophy.locked { background: rgba(29,32,35,0.4); opacity: 0.5; }
+</style>
+</head>
+<body>
+
+<!-- ╔══════════════════════════════════════════════════════════╗
+     ║  MOCK NAVIGATOR — selector solo de demostración        ║
+     ╚══════════════════════════════════════════════════════════╝ -->
+<div class="mock-selector scrollbar-hide">
+  <span class="text-xs text-gray-500 self-center pr-2 font-bold">MOCK:</span>
+  <button onclick="showScreen('selection')" class="active" id="btn-selection">1. Selección Perfil</button>
+  <button onclick="showScreen('worlds')" id="btn-worlds">2. Worlds</button>
+  <button onclick="showScreen('lesson')" id="btn-lesson">3. Lección</button>
+  <button onclick="showScreen('battle')" id="btn-battle">4. Battle Mode</button>
+  <button onclick="showScreen('arena')" id="btn-arena">5. Arena</button>
+  <button onclick="showScreen('profile')" id="btn-profile">6. Profile</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PANTALLA 1 — SELECCIÓN DE PERFIL
+     ═══════════════════════════════════════════════════════════ -->
+<div id="screen-selection" class="screen active">
+  <div class="pt-16 pb-32 px-5 max-w-5xl mx-auto relative z-10">
+    <div class="text-center mb-8 mt-8 slide-up">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
+        ¿Quién está listo para
+        <span class="text-glow-cyan" style="color: var(--secondary);">aprender inglés</span>
+        hoy?
+      </h1>
+      <div class="w-24 h-1 mx-auto mt-4 rounded-full" style="background: linear-gradient(90deg, var(--primary), var(--secondary));"></div>
+    </div>
+
+    <!-- MIS HIJAS -->
+    <div class="text-xs font-bold tracking-widest uppercase text-center mb-3 mt-8" style="color: var(--on-surface-variant);">👧 Mis Hijas</div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+
+      <div class="glass rounded-2xl p-5 text-center slide-up" style="--ring-color: #FF4B4B;">
+        <div class="avatar w-28 h-28 mx-auto mb-4 text-5xl ring-4 neon-red" style="border: 3px solid #FF4B4B;">🎨</div>
+        <h3 class="text-xl font-bold mb-1">Antonia</h3>
+        <div class="text-glow-red font-bold text-sm mb-1" style="color: #FF4B4B;">450 XP · A2</div>
+        <div class="flex items-center justify-center gap-1 text-xs mb-4" style="color: var(--on-surface-variant);">
+          <span class="material-symbols-outlined text-base">palette</span>
+          <span>Mundo Artístico</span>
+        </div>
+        <button class="w-full py-3 rounded-xl font-bold text-sm btn-primary">¡Soy Antonia!</button>
+      </div>
+
+      <div class="glass rounded-2xl p-5 text-center slide-up" style="--ring-color: #00EEFC;">
+        <div class="avatar w-28 h-28 mx-auto mb-4 text-5xl neon-cyan" style="border: 3px solid #00EEFC;">🎹</div>
+        <h3 class="text-xl font-bold mb-1">Belén</h3>
+        <div class="text-glow-cyan font-bold text-sm mb-1" style="color: #00EEFC;">320 XP · A2</div>
+        <div class="flex items-center justify-center gap-1 text-xs mb-4" style="color: var(--on-surface-variant);">
+          <span class="material-symbols-outlined text-base">piano</span>
+          <span>Ritmo Estelar</span>
+        </div>
+        <button class="w-full py-3 rounded-xl font-bold text-sm" style="background: #00EEFC; color: #003539; box-shadow: 0 0 16px rgba(0,238,252,0.4);">¡Soy Belén!</button>
+      </div>
+
+      <div class="glass rounded-2xl p-5 text-center slide-up" style="--ring-color: #C464FF;">
+        <div class="avatar w-28 h-28 mx-auto mb-4 text-5xl neon-purple" style="border: 3px solid #C464FF;">🤸</div>
+        <h3 class="text-xl font-bold mb-1">Sofía</h3>
+        <div class="text-glow-purple font-bold text-sm mb-1" style="color: #C464FF;">210 XP · A1</div>
+        <div class="flex items-center justify-center gap-1 text-xs mb-4" style="color: var(--on-surface-variant);">
+          <span class="material-symbols-outlined text-base">fitness_center</span>
+          <span>Pista Olímpica</span>
+        </div>
+        <button class="w-full py-3 rounded-xl font-bold text-sm" style="background: #C464FF; color: #2a004a; box-shadow: 0 0 16px rgba(196,100,255,0.4);">¡Soy Sofía!</button>
+      </div>
+    </div>
+
+    <!-- MIS SOBRINOS -->
+    <div class="text-xs font-bold tracking-widest uppercase text-center mb-3 mt-8" style="color: var(--on-surface-variant);">👦👧 Mis Sobrinos</div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+      <div class="glass rounded-2xl p-5 text-center slide-up" style="--ring-color: #00EEFC;">
+        <div class="avatar w-28 h-28 mx-auto mb-4 text-5xl neon-cyan" style="border: 3px solid #00EEFC;">✈️</div>
+        <h3 class="text-xl font-bold mb-1">Agustín</h3>
+        <div class="text-glow-cyan font-bold text-sm mb-1" style="color: #00EEFC;">500 XP · A2</div>
+        <div class="flex items-center justify-center gap-1 text-xs mb-4" style="color: var(--on-surface-variant);">
+          <span class="material-symbols-outlined text-base">flight</span>
+          <span>Aviation Base</span>
+        </div>
+        <button class="w-full py-3 rounded-xl font-bold text-sm" style="background: #00EEFC; color: #003539; box-shadow: 0 0 16px rgba(0,238,252,0.4);">¡Soy Agustín!</button>
+      </div>
+
+      <div class="glass rounded-2xl p-5 text-center slide-up" style="--ring-color: #FF4B4B;">
+        <div class="avatar w-28 h-28 mx-auto mb-4 text-5xl neon-red" style="border: 3px solid #FF4B4B;">🎮</div>
+        <h3 class="text-xl font-bold mb-1">Máximo</h3>
+        <div class="text-glow-red font-bold text-sm mb-1" style="color: #FF4B4B;">150 XP · A1</div>
+        <div class="flex items-center justify-center gap-1 text-xs mb-4" style="color: var(--on-surface-variant);">
+          <span class="material-symbols-outlined text-base">sports_esports</span>
+          <span>Game Lab</span>
+        </div>
+        <button class="w-full py-3 rounded-xl font-bold text-sm btn-primary">¡Soy Máximo!</button>
+      </div>
+
+      <div class="glass rounded-2xl p-5 text-center slide-up" style="--ring-color: #C464FF;">
+        <div class="avatar w-28 h-28 mx-auto mb-4 text-5xl neon-purple" style="border: 3px solid #C464FF;">🎻</div>
+        <h3 class="text-xl font-bold mb-1">Antonela</h3>
+        <div class="text-glow-purple font-bold text-sm mb-1" style="color: #C464FF;">280 XP · A1</div>
+        <div class="flex items-center justify-center gap-1 text-xs mb-4" style="color: var(--on-surface-variant);">
+          <span class="material-symbols-outlined text-base">forest</span>
+          <span>Forest Camp</span>
+        </div>
+        <button class="w-full py-3 rounded-xl font-bold text-sm" style="background: #C464FF; color: #2a004a; box-shadow: 0 0 16px rgba(196,100,255,0.4);">¡Soy Antonela!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PANTALLA 2 — WORLDS (MUNDOS)
+     ═══════════════════════════════════════════════════════════ -->
+<div id="screen-worlds" class="screen">
+  <!-- Top header -->
+  <header class="fixed top-9 left-0 right-0 z-40 glass-strong px-5 py-3 flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <div class="avatar w-10 h-10 text-xl" style="border: 2px solid #FF4B4B; --ring-color: #FF4B4B;">🎨</div>
+      <div>
+        <div class="text-xs" style="color: var(--on-surface-variant);">Welcome back,</div>
+        <div class="font-bold text-sm">Antonia · A2</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-2 px-3 py-1.5 rounded-full glass">
+      <span class="material-symbols-outlined text-base" style="color: var(--success);">bolt</span>
+      <span class="font-bold text-sm">450 XP</span>
+    </div>
+  </header>
+
+  <main class="pt-32 pb-32 px-5 max-w-3xl mx-auto relative z-10">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-extrabold mb-1">Active Worlds</h2>
+      <p class="text-sm" style="color: var(--on-surface-variant);">Plot your course through the linguistic grid.</p>
+    </div>
+
+    <!-- Connection line -->
+    <div class="relative">
+      <div class="absolute left-1/2 top-12 bottom-12 w-0.5 -translate-x-1/2 -z-10" style="background: linear-gradient(to bottom, #00EEFC, transparent);"></div>
+
+      <div class="flex flex-col gap-6">
+        <!-- WORLD 1: ACTIVE -->
+        <div class="relative">
+          <div class="absolute -inset-1 rounded-2xl blur opacity-40" style="background: linear-gradient(135deg, #00EEFC, #7df4ff);"></div>
+          <div class="relative glass-strong rounded-2xl p-5 border" style="border-color: #00EEFC;">
+            <div class="flex justify-between items-start mb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(0,238,252,0.15); border: 1px solid rgba(0,238,252,0.4);">
+                  <span class="material-symbols-outlined" style="color: #00EEFC;">location_city</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-xl">London Hub</h3>
+                  <p class="text-sm" style="color: #00EEFC;">Travel & Daily English</p>
+                </div>
+              </div>
+              <div class="text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 neon-cyan" style="background: #00EEFC; color: #003539;">
+                <span class="material-symbols-outlined text-sm">my_location</span>
+                CURRENT
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="flex justify-between text-xs font-bold mb-1.5">
+                <span style="color: var(--on-surface-variant);">Module Progress</span>
+                <span style="color: #00EEFC;">68%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 68%; background: linear-gradient(90deg, #00EEFC, #7df4ff);"></div>
+              </div>
+            </div>
+            <button class="w-full py-3 rounded-xl btn-primary font-bold flex items-center justify-center gap-2 uppercase tracking-wide text-sm">
+              <span class="material-symbols-outlined">play_arrow</span>
+              Resume Quest
+            </button>
+          </div>
+        </div>
+
+        <!-- WORLD 2: PERSONAL -->
+        <div class="relative">
+          <div class="absolute -inset-1 rounded-2xl blur opacity-30" style="background: linear-gradient(135deg, #FF4B4B, #ffb3ae);"></div>
+          <div class="relative glass-strong rounded-2xl p-5 border" style="border-color: rgba(255,75,75,0.5);">
+            <div class="flex justify-between items-start mb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style="background: rgba(255,75,75,0.15); border: 1px solid rgba(255,75,75,0.4);">🎨</div>
+                <div>
+                  <h3 class="font-bold text-xl">Mundo Artístico</h3>
+                  <p class="text-sm" style="color: #FF4B4B;">Tu mundo personal</p>
+                </div>
+              </div>
+              <div class="text-xs font-bold px-3 py-1 rounded-full" style="background: rgba(57,255,20,0.15); color: #39FF14; border: 1px solid rgba(57,255,20,0.4);">PERSONAL</div>
+            </div>
+            <div class="mb-3">
+              <div class="flex justify-between text-xs font-bold mb-1.5">
+                <span style="color: var(--on-surface-variant);">Module Progress</span>
+                <span style="color: #FF4B4B;">35%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 35%; background: linear-gradient(90deg, #FF4B4B, #ffb3ae);"></div>
+              </div>
+            </div>
+            <button class="w-full py-3 rounded-xl btn-ghost-cyan font-bold flex items-center justify-center gap-2 uppercase tracking-wide text-sm">
+              <span class="material-symbols-outlined">play_arrow</span>
+              Continue
+            </button>
+          </div>
+        </div>
+
+        <!-- WORLD 3: LOCKED -->
+        <div class="relative world-locked">
+          <div class="glass rounded-2xl p-5">
+            <div class="flex justify-between items-start mb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(255,255,255,0.05);">
+                  <span class="material-symbols-outlined" style="color: var(--on-surface-variant);">language</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-xl">Cyber-Tokyo</h3>
+                  <p class="text-sm" style="color: var(--on-surface-variant);">Advanced Grammar</p>
+                </div>
+              </div>
+              <div class="text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1" style="background: rgba(255,255,255,0.05); color: var(--on-surface-variant); border: 1px solid rgba(255,255,255,0.1);">
+                <span class="material-symbols-outlined text-sm">lock</span>
+                B1 Req.
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-bold mb-1.5">
+                <span style="color: var(--on-surface-variant);">Locked at A2 · Need B1</span>
+                <span style="color: var(--on-surface-variant);">0%</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" style="width: 0%;"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WORLD 4: LOCKED -->
+        <div class="relative world-locked">
+          <div class="glass rounded-2xl p-5">
+            <div class="flex justify-between items-start mb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(255,255,255,0.05);">
+                  <span class="material-symbols-outlined" style="color: var(--on-surface-variant);">terminal</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-xl">Silicon Valley</h3>
+                  <p class="text-sm" style="color: var(--on-surface-variant);">Tech & Future Skills</p>
+                </div>
+              </div>
+              <div class="text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1" style="background: rgba(255,255,255,0.05); color: var(--on-surface-variant); border: 1px solid rgba(255,255,255,0.1);">
+                <span class="material-symbols-outlined text-sm">lock</span>
+                B2 Req.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PANTALLA 3 — LECCIÓN (con audio button arriba)
+     ═══════════════════════════════════════════════════════════ -->
+<div id="screen-lesson" class="screen">
+  <header class="fixed top-9 left-0 right-0 z-40 glass-strong px-5 py-3 flex justify-between items-center">
+    <button class="flex items-center gap-1 text-sm font-bold" style="color: #00EEFC;">
+      <span class="material-symbols-outlined">arrow_back</span> London Hub
+    </button>
+    <div class="text-xs font-bold px-3 py-1 rounded-full" style="background: rgba(0,238,252,0.15); color: #00EEFC; border: 1px solid rgba(0,238,252,0.4);">
+      QUEST 5 of 12
+    </div>
+  </header>
+
+  <main class="pt-28 pb-32 px-5 max-w-2xl mx-auto relative z-10">
+    <!-- Lesson title -->
+    <div class="mb-5">
+      <div class="text-xs font-bold tracking-widest uppercase mb-1" style="color: var(--on-surface-variant);">Academic Topic</div>
+      <h1 class="text-3xl font-extrabold mb-1">¡Misión de Rescate!</h1>
+      <p class="text-sm" style="color: #00EEFC;">Verbo To Be · Presente Simple</p>
+    </div>
+
+    <!-- AUDIO PLAYER (arriba de la lección, como pediste antes) -->
+    <div class="glass rounded-2xl p-4 mb-5" style="border: 1px solid rgba(0,238,252,0.3);">
+      <div class="flex items-start gap-3 mb-3">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center neon-cyan flex-shrink-0" style="background: #00EEFC;">
+          <span class="material-symbols-outlined" style="color: #003539;">volume_up</span>
+        </div>
+        <div class="flex-1">
+          <div class="font-bold text-sm">Escuchar la Lección</div>
+          <p class="text-xs" style="color: var(--on-surface-variant);">Voz bilingüe · Sigue el texto abajo mientras escuchas</p>
+        </div>
+      </div>
+      <button class="w-full py-2.5 rounded-xl btn-ghost-cyan font-bold text-sm flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined">play_circle</span>
+        Generar Audio
+      </button>
+    </div>
+
+    <!-- Lesson body -->
+    <div class="glass-strong rounded-2xl p-5 mb-5" style="border-left: 3px solid #00EEFC;">
+      <h3 class="font-bold mb-3 flex items-center gap-2"><span>🌟</span> Parte A — La Aventura</h3>
+      <p class="text-sm leading-relaxed mb-4" style="color: var(--on-surface);">
+        Antonia, imagina que estás en <b>London</b> con tus pinceles y tu raqueta de tenis. Cuando alguien te pregunta "<i>Where are you?</i>", necesitas el verbo <b>to be</b>. Es la base para hablar de quién eres, dónde estás y cómo te sientes.
+      </p>
+      <h3 class="font-bold mb-3 flex items-center gap-2"><span>📖</span> Parte B — La Regla</h3>
+      <ul class="text-sm space-y-1.5 mb-4" style="color: var(--on-surface);">
+        <li>- <b>I am</b> [ai am] = Yo soy / estoy</li>
+        <li>- <b>You are</b> [yu ar] = Tú eres / estás</li>
+        <li>- <b>She is</b> [shi is] = Ella es / está</li>
+      </ul>
+      <p class="text-xs italic" style="color: var(--on-surface-variant);">[Lección completa continúa abajo...]</p>
+    </div>
+
+    <!-- Choose mode -->
+    <div class="grid grid-cols-2 gap-3 mb-3">
+      <button class="glass rounded-2xl p-4 text-center hover:scale-[1.02] transition-transform" style="border: 1px solid rgba(0,238,252,0.3);">
+        <span class="material-symbols-outlined text-3xl mb-1" style="color: #00EEFC;">quiz</span>
+        <div class="font-bold text-sm">Quiz Clásico</div>
+        <div class="text-xs" style="color: var(--on-surface-variant);">Multiple choice + completar</div>
+      </button>
+      <button class="glass rounded-2xl p-4 text-center hover:scale-[1.02] transition-transform pulse-glow" style="border: 1px solid rgba(255,75,75,0.5);">
+        <span class="material-symbols-outlined text-3xl mb-1" style="color: #FF4B4B;">swords</span>
+        <div class="font-bold text-sm">Battle Mode ⚡</div>
+        <div class="text-xs" style="color: var(--on-surface-variant);">Combate vs Syntax Virus</div>
+      </button>
+    </div>
+    <div class="text-center text-xs" style="color: var(--on-surface-variant);">Elige cómo quieres rendir esta lección</div>
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PANTALLA 4 — BATTLE MODE
+     ═══════════════════════════════════════════════════════════ -->
+<div id="screen-battle" class="screen">
+  <header class="fixed top-9 left-0 right-0 z-40 glass-strong px-5 py-3 flex justify-between items-center">
+    <div class="text-xs font-bold tracking-widest uppercase" style="color: #FF4B4B;">⚔️ Vocabulary Battle</div>
+    <div class="flex items-center gap-2 text-xs font-bold">
+      <span class="material-symbols-outlined text-sm" style="color: var(--success);">bolt</span>
+      <span>+15 XP</span>
+    </div>
+  </header>
+
+  <main class="pt-28 pb-32 px-5 max-w-2xl mx-auto relative z-10">
+    <!-- HP BARS -->
+    <section class="flex justify-between items-center gap-3 mb-6">
+      <div class="flex-1">
+        <div class="flex items-center gap-1 mb-1">
+          <span class="material-symbols-outlined text-sm" style="color: #00EEFC;">shield</span>
+          <span class="text-xs font-bold tracking-widest uppercase" style="color: #00EEFC;">Antonia</span>
+        </div>
+        <div class="progress-track h-3.5" style="border: 1px solid rgba(0,238,252,0.3);">
+          <div class="progress-fill hp-player" style="width: 85%;"></div>
+        </div>
+        <div class="text-xs mt-1" style="color: #00EEFC;">HP 85/100</div>
+      </div>
+      <div class="text-2xl font-extrabold animate-pulse" style="color: #FF4B4B; text-shadow: 0 0 12px rgba(255,75,75,0.8);">VS</div>
+      <div class="flex-1 text-right">
+        <div class="flex items-center gap-1 mb-1 justify-end">
+          <span class="text-xs font-bold tracking-widest uppercase" style="color: #FF4B4B;">Syntax Virus</span>
+          <span class="material-symbols-outlined text-sm" style="color: #FF4B4B;">bug_report</span>
+        </div>
+        <div class="progress-track h-3.5" style="border: 1px solid rgba(255,75,75,0.3); display: flex; flex-direction: row-reverse;">
+          <div class="progress-fill hp-enemy" style="width: 60%;"></div>
+        </div>
+        <div class="text-xs mt-1" style="color: #FF4B4B;">HP 60/100</div>
+      </div>
+    </section>
+
+    <!-- TARGET WORD -->
+    <section class="glass-strong rounded-2xl p-8 mb-5 text-center relative overflow-hidden" style="border: 1px solid rgba(255,75,75,0.3);">
+      <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(circle, rgba(255,75,75,0.1), transparent 70%);"></div>
+      <div class="relative z-10">
+        <div class="w-24 h-24 mx-auto mb-4 rounded-full border-2 border-dashed flex items-center justify-center text-4xl float" style="border-color: #FF4B4B;">🦠</div>
+        <span class="text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full" style="background: rgba(255,255,255,0.05); color: var(--on-surface-variant); border: 1px solid rgba(255,255,255,0.1);">DECODE</span>
+        <h2 class="text-5xl font-extrabold mt-4 mb-1 text-glow-red" style="color: #FF4B4B;">House</h2>
+        <p class="text-sm italic" style="color: var(--on-surface-variant);">¿Qué significa esta palabra?</p>
+      </div>
+    </section>
+
+    <!-- ACTIONS -->
+    <section class="grid grid-cols-2 gap-3">
+      <button class="glass rounded-xl p-4 hover:scale-[1.02] transition-all" style="border: 1px solid rgba(0,238,252,0.3);">
+        <span class="material-symbols-outlined text-2xl block mb-1" style="color: #00EEFC;">home</span>
+        <div class="font-bold text-sm">Casa</div>
+      </button>
+      <button class="glass rounded-xl p-4 hover:scale-[1.02] transition-all" style="border: 1px solid rgba(0,238,252,0.3);">
+        <span class="material-symbols-outlined text-2xl block mb-1" style="color: #00EEFC;">forest</span>
+        <div class="font-bold text-sm">Bosque</div>
+      </button>
+      <button class="glass rounded-xl p-4 hover:scale-[1.02] transition-all" style="border: 1px solid rgba(0,238,252,0.3);">
+        <span class="material-symbols-outlined text-2xl block mb-1" style="color: #00EEFC;">directions_car</span>
+        <div class="font-bold text-sm">Auto</div>
+      </button>
+      <button class="glass rounded-xl p-4 hover:scale-[1.02] transition-all" style="border: 1px solid rgba(0,238,252,0.3);">
+        <span class="material-symbols-outlined text-2xl block mb-1" style="color: #00EEFC;">school</span>
+        <div class="font-bold text-sm">Escuela</div>
+      </button>
+    </section>
+
+    <div class="text-center mt-6">
+      <div class="inline-block px-4 py-2 rounded-full glass text-xs font-bold">
+        ⏱️ <span style="color: var(--success);">12s</span> · Round 3/8
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PANTALLA 5 — ARENA
+     ═══════════════════════════════════════════════════════════ -->
+<div id="screen-arena" class="screen">
+  <header class="fixed top-9 left-0 right-0 z-40 glass-strong px-5 py-3 flex justify-between items-center">
+    <h1 class="font-extrabold tracking-tight text-xl" style="color: var(--primary-light); text-shadow: 0 0 8px rgba(255,179,174,0.5);">⚔️ ARENA</h1>
+    <div class="flex items-center gap-1 text-xs font-bold">
+      <span class="w-2 h-2 rounded-full animate-pulse" style="background: #39FF14;"></span>
+      <span>3 online</span>
+    </div>
+  </header>
+
+  <main class="pt-28 pb-32 px-5 max-w-3xl mx-auto relative z-10">
+    <!-- Weekly Challenge banner -->
+    <div class="relative mb-6">
+      <div class="absolute -inset-1 rounded-2xl blur opacity-30" style="background: linear-gradient(135deg, #C464FF, #FF4B4B);"></div>
+      <div class="relative glass-strong rounded-2xl p-5">
+        <div class="flex justify-between items-start mb-3">
+          <div>
+            <div class="text-xs font-bold tracking-widest uppercase mb-1" style="color: #C464FF;">⚡ Weekly Challenge</div>
+            <h3 class="font-bold text-lg">Vocab Sprint: Body Parts</h3>
+          </div>
+          <div class="text-xs font-bold px-3 py-1 rounded-full" style="background: rgba(57,255,20,0.15); color: #39FF14;">+100 XP</div>
+        </div>
+        <div class="flex items-center gap-3 text-xs mb-3" style="color: var(--on-surface-variant);">
+          <span>🕐 Termina en 3 días</span>
+          <span>👥 4/6 lo intentaron</span>
+        </div>
+        <button class="w-full py-2.5 rounded-xl btn-primary font-bold text-sm">Aceptar Challenge</button>
+      </div>
+    </div>
+
+    <!-- Battle quick options -->
+    <div class="grid grid-cols-2 gap-3 mb-6">
+      <div class="glass rounded-2xl p-4">
+        <span class="material-symbols-outlined mb-2 text-2xl" style="color: #00EEFC;">flash_on</span>
+        <h4 class="font-bold mb-1">Vocab Duel</h4>
+        <p class="text-xs mb-3" style="color: var(--on-surface-variant);">Supera el récord de tu primo/a</p>
+        <button class="w-full py-2 rounded-lg btn-ghost-cyan text-xs font-bold">Buscar Rival</button>
+      </div>
+      <div class="glass rounded-2xl p-4">
+        <span class="material-symbols-outlined mb-2 text-2xl" style="color: #C464FF;">timer</span>
+        <h4 class="font-bold mb-1">Grammar Sprint</h4>
+        <p class="text-xs mb-3" style="color: var(--on-surface-variant);">60s · Máxima precisión</p>
+        <button class="w-full py-2 rounded-lg text-xs font-bold" style="background: transparent; border: 1.5px solid #C464FF; color: #C464FF;">Empezar</button>
+      </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="glass-strong rounded-2xl p-5">
+      <div class="flex justify-between items-center mb-4 pb-3" style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+        <h2 class="font-bold flex items-center gap-2">
+          <span class="material-symbols-outlined" style="color: #C464FF;">social_leaderboard</span>
+          Hall of Fame
+        </h2>
+        <span class="text-xs font-bold px-2 py-1 rounded-full" style="background: rgba(0,238,252,0.1); color: #00EEFC;">Esta semana</span>
+      </div>
+
+      <div class="space-y-2">
+        <!-- 1st place -->
+        <div class="flex items-center gap-3 p-2.5 rounded-xl" style="background: linear-gradient(90deg, rgba(57,255,20,0.08), transparent); border: 1px solid rgba(57,255,20,0.2);">
+          <span class="text-xl">🥇</span>
+          <div class="avatar w-10 h-10 text-xl flex-shrink-0" style="border: 2px solid #00EEFC; --ring-color: #00EEFC;">✈️</div>
+          <div class="flex-1">
+            <div class="font-bold text-sm">Agustín</div>
+            <span class="text-xs px-2 py-0.5 rounded-full" style="background: rgba(0,238,252,0.1); border: 1px solid rgba(0,238,252,0.3); color: #00EEFC;">A2</span>
+          </div>
+          <div class="text-right">
+            <div class="font-bold" style="color: var(--success);">280 XP</div>
+            <div class="text-xs" style="color: var(--on-surface-variant);">+50 hoy</div>
+          </div>
+        </div>
+
+        <!-- 2nd -->
+        <div class="flex items-center gap-3 p-2.5 rounded-xl" style="background: rgba(255,255,255,0.02);">
+          <span class="text-xl">🥈</span>
+          <div class="avatar w-10 h-10 text-xl flex-shrink-0" style="border: 2px solid #FF4B4B; --ring-color: #FF4B4B;">🎨</div>
+          <div class="flex-1">
+            <div class="font-bold text-sm">Antonia</div>
+            <span class="text-xs px-2 py-0.5 rounded-full" style="background: rgba(0,238,252,0.1); border: 1px solid rgba(0,238,252,0.3); color: #00EEFC;">A2</span>
+          </div>
+          <div class="text-right">
+            <div class="font-bold">220 XP</div>
+            <div class="text-xs" style="color: var(--on-surface-variant);">+0 hoy</div>
+          </div>
+        </div>
+
+        <!-- 3rd -->
+        <div class="flex items-center gap-3 p-2.5 rounded-xl" style="background: rgba(255,255,255,0.02);">
+          <span class="text-xl">🥉</span>
+          <div class="avatar w-10 h-10 text-xl flex-shrink-0" style="border: 2px solid #C464FF; --ring-color: #C464FF;">🎻</div>
+          <div class="flex-1">
+            <div class="font-bold text-sm">Antonela</div>
+            <span class="text-xs px-2 py-0.5 rounded-full" style="background: rgba(0,238,252,0.1); border: 1px solid rgba(0,238,252,0.3); color: #00EEFC;">A1</span>
+          </div>
+          <div class="text-right">
+            <div class="font-bold">180 XP</div>
+            <div class="text-xs" style="color: var(--on-surface-variant);">+30 hoy</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 p-2.5 rounded-xl">
+          <span class="text-sm font-bold w-6 text-center" style="color: var(--on-surface-variant);">4</span>
+          <div class="avatar w-10 h-10 text-xl flex-shrink-0" style="border: 2px solid #00EEFC; --ring-color: #00EEFC;">🎹</div>
+          <div class="flex-1">
+            <div class="font-bold text-sm">Belén</div>
+            <span class="text-xs px-2 py-0.5 rounded-full" style="background: rgba(0,238,252,0.1); border: 1px solid rgba(0,238,252,0.3); color: #00EEFC;">A2</span>
+          </div>
+          <div class="text-right"><div class="font-bold">150 XP</div></div>
+        </div>
+
+        <div class="flex items-center gap-3 p-2.5 rounded-xl">
+          <span class="text-sm font-bold w-6 text-center" style="color: var(--on-surface-variant);">5</span>
+          <div class="avatar w-10 h-10 text-xl flex-shrink-0" style="border: 2px solid #C464FF; --ring-color: #C464FF;">🤸</div>
+          <div class="flex-1">
+            <div class="font-bold text-sm">Sofía</div>
+            <span class="text-xs px-2 py-0.5 rounded-full" style="background: rgba(255,75,75,0.1); border: 1px solid rgba(255,75,75,0.3); color: #FF4B4B;">A1</span>
+          </div>
+          <div class="text-right"><div class="font-bold">110 XP</div></div>
+        </div>
+
+        <div class="flex items-center gap-3 p-2.5 rounded-xl">
+          <span class="text-sm font-bold w-6 text-center" style="color: var(--on-surface-variant);">6</span>
+          <div class="avatar w-10 h-10 text-xl flex-shrink-0" style="border: 2px solid #FF4B4B; --ring-color: #FF4B4B;">🎮</div>
+          <div class="flex-1">
+            <div class="font-bold text-sm">Máximo</div>
+            <span class="text-xs px-2 py-0.5 rounded-full" style="background: rgba(255,75,75,0.1); border: 1px solid rgba(255,75,75,0.3); color: #FF4B4B;">A1</span>
+          </div>
+          <div class="text-right"><div class="font-bold">75 XP</div></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PANTALLA 6 — PROFILE
+     ═══════════════════════════════════════════════════════════ -->
+<div id="screen-profile" class="screen">
+  <header class="fixed top-9 left-0 right-0 z-40 glass-strong px-5 py-3 flex justify-between items-center">
+    <div class="font-bold">Profile</div>
+    <button class="w-9 h-9 rounded-full flex items-center justify-center glass">
+      <span class="material-symbols-outlined text-base">settings</span>
+    </button>
+  </header>
+
+  <main class="pt-24 pb-32 px-5 max-w-2xl mx-auto relative z-10">
+    <!-- Hero card -->
+    <div class="relative mb-6">
+      <div class="absolute -inset-1 rounded-3xl blur opacity-30" style="background: linear-gradient(135deg, #FF4B4B, #C464FF);"></div>
+      <div class="relative glass-strong rounded-3xl p-6 text-center">
+        <div class="relative inline-block mb-3">
+          <div class="avatar w-32 h-32 mx-auto text-6xl neon-red" style="border: 4px solid #FF4B4B; --ring-color: #FF4B4B;">🎨</div>
+          <button class="absolute -bottom-1 -right-1 w-10 h-10 rounded-full flex items-center justify-center neon-cyan" style="background: #00EEFC;">
+            <span class="material-symbols-outlined" style="color: #003539; font-size: 20px;">photo_camera</span>
+          </button>
+        </div>
+        <h2 class="text-2xl font-extrabold mb-1">Antonia</h2>
+        <p class="text-sm mb-3" style="color: var(--on-surface-variant);">🎨 Mundo Artístico · 13 años</p>
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full" style="background: rgba(0,238,252,0.1); border: 1px solid rgba(0,238,252,0.4);">
+          <span class="material-symbols-outlined text-base" style="color: #00EEFC;">workspace_premium</span>
+          <span class="text-xs font-bold tracking-widest" style="color: #00EEFC;">LEVEL A2 · ELEMENTARY</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats grid -->
+    <div class="grid grid-cols-3 gap-3 mb-6">
+      <div class="stat-card text-center">
+        <div class="text-2xl font-extrabold" style="color: #FF4B4B;">450</div>
+        <div class="text-xs" style="color: var(--on-surface-variant);">XP Total</div>
+      </div>
+      <div class="stat-card text-center">
+        <div class="text-2xl font-extrabold" style="color: #39FF14;">9</div>
+        <div class="text-xs" style="color: var(--on-surface-variant);">Lecciones</div>
+      </div>
+      <div class="stat-card text-center">
+        <div class="text-2xl font-extrabold" style="color: #C464FF;">5🔥</div>
+        <div class="text-xs" style="color: var(--on-surface-variant);">Días racha</div>
+      </div>
+    </div>
+
+    <!-- Skill Analysis -->
+    <div class="glass-strong rounded-2xl p-5 mb-6">
+      <h3 class="font-bold mb-4 flex items-center gap-2">
+        <span class="material-symbols-outlined" style="color: #C464FF;">radar</span>
+        Skill Analysis
+      </h3>
+
+      <div class="space-y-4">
+        <div>
+          <div class="flex justify-between text-sm font-bold mb-1.5">
+            <span>Reading</span>
+            <span style="color: #00EEFC;">85%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill skill-bar-reading" style="width: 85%;"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between text-sm font-bold mb-1.5">
+            <span>Listening</span>
+            <span style="color: #C464FF;">72%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill skill-bar-listening" style="width: 72%;"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between text-sm font-bold mb-1.5">
+            <span>Writing</span>
+            <span style="color: #FF4B4B;">60%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill skill-bar-writing" style="width: 60%;"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between text-sm font-bold mb-1.5">
+            <span>Speaking</span>
+            <span style="color: #39FF14;">45%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill skill-bar-speaking" style="width: 45%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trophies -->
+    <div class="glass-strong rounded-2xl p-5">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-bold flex items-center gap-2">
+          <span class="material-symbols-outlined" style="color: #39FF14;">military_tech</span>
+          Trophies
+        </h3>
+        <span class="text-xs font-bold" style="color: var(--on-surface-variant);">3 / 12</span>
+      </div>
+
+      <div class="grid grid-cols-4 gap-3">
+        <div class="trophy unlocked"><span class="text-3xl mb-1">🎯</span><div class="text-[10px] font-bold">First<br>Quest</div></div>
+        <div class="trophy unlocked"><span class="text-3xl mb-1">🔥</span><div class="text-[10px] font-bold">5 Day<br>Streak</div></div>
+        <div class="trophy unlocked"><span class="text-3xl mb-1">⚡</span><div class="text-[10px] font-bold">Speed<br>Demon</div></div>
+        <div class="trophy locked"><span class="text-3xl mb-1 opacity-30">🏆</span><div class="text-[10px] font-bold">Perfect<br>Score</div></div>
+        <div class="trophy locked"><span class="text-3xl mb-1 opacity-30">🌍</span><div class="text-[10px] font-bold">World<br>Master</div></div>
+        <div class="trophy locked"><span class="text-3xl mb-1 opacity-30">💎</span><div class="text-[10px] font-bold">Vocab<br>King</div></div>
+        <div class="trophy locked"><span class="text-3xl mb-1 opacity-30">🎓</span><div class="text-[10px] font-bold">B1<br>Reached</div></div>
+        <div class="trophy locked"><span class="text-3xl mb-1 opacity-30">⚔️</span><div class="text-[10px] font-bold">Battle<br>Champion</div></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     BOTTOM NAVIGATION (visible en pantallas con sesión activa)
+     ═══════════════════════════════════════════════════════════ -->
+<nav class="bottom-nav" id="bottomNav" style="display:none;">
+  <div class="flex justify-around items-center max-w-md mx-auto">
+    <button class="nav-tab" onclick="showScreen('worlds')" id="nav-worlds">
+      <span class="material-symbols-outlined">public</span>
+      <span class="text-xs font-bold">Worlds</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('arena')" id="nav-arena">
+      <span class="material-symbols-outlined">swords</span>
+      <span class="text-xs font-bold">Arena</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('profile')" id="nav-profile">
+      <span class="material-symbols-outlined">person</span>
+      <span class="text-xs font-bold">Profile</span>
+    </button>
+  </div>
+</nav>
+
+<script>
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+
+  document.querySelectorAll('.mock-selector button').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + name).classList.add('active');
+
+  // Bottom nav: visible solo en worlds/arena/profile/lesson/battle
+  const showBottom = ['worlds','arena','profile','lesson','battle'].includes(name);
+  document.getElementById('bottomNav').style.display = showBottom ? 'block' : 'none';
+
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  if (name === 'worlds') document.getElementById('nav-worlds').classList.add('active');
+  if (name === 'arena') document.getElementById('nav-arena').classList.add('active');
+  if (name === 'profile') document.getElementById('nav-profile').classList.add('active');
+  if (name === 'lesson') document.getElementById('nav-worlds').classList.add('active');
+  if (name === 'battle') document.getElementById('nav-worlds').classList.add('active');
+
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

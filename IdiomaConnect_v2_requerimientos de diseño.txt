@@ -1,0 +1,23 @@
+En el contexto de una app de idiomas diseñada con esta estética de videojuego futurista, estas secciones están pensadas para transformar el aprendizaje en una experiencia inmersiva y social:
+
+🌍 Worlds (Mundos)
+Es el modo aventura de la aplicación. En lugar de una lista aburrida de unidades, el contenido se divide en mapas temáticos que los chicos pueden "desbloquear".
+
+Concepto: Cada mundo (como London City, Cyber-Tokyo o Music Zone) contiene lecciones específicas de vocabulario y gramática relacionadas con ese entorno.
+Mecánica: Al completar un mundo, ganan una insignia única y desbloquean el siguiente nivel en el mapa global.
+⚔️ Arena
+Es la zona competitiva y social. Aquí es donde el aprendizaje se vuelve multijugador para fomentar la motivación entre tus hijas y sobrinos.
+
+Concepto: Un espacio para desafíos rápidos en tiempo real o ligas semanales.
+Mecánica:
+Battles: Duelos de vocabulario 1 vs 1 donde gana quien responda más rápido correctamente.
+Leaderboards: Una tabla de clasificación donde pueden ver quién ha ganado más XP esa semana.
+👤 Profile (Perfil)
+Es el centro de identidad y personalización. En una app para adolescentes, este espacio es vital para que sientan que la app les pertenece.
+
+Concepto: Más que una página de ajustes, es donde gestionan su "personaje" en el juego.
+Mecánica:
+Avatar: Aquí pueden usar sus monedas ganadas para comprar "skins" (ropa, accesorios neón, mascotas robóticas).
+Logros: Una galería de trofeos y medallas obtenidas.
+Estadísticas: Gráficos de su racha de días, palabras aprendidas y nivel de maestría.
+¿Te gustaría que diseñemos cómo se vería el interior de alguno de estos "Worlds" o prefieres ver cómo sería una "Battle" en la Arena?

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&amp;family=Source+Sans+3:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+        }
+        .glass-card {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(255, 75, 75, 0.4);
+        }
+        .neon-glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 238, 252, 0.4);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px currentColor;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#002022",
+                        "on-error": "#690005",
+                        "inverse-surface": "#e0e2e6",
+                        "on-tertiary-fixed-variant": "#7000a7",
+                        "primary-fixed-dim": "#ffb3ae",
+                        "surface-container-high": "#272a2d",
+                        "on-background": "#e0e2e6",
+                        "on-secondary": "#00363a",
+                        "on-tertiary-container": "#450069",
+                        "secondary-fixed-dim": "#00dbe9",
+                        "tertiary-fixed": "#f5d9ff",
+                        "primary-fixed": "#ffdad7",
+                        "outline-variant": "#5b403e",
+                        "secondary": "#d3fbff",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#191c1f",
+                        "surface-container": "#1d2023",
+                        "on-secondary-container": "#00686f",
+                        "on-surface-variant": "#e4bdba",
+                        "inverse-primary": "#bb1522",
+                        "secondary-fixed": "#7df4ff",
+                        "surface-container-highest": "#323538",
+                        "surface-variant": "#323538",
+                        "on-primary-container": "#5c0008",
+                        "on-primary": "#68000b",
+                        "outline": "#ab8886",
+                        "surface-container-lowest": "#0b0f11",
+                        "on-tertiary-fixed": "#30004b",
+                        "on-tertiary": "#4f0077",
+                        "background": "#101417",
+                        "secondary-container": "#00eefc",
+                        "on-secondary-fixed-variant": "#004f54",
+                        "tertiary-fixed-dim": "#e5b4ff",
+                        "on-primary-fixed": "#410004",
+                        "primary-container": "#ff5351",
+                        "surface": "#101417",
+                        "error-container": "#93000a",
+                        "primary": "#ffb3ae",
+                        "tertiary": "#e5b4ff",
+                        "surface-tint": "#ffb3ae",
+                        "surface-dim": "#101417",
+                        "inverse-on-surface": "#2d3134",
+                        "error": "#ffb4ab",
+                        "tertiary-container": "#c464ff",
+                        "surface-bright": "#363a3d",
+                        "on-surface": "#e0e2e6",
+                        "on-primary-fixed-variant": "#930014"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-margin": "20px",
+                        "xl": "32px",
+                        "sm": "8px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Source Sans 3"],
+                        "body-md": ["Source Sans 3"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "display-hero": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-bold": ["14px", {"lineHeight": "1.0", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "display-hero": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md selection:bg-primary/30">
+<!-- Top Navigation Anchor (Shared Component Mapping) -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-primary/20 shadow-[0_0_15px_rgba(255,179,174,0.3)] flex justify-between items-center px-container-margin py-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/40 ring-2 ring-primary/10">
+<img alt="User Character Portrait" class="w-full h-full object-cover" data-alt="A stylized digital character portrait of a friendly educational mentor in a futuristic cyberpunk aesthetic. The character wears sleek tech-wear with subtle glowing red circuits. The background is a soft-focus laboratory with holographic interfaces in deep blues and neon reds, maintaining a premium and high-tech feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsckE76FX3WflgjiXhLLz0SuCwbvRxApa_2TUW8wOukS9CAfy8x7tZLU-FaKS0JXCkFkHNwMzUJ9-HRn1iKLfJvJsHLDJf2baxn-DlvPvHHcgkJZ9fg8s_7Ajs6rAwgvj9tl5LjuLwRo2NokLUa44oYgd28QZApEeT2ZV2V0vgxV4c7xEZjNIOipexkLC0QXUBtv5LNMRdXYuTRuk4V5CCsLDfKu3lQOqpLERlzVlv6yZpFEWvcuDh_zWUym5c5PSV3jf_rR3tYroK"/>
+</div>
+<span class="font-display-hero text-headline-lg italic tracking-tighter text-primary">IdiomaConnect</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-32 pb-32 px-container-margin max-w-6xl mx-auto">
+<!-- Screen Title -->
+<div class="text-center mb-xl">
+<h1 class="font-display-hero text-headline-lg md:text-display-hero mb-md tracking-tight leading-tight">
+                ¿Quién está listo para <span class="text-secondary-container text-glow">aprender inglés</span> hoy?
+            </h1>
+<div class="w-24 h-1 bg-gradient-to-r from-primary to-secondary-container mx-auto rounded-full"></div>
+</div>
+<!-- Section: MIS HIJAS -->
+<section class="mb-xl">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Antonia: Painting -->
+<div class="glass-card rounded-xl p-lg flex flex-col items-center group hover:scale-[1.02] transition-all duration-300 border-t border-l border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] relative overflow-hidden">
+<div class="absolute -top-10 -right-10 w-24 h-24 bg-primary/20 blur-3xl group-hover:bg-primary/40 transition-colors"></div>
+<div class="w-32 h-32 rounded-full mb-md overflow-hidden ring-4 ring-primary/40 group-hover:neon-glow-primary transition-all">
+<img class="w-full h-full object-cover" data-alt="A high-fidelity 3D digital illustration of a young girl named Antonia with a creative, artistic personality. She is wearing a colorful apron splattered with neon paint. In the background, holographic canvases glow with vibrant red and orange hues. The style is a mix of Pixar-style character design and cyberpunk glassmorphism lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtdK1ivMcsnsZa2PbT7gWmnGqc2pW5m-5qObIDhCT8XjrSp-7ziciaXCgwthaun7WjbtqVIhCgPFc6QbhrzrG1VGGBFKQiExi2rb8cWEWTYFo7OdnUpLzBEYAFYEAlnqSrdpBTWORCwdL4JI5Syt_TDQny0WUkvoIyieVniMy_LUr9k44OyYtmZz02rIPTy2mMOisCh-fiucSMfVJZBLybLWGs_luT-ZCiv0_3fPQNvOkwsQxY5BFzyXuw_aIsWvzI6BMbQnZUXBS4"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Antonia</h3>
+<div class="text-primary font-label-bold mb-xs text-glow">450 XP</div><div class="flex items-center gap-xs text-on-surface-variant text-label-bold mb-lg">
+<span class="material-symbols-outlined text-[18px]">palette</span>
+<span>Mundo Artístico</span>
+</div>
+<button class="w-full py-md bg-primary-container text-on-primary-container font-label-bold rounded-lg shadow-[0_0_10px_rgba(255,75,75,0.3)] hover:scale-95 transition-transform active:scale-90">
+                        ¡Soy Antonia!
+                    </button>
+</div>
+<!-- Belen: Piano -->
+<div class="glass-card rounded-xl p-lg flex flex-col items-center group hover:scale-[1.02] transition-all duration-300 border-t border-l border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] relative overflow-hidden">
+<div class="absolute -top-10 -right-10 w-24 h-24 bg-secondary-container/20 blur-3xl group-hover:bg-secondary-container/40 transition-colors"></div>
+<div class="w-32 h-32 rounded-full mb-md overflow-hidden ring-4 ring-secondary-container/40 group-hover:neon-glow-cyan transition-all">
+<img class="w-full h-full object-cover" data-alt="A beautiful digital 3D character design of a girl named Belen sitting at a futuristic glowing piano. Her clothes are sleek and modern with cyan glowing accents. The lighting is moody and cinematic, featuring cool blue and teal tones. The aesthetic is sophisticated and high-tech, fitting for a music-themed character in a competitive gaming HUD environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKsewtAi74h9nrTleJPAob0T0w2Aqe5e0rHtMTHzWhexhNrcZ66IMiI6UbhiAiLHEenlEKKlHmfzzBXC34xV1v7aAjH7y6HIlLCuer3OrU9KCaIG7Blm6w8ktBoXhUc1A9D25ydZbqF1d3r3AiHniko0YIPOsOxSJX_hHNLhADCjdV64E4xuthGIl-flhpsIRn_EaIXBld-B79yrwvnNcXuThP8sA9OVdhFJfPiyZ6g2TYcxeyitZGMx8ynryixcAL34MAbGLOLYx0"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Belen</h3>
+<div class="text-secondary-container font-label-bold mb-xs text-glow">320 XP</div><div class="flex items-center gap-xs text-on-surface-variant text-label-bold mb-lg">
+<span class="material-symbols-outlined text-[18px]">piano</span>
+<span>Ritmo Estelar</span>
+</div>
+<button class="w-full py-md bg-secondary-container text-on-secondary-container font-label-bold rounded-lg shadow-[0_0_10px_rgba(0,238,252,0.3)] hover:scale-95 transition-transform active:scale-90">
+                        ¡Soy Belen!
+                    </button>
+</div>
+<!-- Sofia: Science -->
+<div class="glass-card rounded-xl p-lg flex flex-col items-center group hover:scale-[1.02] transition-all duration-300 border-t border-l border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] relative overflow-hidden">
+<div class="absolute -top-10 -right-10 w-24 h-24 bg-tertiary-container/20 blur-3xl group-hover:bg-tertiary-container/40 transition-colors"></div>
+<div class="w-32 h-32 rounded-full mb-md overflow-hidden ring-4 ring-tertiary-container/40 group-hover:shadow-[0_0_15px_rgba(196,100,255,0.4)] transition-all">
+<img class="w-full h-full object-cover" data-alt="A portrait of a young girl named Sofia with a focus on science and discovery. She wears high-tech goggles and a futuristic lab coat. Holographic molecules and chemical symbols float around her in purple and neon pink. The scene is lit with vibrant ultraviolet and neon lighting, creating an electric academic feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnMMG3USWbwWGj-bf2T5L0EsBxjBvq2TvNMRLy_Wef3wtxgSbTPAkwcr6gSqTyb_YkeFncleKZ-UXKNeYbAj02UH4aQW5pgXy3iPqmJa6mpBAq42XH-X1iQF3apVzN01yVfOowWqfRcXFE6gXbyX09cCAVVzCBGn25_duvlVUIJWlCYko4ZXiakI2ztnvG9byKcjXtY59fK81VswzfYpbKl0YyxPamXZ8p4TTILMnDi9dKGLEv0B8CTQsJ7N1eSypRGWSTLoCgGODl"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Sofia</h3>
+<div class="text-tertiary font-label-bold mb-xs text-glow">210 XP</div><div class="flex items-center gap-xs text-on-surface-variant text-label-bold mb-lg">
+<span class="material-symbols-outlined text-[18px]">fitness_center</span>
+<span>Gimnasia Artística</span>
+</div>
+<button class="w-full py-md bg-tertiary-container text-on-tertiary-container font-label-bold rounded-lg shadow-[0_0_10px_rgba(196,100,255,0.3)] hover:scale-95 transition-transform active:scale-90">
+                        ¡Soy Sofia!
+                    </button>
+</div>
+</div>
+</section>
+<!-- Section: MIS SOBRINOS -->
+<section>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Agustin: Gaming -->
+<div class="glass-card rounded-xl p-lg flex flex-col items-center group hover:scale-[1.02] transition-all duration-300 border-t border-l border-white/20 relative overflow-hidden">
+<div class="w-32 h-32 rounded-full mb-md overflow-hidden ring-4 ring-secondary-container/40 group-hover:neon-glow-cyan transition-all">
+<img class="w-full h-full object-cover" data-alt="A cool 3D gaming character of a boy named Agustin wearing a professional gaming headset with cyan LED lights. He is surrounded by holographic gaming interfaces and floating controllers. The environment is dark midnight navy with bright neon teal accents, conveying a high-stakes competitive atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChpaXiNiVUyWQ6hj1hmncJaIo11XQEzbLruBSV6C_ZMtE77GL5T3ToGDrP0oenlTakVcC-b4I4pB7Ej5a6pIDQmvv7dVibIGdR1hHiTDT4JOEsIPZjNDzQu8ztazDhr7b6pPybJTav-lD5SFJY1MPOJMzcJ3dng5fuaU451I_EsK4MKmFmwPN9ttCdLBOX4G_bTrZ7YqAAD6jZb9T1dO8-7nksn9m_7qJl_a4tT7zPVeoICyGJr71nBGqUJWF3y-6xU-m2768HMJG6"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Agustin</h3>
+<div class="text-secondary-container font-label-bold mb-xs text-glow">500 XP</div><div class="flex items-center gap-xs text-on-surface-variant text-label-bold mb-lg">
+<span class="material-symbols-outlined text-[18px]">sports_esports</span>
+<span>Arena Pro</span>
+</div>
+<button class="w-full py-md bg-secondary-container text-on-secondary-container font-label-bold rounded-lg shadow-[0_0_10px_rgba(0,238,252,0.3)] hover:scale-95 transition-transform active:scale-90">
+                        ¡Soy Agustin!
+                    </button>
+</div>
+<!-- Maximo: Space -->
+<div class="glass-card rounded-xl p-lg flex flex-col items-center group hover:scale-[1.02] transition-all duration-300 border-t border-l border-white/20 relative overflow-hidden">
+<div class="w-32 h-32 rounded-full mb-md overflow-hidden ring-4 ring-primary/40 group-hover:neon-glow-primary transition-all">
+<img class="w-full h-full object-cover" data-alt="A portrait of a boy named Maximo in a futuristic space explorer outfit. He is standing against a background of a glowing galaxy with red nebulae. His spacesuit has sleek white and red plating with glowing oxygen vents. The design is cinematic, detailed, and uses vibrant red and deep space blues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7S4dbRgQsGmBq-3sBTNZII-eekoQhEU-su6XaFQNo2ZyJvm5Pm_WaITMR5q-bIZe1-oWacKNPLav8AQ10u_mICPFNsIdLYlfPE7wDqaq3-Yw6bw0n6DoBzIxsLL_t4LxkRCZhbwg_uY_VVpGA-GvFtbUE6UtPEauoGcB2omWHEkHVyMc2CF1BxeCsPBsOGhidUVpNdgpiksVye8J4LRk5UYPWIjMK-8heE9PAjVOD9i0j0TUsbQtSwOMw6aRPlYACR_4ZYC92o7Nk"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Maximo</h3>
+<div class="text-primary font-label-bold mb-xs text-glow">150 XP</div><div class="flex items-center gap-xs text-on-surface-variant text-label-bold mb-lg">
+<span class="material-symbols-outlined text-[18px]">rocket_launch</span>
+<span>Misión Marte</span>
+</div>
+<button class="w-full py-md bg-primary-container text-on-primary-container font-label-bold rounded-lg shadow-[0_0_10px_rgba(255,75,75,0.3)] hover:scale-95 transition-transform active:scale-90">
+                        ¡Soy Maximo!
+                    </button>
+</div>
+<!-- Antonela: Nature/Animals -->
+<div class="glass-card rounded-xl p-lg flex flex-col items-center group hover:scale-[1.02] transition-all duration-300 border-t border-l border-white/20 relative overflow-hidden">
+<div class="w-32 h-32 rounded-full mb-md overflow-hidden ring-4 ring-tertiary-container/40 group-hover:shadow-[0_0_15px_rgba(196,100,255,0.4)] transition-all">
+<img class="w-full h-full object-cover" data-alt="A character design of a girl named Antonela with a focus on nature and veterinary themes. She is accompanied by a cute robotic kitten with glowing purple eyes. The background is a futuristic vertical forest with bioluminescent plants in violet and emerald green. The style is soft yet technologically advanced." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAterxLynMarFC1NkwrJmAIOxNPLkIelXfAPI659Wv2fk5HI6BcaeaXFCkzjn_x5_-XCfb7e0xY_6NxwZ2oQYkqfUeAoroi0TT0bWYHNS-aZZTJ-ErHNaaqNM3ELhJmlceU4jPfZqyJwTsg8dn9Yb0Gi_uSR7yvkHa8gh8YSzPuqT04UwkEqUfNNCmVZxVXZZYqTSty4a7b7XxRgReazrU5CJcG-fggNDLtfuF9jUxwh23Ds6zD-EHceTeXQ0Knr4MaZ7k7uwdx3mN5"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Antonela</h3>
+<div class="text-tertiary font-label-bold mb-xs text-glow">280 XP</div><div class="flex items-center gap-xs text-on-surface-variant text-label-bold mb-lg">
+<span class="material-symbols-outlined text-[18px]">pets</span>
+<span>Bio-Explorer</span>
+</div>
+<button class="w-full py-md bg-tertiary-container text-on-tertiary-container font-label-bold rounded-lg shadow-[0_0_10px_rgba(196,100,255,0.3)] hover:scale-95 transition-transform active:scale-90">
+                        ¡Soy Antonela!
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Navigation Shell (Shared Component Mapping) -->
+<!-- BottomNavBar suppressed due to being a Selection/Onboarding-style screen, however, placeholder logic remains for structure -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-lg pb-safe bg-surface-container/70 backdrop-blur-lg border-t border-secondary-fixed/20 shadow-[0_-4px_20px_rgba(0,238,252,0.15)]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity active:scale-110 duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="public">public</span>
+<span class="font-label-bold text-label-bold">Worlds</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity active:scale-110 duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-label-bold text-label-bold">Arena</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary-container drop-shadow-[0_0_8px_rgba(0,238,252,0.8)] active:scale-110 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-bold text-label-bold">Profile</span>
+</a>
+</nav>
+</body></html>

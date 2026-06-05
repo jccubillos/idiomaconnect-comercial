@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cyber-Linguist Protocol</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Source+Sans+3:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#ffb3ae",
+                        "surface": "#101417",
+                        "on-primary-fixed": "#410004",
+                        "inverse-primary": "#bb1522",
+                        "secondary": "#d3fbff",
+                        "surface-bright": "#363a3d",
+                        "primary-fixed-dim": "#ffb3ae",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed": "#002022",
+                        "tertiary-fixed-dim": "#e5b4ff",
+                        "on-secondary-fixed-variant": "#004f54",
+                        "on-surface-variant": "#e4bdba",
+                        "tertiary-container": "#c464ff",
+                        "primary-fixed": "#ffdad7",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed": "#f5d9ff",
+                        "surface-container-low": "#191c1f",
+                        "primary-container": "#ff5351",
+                        "surface-dim": "#101417",
+                        "background": "#101417",
+                        "inverse-on-surface": "#2d3134",
+                        "secondary-fixed-dim": "#00dbe9",
+                        "surface-container-highest": "#323538",
+                        "error-container": "#93000a",
+                        "secondary-container": "#00eefc",
+                        "outline": "#ab8886",
+                        "on-background": "#e0e2e6",
+                        "outline-variant": "#5b403e",
+                        "on-tertiary-fixed-variant": "#7000a7",
+                        "on-tertiary-fixed": "#30004b",
+                        "on-secondary-container": "#00686f",
+                        "on-surface": "#e0e2e6",
+                        "on-primary-container": "#5c0008",
+                        "on-secondary": "#00363a",
+                        "on-tertiary": "#4f0077",
+                        "on-primary-fixed-variant": "#930014",
+                        "surface-variant": "#323538",
+                        "secondary-fixed": "#7df4ff",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#0b0f11",
+                        "surface-container-high": "#272a2d",
+                        "primary": "#ffb3ae",
+                        "on-primary": "#68000b",
+                        "surface-container": "#1d2023",
+                        "tertiary": "#e5b4ff",
+                        "inverse-surface": "#e0e2e6",
+                        "on-tertiary-container": "#450069"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "container-margin": "20px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "unit": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": [
+                            "Source Sans 3"
+                        ],
+                        "label-bold": [
+                            "Plus Jakarta Sans"
+                        ],
+                        "headline-lg": [
+                            "Plus Jakarta Sans"
+                        ],
+                        "headline-md": [
+                            "Plus Jakarta Sans"
+                        ],
+                        "display-hero": [
+                            "Plus Jakarta Sans"
+                        ],
+                        "body-lg": [
+                            "Source Sans 3"
+                        ]
+                    },
+                    "fontSize": {
+                        "body-md": [
+                            "16px",
+                            {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "label-bold": [
+                            "14px",
+                            {
+                                "lineHeight": "1.0",
+                                "fontWeight": "700"
+                            }
+                        ],
+                        "headline-lg": [
+                            "32px",
+                            {
+                                "lineHeight": "1.2",
+                                "fontWeight": "700"
+                            }
+                        ],
+                        "headline-md": [
+                            "24px",
+                            {
+                                "lineHeight": "1.3",
+                                "fontWeight": "700"
+                            }
+                        ],
+                        "display-hero": [
+                            "48px",
+                            {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "800"
+                            }
+                        ],
+                        "body-lg": [
+                            "18px",
+                            {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0A0B1E;
+        }
+        .glass-panel {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 238, 252, 0.2);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 12px rgba(255, 75, 75, 0.5);
+        }
+        .neon-glow-secondary {
+            box-shadow: 0 0 12px rgba(0, 238, 252, 0.3);
+        }
+        .gradient-progress {
+            background: linear-gradient(90deg, rgba(0,238,252,1) 0%, rgba(196,100,255,1) 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="text-on-surface font-body-md min-h-screen pb-24 md:pb-0 md:pt-24">
+<!-- TopAppBar (Visible on Web, hidden on Mobile) -->
+<header class="hidden md:flex bg-surface/80 dark:bg-surface/80 backdrop-blur-xl fixed top-0 w-full z-50 border-b border-outline-variant/20 shadow-[0_4px_20px_rgba(0,0,0,0.5)] flex justify-between items-center px-container-margin py-sm">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-secondary-container/20 flex items-center justify-center border border-secondary-container/50">
+<span class="material-symbols-outlined text-secondary-container" style="font-variation-settings: 'FILL' 1;">headphones</span>
+</div>
+<h1 class="font-display-hero text-headline-md tracking-tighter text-primary dark:text-primary-fixed-dim drop-shadow-[0_0_8px_rgba(255,179,174,0.6)]">CYBER-LINGUIST</h1>
+</div>
+<nav class="flex gap-lg">
+<a class="text-on-surface-variant dark:text-on-surface-variant font-label-bold text-label-bold hover:bg-surface-variant/50 transition-colors duration-300 px-4 py-2 rounded-lg flex items-center gap-2" href="#">
+<span class="material-symbols-outlined">map</span> Map
+             </a>
+<a class="text-primary dark:text-primary-fixed-dim font-label-bold text-label-bold hover:bg-surface-variant/50 transition-colors duration-300 px-4 py-2 rounded-lg flex items-center gap-2 bg-primary-container/10 ring-1 ring-primary/40" href="#">
+<span class="material-symbols-outlined">swords</span> Arena
+             </a>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-label-bold text-label-bold hover:bg-surface-variant/50 transition-colors duration-300 px-4 py-2 rounded-lg flex items-center gap-2" href="#">
+<span class="material-symbols-outlined">person_filled</span> Profile
+             </a>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-label-bold text-label-bold hover:bg-surface-variant/50 transition-colors duration-300 px-4 py-2 rounded-lg flex items-center gap-2" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+             </a>
+</nav>
+<button class="text-primary dark:text-primary-fixed-dim hover:bg-surface-variant/50 transition-colors duration-300 p-2 rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</button>
+</header>
+<!-- Mobile Header -->
+<header class="md:hidden flex justify-between items-center px-container-margin py-md glass-panel sticky top-0 z-40">
+<h1 class="font-display-hero text-headline-md tracking-tighter text-primary drop-shadow-[0_0_8px_rgba(255,179,174,0.6)]">CYBER-LINGUIST</h1>
+<button class="text-primary p-2 rounded-full">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="px-container-margin max-w-7xl mx-auto py-xl flex flex-col gap-xl">
+<!-- Hero Section: The Sync Matrix Intro -->
+<section class="glass-panel rounded-xl p-lg relative overflow-hidden flex flex-col md:flex-row gap-lg items-center border-t-2 border-t-tertiary-container/50">
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-tertiary-container/20 rounded-full blur-3xl"></div>
+<div class="flex-1 z-10 flex flex-col gap-md">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-tertiary-container/10 border border-tertiary-container/30 self-start w-auto">
+<span class="material-symbols-outlined text-tertiary-container text-sm">graphic_eq</span>
+<span class="text-tertiary-container font-label-bold text-xs uppercase tracking-wider">Sync Matrix Active</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Rhythm &amp; Theory Protocol</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Calibrate your linguistic timing. Translate standard sheet notation into high-fidelity English performance prompts.</p>
+<div class="flex gap-md mt-sm">
+<button class="bg-[#FF4B4B] text-on-primary font-label-bold text-label-bold px-6 py-3 rounded-lg neon-glow-primary hover:bg-[#ff6b6b] transition-colors">
+                        INITIATE SEQUENCE
+                    </button>
+<button class="bg-transparent border border-secondary-container text-secondary-container font-label-bold text-label-bold px-6 py-3 rounded-lg hover:bg-secondary-container/10 transition-colors">
+                        REVIEW LOGS
+                    </button>
+</div>
+</div>
+<div class="flex-1 w-full relative z-10">
+<!-- Abstract Orchestral HUD Image placeholder -->
+<div class="w-full aspect-video rounded-lg bg-surface-container-high border border-outline-variant/30 overflow-hidden relative group">
+<img class="w-full h-full object-cover opacity-60 mix-blend-screen group-hover:opacity-80 transition-opacity duration-500" data-alt="A sleek, high-tech digital HUD overlaying a classical orchestral sheet music background. The scene is rendered in a cyberpunk aesthetic with a deep midnight navy and glowing violet and cyan color palette. Luminous digital waveforms and geometric analytical nodes float above the musical notes, suggesting advanced technological analysis of classical rhythm. The mood is highly focused, professional, and futuristic, blending the precision of classical music with the edge of a cybernetic training simulation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBusjRPOGtIos9j4j8nIXRQCLQXsfQ97E86cm9xQuUGydkoTSWEgkJfbDl_RTtlIuIi65nb9vWKSg7D2wVBddMmcgYs4oJXKdKclCPBraIsmy0c6QoJnstne9SjWr3cTWQCZSGdVm-d5FpwCqlNxqRa-e2A7ZbsZJTSdD6zQYIV-piU99oJkND3AFjJ4XhzizQT9yW5sHbrjPN5Yf00q6VunpVsaIeVOS6_KDT2OyICqVAPXxbqbYKuvbwj_j-tfRaQMP5Pei5M5ngB"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+<div class="flex flex-col gap-1">
+<span class="text-xs font-label-bold text-secondary-container tracking-wider uppercase">Current Track</span>
+<span class="font-headline-md text-sm text-on-surface">Sonata Analysis v2.4</span>
+</div>
+<div class="w-12 h-12 rounded-full border-2 border-secondary-container flex items-center justify-center bg-surface/50 backdrop-blur-sm animate-pulse">
+<span class="material-symbols-outlined text-secondary-container" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid: Modules -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- Module 1: Sheet Translation -->
+<div class="glass-panel rounded-xl p-md flex flex-col gap-md col-span-1 md:col-span-2 relative overflow-hidden group">
+<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-secondary-container/10 rounded-full blur-2xl group-hover:bg-secondary-container/20 transition-all"></div>
+<div class="flex justify-between items-start z-10">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/20 border border-secondary-container/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-container">translate</span>
+</div>
+<span class="text-xs font-label-bold text-on-surface-variant bg-surface-variant/50 px-2 py-1 rounded">Module A</span>
+</div>
+<div class="z-10 flex flex-col gap-1 mt-auto">
+<h3 class="font-headline-md text-headline-md text-on-surface">Notation Translation</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Decode complex musical directives into actionable English performance notes.</p>
+<!-- Progress -->
+<div class="flex flex-col gap-2 w-full">
+<div class="flex justify-between text-xs font-label-bold text-on-surface-variant">
+<span>Proficiency</span>
+<span class="text-secondary-container">78%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full gradient-progress w-[78%] relative">
+<div class="absolute right-0 top-0 bottom-0 w-4 bg-white/50 blur-[2px]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Module 2: Rhythm Sync -->
+<div class="glass-panel rounded-xl p-md flex flex-col gap-md col-span-1 relative overflow-hidden group">
+<div class="flex justify-between items-start z-10">
+<div class="w-10 h-10 rounded-lg bg-tertiary-container/20 border border-tertiary-container/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary-container">timer</span>
+</div>
+<span class="text-xs font-label-bold text-on-surface-variant bg-surface-variant/50 px-2 py-1 rounded">Module B</span>
+</div>
+<div class="z-10 flex flex-col gap-1 mt-auto">
+<h3 class="font-headline-md text-headline-md text-on-surface">Tempo Sync</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm line-clamp-2 mb-4">Master verbal pacing to match orchestral timing signatures.</p>
+<button class="w-full py-2 border border-tertiary-container/50 text-tertiary-container font-label-bold text-xs rounded-lg hover:bg-tertiary-container/10 transition-colors">
+                         ENTER CALIBRATION
+                     </button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Visible on Mobile, hidden on Web) -->
+<nav class="md:hidden bg-surface-container/80 dark:bg-surface-container/80 backdrop-blur-xl fixed bottom-0 w-full z-50 rounded-t-xl border-t border-outline-variant/20 shadow-[0_-4px_24px_rgba(0,0,0,0.6)] flex justify-around items-center px-4 pb-4 pt-2">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-bold text-[10px] mt-1">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container/20 text-primary dark:text-primary-fixed-dim rounded-xl px-4 py-2 ring-1 ring-primary/40 shadow-[0_0_12px_rgba(255,179,174,0.3)] active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">swords</span>
+<span class="font-label-bold text-[10px] mt-1">Arena</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined">person_filled</span>
+<span class="font-label-bold text-[10px] mt-1">Profile</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-bold text-[10px] mt-1">Settings</span>
+</a>
+</nav>
+</body></html>

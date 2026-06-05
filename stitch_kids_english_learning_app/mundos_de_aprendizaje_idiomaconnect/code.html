@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Worlds - Cyber-Linguist</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Source+Sans+3:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#272a2d",
+                    "surface-tint": "#ffb3ae",
+                    "tertiary-fixed-dim": "#e5b4ff",
+                    "surface-bright": "#363a3d",
+                    "outline-variant": "#5b403e",
+                    "inverse-primary": "#bb1522",
+                    "on-surface-variant": "#e4bdba",
+                    "surface-dim": "#101417",
+                    "on-secondary-fixed": "#002022",
+                    "surface": "#101417",
+                    "on-tertiary-fixed-variant": "#7000a7",
+                    "on-primary-container": "#5c0008",
+                    "inverse-surface": "#e0e2e6",
+                    "secondary": "#d3fbff",
+                    "on-primary": "#68000b",
+                    "error": "#ffb4ab",
+                    "primary": "#ffb3ae",
+                    "on-tertiary-container": "#450069",
+                    "surface-variant": "#323538",
+                    "surface-container": "#1d2023",
+                    "primary-fixed": "#ffdad7",
+                    "on-secondary-fixed-variant": "#004f54",
+                    "primary-fixed-dim": "#ffb3ae",
+                    "on-primary-fixed-variant": "#930014",
+                    "surface-container-lowest": "#0b0f11",
+                    "tertiary-fixed": "#f5d9ff",
+                    "on-error": "#690005",
+                    "error-container": "#93000a",
+                    "secondary-fixed-dim": "#00dbe9",
+                    "on-tertiary-fixed": "#30004b",
+                    "secondary-fixed": "#7df4ff",
+                    "surface-container-highest": "#323538",
+                    "on-background": "#e0e2e6",
+                    "on-surface": "#e0e2e6",
+                    "tertiary-container": "#c464ff",
+                    "secondary-container": "#00eefc",
+                    "primary-container": "#ff5351",
+                    "inverse-on-surface": "#2d3134",
+                    "on-primary-fixed": "#410004",
+                    "tertiary": "#e5b4ff",
+                    "on-secondary": "#00363a",
+                    "on-secondary-container": "#00686f",
+                    "surface-container-low": "#191c1f",
+                    "outline": "#ab8886",
+                    "background": "#101417",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary": "#4f0077"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "container-margin": "20px",
+                    "xs": "4px",
+                    "unit": "4px",
+                    "md": "16px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "display-hero": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body-md": [
+                            "Source Sans 3"
+                    ],
+                    "headline-lg": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body-lg": [
+                            "Source Sans 3"
+                    ],
+                    "label-bold": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-md": [
+                            "Plus Jakarta Sans"
+                    ]
+            },
+            "fontSize": {
+                    "display-hero": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "800"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-bold": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.0",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "700"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Source Sans 3', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .font-display-hero, .font-headline-lg, .font-headline-md, .font-label-bold { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        /* Custom Scrollbar for the map area */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(91, 64, 62, 0.5); /* outline-variant */
+            border-radius: 9999px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background antialiased min-h-screen flex flex-col relative overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="bg-surface/80 dark:bg-surface/80 backdrop-blur-xl fixed top-0 w-full z-50 border-b border-outline-variant/20 shadow-[0_4px_20px_rgba(0,0,0,0.5)] flex justify-between items-center px-container-margin py-sm w-full">
+<!-- Leading Avatar -->
+<div class="h-10 w-10 rounded-full overflow-hidden border-2 border-primary/50 shadow-[0_0_10px_rgba(255,179,174,0.3)]">
+<img alt="User Pilot Avatar" class="w-full h-full object-cover" data-alt="A stylized, high-contrast portrait of a young gamer or tech enthusiast, illuminated by soft neon pink and cyan lights, serving as a profile avatar. The background is a dark, out-of-focus cyberpunk alleyway. The lighting emphasizes a futuristic, Electric Academic aesthetic suitable for a modern learning platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJTMdIWo6pjyt4Eb8fm5DlnW9LWwlD22oTs0JsguqMX5oNtXqJ6k01Kly96T0l1HbMbPYxCKQL_2ttOfQXEpTQqDbaZ7npMJiPcfndstP-aJjMdPHH3fI-L9fSKkDKFnwC-2Tto1kW0v5NGOS5Ja4gKO8Tezc9B_-28Lqod596tWwR-phSjT7mSi0MQD2TIFz5ArB0Up8-n58FcPoQ5lm8h01VWGeKAkYSa0WDdvqjUyq4rFXCA6RXjA6CfiPG-CO4_kasI2YmmaKL"/>
+</div>
+<!-- Headline -->
+<h1 class="font-display-hero text-headline-md tracking-tighter text-primary dark:text-primary-fixed-dim drop-shadow-[0_0_8px_rgba(255,179,174,0.6)]">CYBER-LINGUIST</h1>
+<!-- Trailing Icon -->
+<button class="text-primary dark:text-primary-fixed-dim hover:bg-surface-variant/50 transition-colors duration-300 active:scale-95 transition-transform p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</button>
+</header>
+<!-- Main Content: Map Area -->
+<main class="flex-grow pt-[88px] pb-[100px] px-container-margin relative z-10 w-full max-w-5xl mx-auto">
+<!-- Atmospheric Background Map Image -->
+<div class="fixed inset-0 z-0 opacity-20 pointer-events-none" data-alt="A deeply dark, stylized topographical map resembling a futuristic HUD display. The map features glowing, abstract circuit-like lines and subtle topographical rings against a pitch-black background. Thin, faint neon blue and cyan grid lines traverse the dark space, establishing a cyberpunk, high-tech navigational atmosphere without overwhelming the foreground UI elements." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuACCUuQalPF256JFHYsmv0NTa5SEJ-PSxHs9mhOOK3XfdawEIYW4vxbV3mXOzCayLBODj9C3ZiRbjyOZ2msnpJ1-zNa3iRKzSAyJTpsTVRhXnaMv6D8PObbuqm6QAa4UgBOg_XS86-TfJH9cDHyGtXAhULmHfd1h2HAOMlZxJxiZxPBH27BceYX6bpyn7zbIcU4eb68ewVQxDoXH0AKD276zbQMH1hJkmaTs7wdNfK-hdWe-3JoBVsE9s5y7nIZVXaaGrk_htSkuYdC'); background-size: cover; background-position: center;">
+</div>
+<div class="relative z-10 w-full">
+<div class="mb-lg mt-sm text-center">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Active Worlds</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Plot your course through the linguistic grid.</p>
+</div>
+<!-- Path Container (Visual connection) -->
+<div class="relative flex flex-col gap-xl">
+<!-- Connection Line (Hidden on mobile, visible on larger screens if layout changes, but keeping it simple vertical here with a central line) -->
+<div class="absolute left-1/2 top-10 bottom-10 w-px bg-gradient-to-b from-secondary-container via-outline-variant/30 to-transparent -translate-x-1/2 z-[-1]"></div>
+<!-- NODE 1: London Hub (Current) -->
+<div class="relative w-full max-w-lg mx-auto transform transition-all hover:scale-[1.02]">
+<!-- Active Glow Underlay -->
+<div class="absolute -inset-1 bg-gradient-to-r from-secondary-container to-secondary-fixed rounded-xl blur opacity-30 animate-pulse"></div>
+<div class="bg-surface-container/90 backdrop-blur-xl rounded-xl border border-secondary-container p-lg relative z-10 shadow-[0_8px_32px_rgba(0,238,252,0.15)] flex flex-col gap-md">
+<!-- Header Row -->
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-sm">
+<div class="bg-secondary-container/20 p-2 rounded-lg border border-secondary-container/50 text-secondary-container">
+<span class="material-symbols-outlined">location_city</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">London Hub</h3>
+<p class="font-body-md text-body-md text-secondary-container">Travel English</p>
+</div>
+</div>
+<!-- Current Location Badge -->
+<div class="bg-secondary-container text-on-secondary-container font-label-bold text-label-bold px-3 py-1 rounded-full flex items-center gap-1 shadow-[0_0_8px_rgba(0,238,252,0.6)]">
+<span class="material-symbols-outlined text-[16px] animate-pulse" style="font-variation-settings: 'FILL' 1;">my_location</span>
+                                CURRENT
+                            </div>
+</div>
+<!-- Progress Section -->
+<div>
+<div class="flex justify-between font-label-bold text-label-bold text-on-surface-variant mb-xs">
+<span>Module Progress</span>
+<span class="text-secondary-fixed">68%</span>
+</div>
+<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden relative">
+<!-- Glowing Progress Bar -->
+<div class="absolute top-0 left-0 h-full w-[68%] bg-gradient-to-r from-secondary-container to-secondary-fixed rounded-full shadow-[0_0_10px_#00eefc]">
+<!-- Leading edge glow -->
+<div class="absolute right-0 top-0 bottom-0 w-4 bg-white/50 blur-[2px]"></div>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full mt-sm py-3 bg-[#FF4B4B] text-white font-label-bold text-label-bold rounded-lg shadow-[0_0_12px_rgba(255,75,75,0.4)] hover:bg-[#ff5a5a] transition-colors flex justify-center items-center gap-2 uppercase tracking-wide">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                            Resume Quest
+                        </button>
+</div>
+</div>
+<!-- NODE 2: Cyber-Tokyo -->
+<div class="relative w-full max-w-lg mx-auto opacity-90">
+<div class="bg-surface-container/80 backdrop-blur-xl rounded-xl border border-outline-variant/40 p-lg relative z-10 shadow-lg flex flex-col gap-md transition-all hover:border-secondary-container/50">
+<!-- Header Row -->
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-sm">
+<div class="bg-surface-variant p-2 rounded-lg border border-outline-variant/50 text-on-surface-variant">
+<span class="material-symbols-outlined">language</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Cyber-Tokyo</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Advanced Grammar</p>
+</div>
+</div>
+<!-- Requirement Badge -->
+<div class="bg-surface-variant text-on-surface-variant font-label-bold text-label-bold px-3 py-1 rounded-full border border-outline-variant/30 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+                                Lvl 15 Req.
+                            </div>
+</div>
+<!-- Progress Section -->
+<div>
+<div class="flex justify-between font-label-bold text-label-bold text-on-surface-variant mb-xs">
+<span>Module Progress</span>
+<span>0%</span>
+</div>
+<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full w-0 bg-secondary-container rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- NODE 3: Silicon Valley -->
+<div class="relative w-full max-w-lg mx-auto opacity-75">
+<div class="bg-surface-container/60 backdrop-blur-xl rounded-xl border border-outline-variant/20 p-lg relative z-10 shadow-lg flex flex-col gap-md grayscale-[30%]">
+<!-- Header Row -->
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-sm">
+<div class="bg-surface-variant p-2 rounded-lg border border-outline-variant/30 text-on-surface-variant/50">
+<span class="material-symbols-outlined">terminal</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface-variant">Silicon Valley</h3>
+<p class="font-body-md text-body-md text-on-surface-variant/70">Tech Vocabulary</p>
+</div>
+</div>
+<!-- Requirement Badge -->
+<div class="bg-surface-variant text-on-surface-variant/70 font-label-bold text-label-bold px-3 py-1 rounded-full border border-outline-variant/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+                                Lvl 30 Req.
+                            </div>
+</div>
+<!-- Progress Section -->
+<div>
+<div class="flex justify-between font-label-bold text-label-bold text-on-surface-variant/70 mb-xs">
+<span>Module Progress</span>
+<span>0%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full w-0 bg-secondary-container rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<!-- Destination Context: Top-level navigation screen ("Worlds" fits the "Map" intent perfectly) -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container/80 dark:bg-surface-container/80 backdrop-blur-xl border-t border-outline-variant/20 shadow-[0_-4px_24px_rgba(0,0,0,0.6)] flex justify-around items-center px-4 pb-4 pt-2 md:hidden">
+<!-- Tab 1: Map (ACTIVE) -->
+<button class="flex flex-col items-center justify-center bg-primary-container/20 text-primary dark:text-primary-fixed-dim rounded-xl px-4 py-2 ring-1 ring-primary/40 shadow-[0_0_12px_rgba(255,179,174,0.3)] active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-label-bold text-label-bold">Map</span>
+</button>
+<!-- Tab 2: Arena (INACTIVE) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined mb-1">swords</span>
+<span class="font-label-bold text-label-bold">Arena</span>
+</button>
+<!-- Tab 3: Profile (INACTIVE) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined mb-1">person_filled</span>
+<span class="font-label-bold text-label-bold">Profile</span>
+</button>
+<!-- Tab 4: Settings (INACTIVE) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined mb-1">settings</span>
+<span class="font-label-bold text-label-bold">Settings</span>
+</button>
+</nav>
+</body></html>

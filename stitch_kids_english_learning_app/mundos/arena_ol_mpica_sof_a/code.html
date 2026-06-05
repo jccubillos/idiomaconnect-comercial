@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sports English Classroom - Sofía's World</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Source+Sans+3:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-tertiary-container": "#450069",
+                "on-surface": "#e0e2e6",
+                "on-secondary-fixed": "#002022",
+                "inverse-on-surface": "#2d3134",
+                "secondary": "#d3fbff",
+                "on-primary-fixed": "#410004",
+                "tertiary-fixed": "#f5d9ff",
+                "on-tertiary": "#4f0077",
+                "on-error": "#690005",
+                "surface-variant": "#323538",
+                "secondary-container": "#00eefc",
+                "on-primary-fixed-variant": "#930014",
+                "on-primary-container": "#5c0008",
+                "on-surface-variant": "#e4bdba",
+                "on-secondary": "#00363a",
+                "error": "#ffb4ab",
+                "background": "#101417",
+                "surface": "#101417",
+                "primary-fixed-dim": "#ffb3ae",
+                "surface-container-highest": "#323538",
+                "surface-tint": "#ffb3ae",
+                "surface-container-low": "#191c1f",
+                "on-primary": "#68000b",
+                "on-tertiary-fixed-variant": "#7000a7",
+                "surface-bright": "#363a3d",
+                "secondary-fixed": "#7df4ff",
+                "on-secondary-container": "#00686f",
+                "tertiary-container": "#c464ff",
+                "outline": "#ab8886",
+                "error-container": "#93000a",
+                "on-error-container": "#ffdad6",
+                "inverse-primary": "#bb1522",
+                "surface-container-lowest": "#0b0f11",
+                "primary-container": "#ff5351",
+                "on-secondary-fixed-variant": "#004f54",
+                "inverse-surface": "#e0e2e6",
+                "surface-dim": "#101417",
+                "tertiary-fixed-dim": "#e5b4ff",
+                "outline-variant": "#5b403e",
+                "on-background": "#e0e2e6",
+                "surface-container-high": "#272a2d",
+                "primary": "#ffb3ae",
+                "secondary-fixed-dim": "#00dbe9",
+                "primary-fixed": "#ffdad7",
+                "tertiary": "#e5b4ff",
+                "surface-container": "#1d2023",
+                "on-tertiary-fixed": "#30004b"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "sm": "8px",
+                "lg": "24px",
+                "xl": "32px",
+                "xs": "4px",
+                "md": "16px",
+                "gutter": "16px",
+                "container-margin": "20px",
+                "unit": "4px"
+        },
+        "fontFamily": {
+                "label-bold": [
+                        "Plus Jakarta Sans"
+                ],
+                "body-md": [
+                        "Source Sans 3"
+                ],
+                "headline-md": [
+                        "Plus Jakarta Sans"
+                ],
+                "body-lg": [
+                        "Source Sans 3"
+                ],
+                "display-hero": [
+                        "Plus Jakarta Sans"
+                ],
+                "headline-lg": [
+                        "Plus Jakarta Sans"
+                ]
+        },
+        "fontSize": {
+                "label-bold": [
+                        "14px",
+                        {
+                                "lineHeight": "1.0",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "1.3",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "display-hero": [
+                        "48px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "800"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "700"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        .glass-card {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 238, 252, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .neon-border {
+            border: 1px solid rgba(0, 238, 252, 0.4);
+            box-shadow: 0 0 8px rgba(0, 238, 252, 0.2);
+        }
+        .text-glow-cyan {
+            text-shadow: 0 0 8px rgba(0, 238, 252, 0.6);
+        }
+        .progress-gradient {
+            background: linear-gradient(90deg, #00dbe9 0%, #7df4ff 100%);
+        }
+        .neon-slab-button {
+            background-color: #ff5351;
+            box-shadow: 0 0 12px rgba(255, 83, 81, 0.6);
+            color: #ffffff;
+            border: none;
+        }
+        .transcript-panel {
+            background: rgba(25, 28, 31, 0.9);
+            border-left: 4px solid #00eefc;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .transcript-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        .transcript-panel::-webkit-scrollbar-thumb {
+            background: #323538;
+            border-radius: 4px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-24 md:pb-0 pt-20">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant/20 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+<div class="flex justify-between items-center px-container-margin py-sm w-full">
+<div class="flex items-center gap-md hover:bg-surface-variant/50 transition-colors duration-300 rounded-full p-2 cursor-pointer active:scale-95 transition-transform">
+<img alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-secondary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCo1dChLTmV1x6kCTlpkyeqn0Lb-R6RD54jWDXtj6DLo3AkZFugafVs-UKHuGjfD670NabdYXn6-KLBmZV4PyfLVmUCtVH9Q55TuLc-FBrz3Y4qxDRmCPagAHnZk_pNFyDpmBXJMGKA7eRqw0wAMJ3cb12Hcid0s-YKBSpNZB5LLJaRBooWswqymG6n4ruwDe28ayvq3sMw_Kcq3gqyiZqFyTOTuBoy90ng8pca4_gXmqgywU8SnjHQ3cEb0o_VlSJyFQxcxU4ZxAm"/>
+</div>
+<h1 class="font-display-hero text-headline-md tracking-tighter text-primary dark:text-primary-fixed-dim drop-shadow-[0_0_8px_rgba(255,179,174,0.6)]">ENGLISH ARENA</h1>
+<div class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-variant/50 transition-colors duration-300 cursor-pointer text-primary dark:text-primary-fixed-dim active:scale-95 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+</div>
+</div>
+<!-- Web Nav (Hidden on Mobile) -->
+<nav class="hidden md:flex justify-center gap-lg py-sm px-container-margin border-t border-outline-variant/20 bg-surface-container/50">
+<a class="font-label-bold text-label-bold text-on-surface-variant/70 hover:text-primary transition-all duration-200" href="#">Syllabus</a>
+<a class="font-label-bold text-label-bold flex items-center gap-2 bg-primary-container/20 text-primary rounded-xl px-4 py-2 ring-1 ring-primary/40 shadow-[0_0_12px_rgba(255,179,174,0.3)]" href="#"><span class="material-symbols-outlined">stadium</span> Classroom</a>
+<a class="font-label-bold text-label-bold text-on-surface-variant/70 hover:text-primary transition-all duration-200" href="#">Progress</a>
+<a class="font-label-bold text-label-bold text-on-surface-variant/70 hover:text-primary transition-all duration-200" href="#">Settings</a>
+</nav>
+</header>
+<main class="max-w-7xl mx-auto px-container-margin flex flex-col gap-xl">
+<!-- Hero Banner: Match Day -->
+<section class="mt-lg relative rounded-xl overflow-hidden glass-card aspect-[21/9] flex items-end p-lg">
+<img class="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-screen" data-alt="A futuristic, high-tech sports stadium interior at night. Glowing cyan and white neon lines trace the architecture of the stands and the pitch. The atmosphere is electric and high-energy, resembling a cyberpunk esports arena. Volumetric lighting cuts through a slight atmospheric haze, illuminating the dark graphite and navy structures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyN2tpBRB3G7krHMLBiCubaY1hTuYT0VzZawoUegi2WKNGXaoapiGQymg-wdkXbCU3Y9MOB-3cVlPyiCuh7ZaN0EiMnetsiInpG6naTvD6U-fxTXGND7W2BaBelYs6qG6B6PeSrSlhzxmx6d5A6JyExgkkJ5aw-l2z-89hJcsW12A1rUQcnOLAGUUFtJriZBk7T9emFxfDIlUMUVXRwdNh8oE1S--P9kZroT2vapuRcyHwgEXzpLArrXg5XRfUOAmtCkYAGDNNqAl8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
+<div class="relative z-10 w-full">
+<div class="flex items-center gap-sm mb-sm">
+<span class="bg-secondary-container/20 text-secondary border border-secondary/50 px-3 py-1 rounded-full font-label-bold text-xs uppercase tracking-wider">Unit 4</span>
+<span class="text-on-surface-variant font-label-bold text-sm">Sports Commentary</span>
+</div>
+<h2 class="font-display-hero text-display-hero text-white text-glow-cyan mb-md leading-tight">TACTICAL<br/>PHRASING</h2>
+<div class="flex gap-md">
+<button class="neon-slab-button font-label-bold px-6 py-3 rounded-lg flex items-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+                        Start Lesson
+                    </button>
+</div>
+</div>
+</section>
+<!-- Stats & Leveling HUD -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-md">
+<div class="glass-card rounded-xl p-md flex flex-col gap-sm">
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="font-label-bold">Fluency Level</span>
+<span class="material-symbols-outlined text-secondary">trending_up</span>
+</div>
+<div class="font-headline-lg text-headline-lg text-white">B2 Upper</div>
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden mt-2 relative">
+<div class="h-full progress-gradient w-[75%] rounded-full relative">
+<div class="absolute right-0 top-0 bottom-0 w-4 bg-white opacity-50 blur-[2px]"></div>
+</div>
+</div>
+</div>
+<div class="glass-card rounded-xl p-md flex flex-col gap-sm">
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="font-label-bold">Study Streak</span>
+<span class="material-symbols-outlined text-primary">local_fire_department</span>
+</div>
+<div class="font-headline-lg text-headline-lg text-white">12 <span class="text-body-md text-on-surface-variant">Days</span></div>
+</div>
+<div class="glass-card rounded-xl p-md flex flex-col gap-sm">
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="font-label-bold">Vocab Score</span>
+<span class="material-symbols-outlined text-tertiary">sort_by_alpha</span>
+</div>
+<div class="font-headline-lg text-headline-lg text-white">8,450</div>
+</div>
+<div class="glass-card rounded-xl p-md flex flex-col gap-sm">
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="font-label-bold">Course Module</span>
+<span class="material-symbols-outlined text-secondary-fixed">school</span>
+</div>
+<div class="font-headline-lg text-headline-lg text-white text-glow-cyan text-secondary-fixed">Sports Lingo</div>
+</div>
+</section>
+<!-- Training Modules Grid (Bento) -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- Reading Panel -->
+<div class="glass-card rounded-xl p-lg md:col-span-3 relative overflow-hidden border border-outline-variant/30 flex flex-col lg:flex-row gap-lg">
+<div class="w-full lg:w-1/3 flex flex-col justify-center">
+<div class="flex gap-2 mb-md">
+<span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-full font-label-bold text-xs">Reading Analysis</span>
+<span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-full font-label-bold text-xs">News</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-white mb-sm">Match Report: The Final Whistle</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Analyze the post-match summary. Focus on past continuous tenses describing the ongoing action, and past perfect for events that happened before the winning goal.</p>
+<button class="bg-transparent border border-secondary text-secondary font-label-bold px-4 py-2 rounded-lg hover:bg-secondary/10 transition-colors self-start">Analyze Text</button>
+</div>
+<div class="w-full lg:w-2/3 transcript-panel rounded-lg p-md font-body-md text-on-surface leading-relaxed">
+<p class="mb-4"><span class="text-secondary font-bold">REPORTER:</span> It was an electrifying night at the Neon Stadium. The Strikers <strong class="text-primary-fixed">were dominating</strong> possession for the first 60 minutes, pushing the defenders to their absolute limits.</p>
+<p class="mb-4">By the time Martinez found the back of the net in the 88th minute, the opposing team <strong class="text-primary-fixed">had already exhausted</strong> their substitutions, trying desperately to hold the line.</p>
+<p class="mb-4">"We <strong class="text-primary-fixed">had been practicing</strong> that exact set-piece all week," the captain stated in the post-match press conference. "We knew their defense <strong class="text-primary-fixed">was struggling</strong> with high crosses."</p>
+<p>The victory secures their place in the finals next month, a stunning turnaround for a squad that <strong class="text-primary-fixed">had started</strong> the season at the bottom of the league.</p>
+</div>
+</div>
+<!-- Equipment Names -->
+<div class="glass-card rounded-xl p-lg md:col-span-2 relative overflow-hidden group cursor-pointer border border-outline-variant/30 hover:border-secondary/50 transition-colors">
+<div class="absolute right-0 top-0 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[120px]">sports_soccer</span>
+</div>
+<div class="relative z-10 flex flex-col h-full justify-between">
+<div>
+<div class="flex gap-2 mb-md">
+<span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-full font-label-bold text-xs">Vocabulary</span>
+<span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-full font-label-bold text-xs">Idioms</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-white mb-sm">Drop the Ball</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">Learn common English idioms derived from sports that are used in everyday conversation and business.</p>
+</div>
+<div class="mt-xl flex items-center justify-between">
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border border-surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA06SDpq-vQGl6drzePfbM7LeFqu-9twUpZbgNYEbWiaNMwkjRAF1gnlMR9O4gLgwRLYDm4gV-fcdgR_JvgoFccx3iR7S4QoeywapuzuIKIfDFQuOB24WerZfFvGh2KeKoPyS_BAbDa0s_B6sShIxSI4AlEEkI8kNIVjHt8_DZ7E948iRop_ZFaaPy06VLIl5deNdyYjdhGy9wmd6BfqGQMK4xJL_oYCjwcmd4hfk1XzKqpv7Lm2EH5quWrk-A3yNbS1SIfRuZVxFw8"/>
+<img class="w-8 h-8 rounded-full border border-surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxp6T6v0XngDqO4l4IlCPG7bui9LbuWPYRqfnBAVHOtATb_LSTl9JzTTPciDw_EEPendUIxj7KGZ7ApUEAZFp2kVQzcZ5s4kwnmRXqUeCkRJ8fzWQas0WQVsbAiNe6gdFa6YI8SbL6qBI3P9hao6wDuSBrxbruPXsAGg50zr0sKU0RnVFjqgbcHMBm8lZDyNGMjX-VRJFCWeDBXyQNCc0zGVbYIrc1kX3m25RWWR3xOnbJNTfCT5Z7Iv5wM8zLyQ8JmCd3fLdOAt58"/>
+<div class="w-8 h-8 rounded-full border border-surface bg-surface-container-highest flex items-center justify-center text-xs font-label-bold text-on-surface-variant">+4</div>
+</div>
+<button class="w-10 h-10 rounded-full border border-secondary text-secondary flex items-center justify-center group-hover:bg-secondary/10 transition-colors">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Rulebooks -->
+<div class="glass-card rounded-xl p-lg relative overflow-hidden group cursor-pointer border border-outline-variant/30 hover:border-primary/50 transition-colors flex flex-col justify-between">
+<div>
+<div class="flex gap-2 mb-md">
+<span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-full font-label-bold text-xs">Grammar</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-white mb-sm">The Playbook</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Study the structural rules of the language. Conditionals, tenses, and tactical phrasing.</p>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden mt-lg relative">
+<div class="h-full bg-primary w-[40%] rounded-full relative"></div>
+</div>
+<div class="mt-2 text-right font-label-bold text-xs text-primary">40% Complete</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container/80 dark:bg-surface-container/80 backdrop-blur-xl shadow-[0_-4px_24px_rgba(0,0,0,0.6)]">
+<div class="flex justify-around items-center w-full px-4 pb-4 pt-2 border-t border-outline-variant/20">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-bold text-[10px] mt-1">Syllabus</span>
+</a>
+<!-- Active State -->
+<a class="flex flex-col items-center justify-center bg-primary-container/20 text-primary dark:text-primary-fixed-dim rounded-xl px-4 py-2 ring-1 ring-primary/40 shadow-[0_0_12px_rgba(255,179,174,0.3)] active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">stadium</span>
+<span class="font-label-bold text-[10px] mt-1">Classroom</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">person_filled</span>
+<span class="font-label-bold text-[10px] mt-1">Progress</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-bold text-[10px] mt-1">Settings</span>
+</a>
+</div>
+</nav>
+</body></html>

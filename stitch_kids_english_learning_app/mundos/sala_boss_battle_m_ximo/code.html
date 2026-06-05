@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mastery Review - Cyber-Linguist</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Source+Sans+3:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#ffb3ae",
+                    "surface": "#101417",
+                    "on-primary-fixed": "#410004",
+                    "inverse-primary": "#bb1522",
+                    "secondary": "#d3fbff",
+                    "surface-bright": "#363a3d",
+                    "primary-fixed-dim": "#ffb3ae",
+                    "error": "#ffb4ab",
+                    "on-secondary-fixed": "#002022",
+                    "tertiary-fixed-dim": "#e5b4ff",
+                    "on-secondary-fixed-variant": "#004f54",
+                    "on-surface-variant": "#e4bdba",
+                    "tertiary-container": "#c464ff",
+                    "primary-fixed": "#ffdad7",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-fixed": "#f5d9ff",
+                    "surface-container-low": "#191c1f",
+                    "primary-container": "#ff5351",
+                    "surface-dim": "#101417",
+                    "background": "#101417",
+                    "inverse-on-surface": "#2d3134",
+                    "secondary-fixed-dim": "#00dbe9",
+                    "surface-container-highest": "#323538",
+                    "error-container": "#93000a",
+                    "secondary-container": "#00eefc",
+                    "outline": "#ab8886",
+                    "on-background": "#e0e2e6",
+                    "outline-variant": "#5b403e",
+                    "on-tertiary-fixed-variant": "#7000a7",
+                    "on-tertiary-fixed": "#30004b",
+                    "on-secondary-container": "#00686f",
+                    "on-surface": "#e0e2e6",
+                    "on-primary-container": "#5c0008",
+                    "on-secondary": "#00363a",
+                    "on-tertiary": "#4f0077",
+                    "on-primary-fixed-variant": "#930014",
+                    "surface-variant": "#323538",
+                    "secondary-fixed": "#7df4ff",
+                    "on-error": "#690005",
+                    "surface-container-lowest": "#0b0f11",
+                    "surface-container-high": "#272a2d",
+                    "primary": "#ffb3ae",
+                    "on-primary": "#68000b",
+                    "surface-container": "#1d2023",
+                    "tertiary": "#e5b4ff",
+                    "inverse-surface": "#e0e2e6",
+                    "on-tertiary-container": "#450069"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "container-margin": "20px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "md": "16px",
+                    "xl": "32px",
+                    "unit": "4px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "body-md": [
+                            "Source Sans 3"
+                    ],
+                    "label-bold": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-lg": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-md": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "display-hero": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body-lg": [
+                            "Source Sans 3"
+                    ]
+            },
+            "fontSize": {
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-bold": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.0",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "display-hero": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "800"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0A0B1E;
+        }
+        .glass-panel {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 75, 75, 0.2);
+        }
+        .neon-text-primary {
+            text-shadow: 0 0 8px rgba(255, 75, 75, 0.6);
+        }
+        .neon-shadow-primary {
+            box-shadow: 0 0 12px rgba(255, 75, 75, 0.3);
+        }
+        .health-bar-fill {
+            background: linear-gradient(90deg, #bb1522 0%, #ff5351 100%);
+            box-shadow: 0 0 8px rgba(255, 83, 81, 0.5);
+        }
+        .mana-bar-fill {
+            background: linear-gradient(90deg, #00686f 0%, #00dbe9 100%);
+            box-shadow: 0 0 8px rgba(0, 219, 233, 0.5);
+        }
+        /* Custom scrollbar for web */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(18, 18, 18, 0.5); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 75, 75, 0.3); 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 75, 75, 0.6); 
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="text-on-surface min-h-screen flex flex-col pb-24 md:pb-0 pt-[72px]">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant/20 shadow-[0_4px_20px_rgba(0,0,0,0.5)] flex justify-between items-center px-container-margin py-sm w-full">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden border border-outline-variant/50 relative">
+<img alt="User Pilot Avatar" class="w-full h-full object-cover" data-alt="A futuristic avatar portrait of a young male gamer with glowing cybernetic eye implants. The lighting is dark and moody, illuminated by intense red and neon cyan lights reflecting off his face. The background is a blurred cyberpunk city landscape. The overall style is high-octane, electric academic, blending competitive gaming aesthetics with premium realism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmGUDI_lw3i2WIM_v69eWqO07-d8ODAeOwAPKqVqfWYelxBlnFC_FgoGm7yG3bkTle6HswvaYndluMn3vimIrc654Djaw6dIw9jbsnPGm53h8wmQ4c-yK8so3z_KSH1Vta_sWJRJrbFElQas2QKvXVX9MK0nf-mKz7Aa1qBH3oNXYwd3UKKjMoI8wNdTnT0VDEm6FFQCVsOL2qUKXTO3IfmFPjlToHvwtxFcoERN2vm0yXBaW-y-df-Of73QNNaR2jO8ef5cx4Xvob"/>
+</div>
+<h1 class="font-display-hero text-headline-md tracking-tighter text-primary dark:text-primary-fixed-dim drop-shadow-[0_0_8px_rgba(255,179,174,0.6)]">CYBER-LINGUIST</h1>
+</div>
+<!-- Web Navigation -->
+<nav class="hidden md:flex gap-lg items-center">
+<a class="font-label-bold text-label-bold flex items-center gap-xs text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/50 transition-colors duration-300 px-4 py-2 rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">map</span>
+                Map
+            </a>
+<a class="font-label-bold text-label-bold flex items-center gap-xs text-primary dark:text-primary-fixed-dim bg-primary-container/20 rounded-lg px-4 py-2 ring-1 ring-primary/40 shadow-[0_0_12px_rgba(255,179,174,0.3)]" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">swords</span>
+                Mastery
+            </a>
+<a class="font-label-bold text-label-bold flex items-center gap-xs text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/50 transition-colors duration-300 px-4 py-2 rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">person</span>
+                Profile
+            </a>
+<a class="font-label-bold text-label-bold flex items-center gap-xs text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/50 transition-colors duration-300 px-4 py-2 rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+                Settings
+            </a>
+</nav>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-primary dark:text-primary-fixed-dim hover:bg-surface-variant/50 transition-colors duration-300 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</button>
+</header>
+<main class="flex-grow px-container-margin py-lg max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Left Column: Arena Status & Player HUD -->
+<div class="lg:col-span-4 flex flex-col gap-lg">
+<!-- Player HUD -->
+<div class="glass-panel rounded-xl p-lg flex flex-col gap-md relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-[32px] neon-text-primary" style="font-variation-settings: 'FILL' 1;">shield_person</span>
+<h2 class="font-headline-md text-headline-md text-on-surface uppercase tracking-wider">Máximo [LVL 42]</h2>
+</div>
+<div class="flex flex-col gap-sm">
+<div class="flex justify-between font-label-bold text-label-bold text-on-surface-variant">
+<span>HP (Study Energy)</span>
+<span class="text-primary">850/1000</span>
+</div>
+<div class="h-4 bg-surface-container-highest rounded-full overflow-hidden border border-outline-variant/30">
+<div class="h-full health-bar-fill w-[85%] relative">
+<div class="absolute right-0 top-0 bottom-0 w-4 bg-white/50 blur-[2px]"></div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-sm">
+<div class="flex justify-between font-label-bold text-label-bold text-on-surface-variant">
+<span>MANA (Focus)</span>
+<span class="text-secondary-container">320/500</span>
+</div>
+<div class="h-4 bg-surface-container-highest rounded-full overflow-hidden border border-outline-variant/30">
+<div class="h-full mana-bar-fill w-[64%] relative">
+<div class="absolute right-0 top-0 bottom-0 w-4 bg-white/50 blur-[2px]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Current Boss -->
+<div class="glass-panel rounded-xl p-0 flex flex-col overflow-hidden relative border border-error-container/50">
+<div class="h-48 relative w-full">
+<img alt="Linguistic Challenge" class="w-full h-full object-cover mix-blend-luminosity opacity-80" data-alt="A colossal, terrifying cybernetic dragon boss creature hovering in a dark, neon-lit digital wasteland. The dragon is composed of angular, glitching polygons emitting intense crimson and deep purple light. Sparks of electricity arc across its metallic scales. The overall visual style is a high-octane, dark cyberpunk aesthetic, heavily influenced by modern boss-battle gaming HUDs with strong contrasting shadows and luminous glowing elements." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaU-Lrtd03LCw6UjsmXsf3RjSCcVYXub15mL89m57zgUW8Vv0wYovPAToGyw5QHyIu3nVQMeeM1s1HDQD4SSftTfTSeb0wDyf6lVeR_4A3ORzmQgJYb5upGvG2jQCdtYhPDw7nd6eUyAnSj04Z7fiTopZXYgOakMpqTJK1RsHNmYjcWnDBOG7IwoT_G8kvj_knYl5fZ5YJqA1Uc3q5bIHSnqBwyj2IlgPjRkcUdOFpGe0VQnG2MUYiftvoOSW6AOmeCmWKr-_WAVmQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+<div>
+<span class="inline-block px-2 py-1 rounded-full bg-error-container/80 text-on-error-container font-label-bold text-[10px] uppercase tracking-widest border border-error/30 mb-1">Mastery Challenge</span>
+<h3 class="font-headline-lg text-headline-lg text-error neon-text-primary">El Subjuntivo</h3>
+</div>
+<span class="material-symbols-outlined text-error text-[40px] drop-shadow-[0_0_10px_rgba(255,180,171,0.8)]" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+</div>
+<div class="p-md flex flex-col gap-sm bg-surface/50">
+<div class="flex justify-between font-label-bold text-label-bold text-error">
+<span>Challenge Progress</span>
+<span>45%</span>
+</div>
+<div class="h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error w-[45%] shadow-[0_0_8px_rgba(255,180,171,0.5)]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Spells & Skill Tree -->
+<div class="lg:col-span-8 flex flex-col gap-lg">
+<!-- Language Spells (Actions) -->
+<div class="glass-panel rounded-xl p-lg flex flex-col gap-md">
+<div class="flex justify-between items-center border-b border-outline-variant/20 pb-sm">
+<h2 class="font-headline-md text-headline-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-tertiary-container">auto_awesome</span>
+                        Mastery Drills
+                    </h2>
+<span class="font-label-bold text-label-bold text-on-surface-variant">Select Drill</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Spell 1 -->
+<button class="relative group overflow-hidden rounded-xl bg-surface-container-low border border-primary/20 hover:border-primary/60 transition-all duration-300 p-md flex flex-col gap-sm text-left hover:-translate-y-1 hover:shadow-[0_4px_20px_rgba(255,75,75,0.2)]">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-start w-full relative z-10">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">translate</span>
+</div>
+<h4 class="font-label-bold text-body-lg text-primary">Sentence Constructor</h4>
+</div>
+<span class="font-label-bold text-label-bold text-secondary-container bg-secondary-container/10 px-2 py-1 rounded border border-secondary-container/30">-15 Mana</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant relative z-10">Assemble multi-clause sentences using complex connectors.</p>
+</button>
+<!-- Spell 2 -->
+<button class="relative group overflow-hidden rounded-xl bg-surface-container-low border border-tertiary/20 hover:border-tertiary/60 transition-all duration-300 p-md flex flex-col gap-sm text-left hover:-translate-y-1 hover:shadow-[0_4px_20px_rgba(229,180,255,0.2)]">
+<div class="absolute inset-0 bg-gradient-to-br from-tertiary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-start w-full relative z-10">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-tertiary/20 flex items-center justify-center text-tertiary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">history_edu</span>
+</div>
+<h4 class="font-label-bold text-body-lg text-tertiary">Paragraph Analysis</h4>
+</div>
+<span class="font-label-bold text-label-bold text-secondary-container bg-secondary-container/10 px-2 py-1 rounded border border-secondary-container/30">-40 Mana</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant relative z-10">Analyze and correct advanced past subjunctive paragraph structures.</p>
+</button>
+<!-- Spell 3 (Locked) -->
+<button class="relative overflow-hidden rounded-xl bg-surface-container-lowest border border-outline-variant/30 p-md flex flex-col gap-sm text-left opacity-60 cursor-not-allowed">
+<div class="flex justify-between items-start w-full">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">lock</span>
+</div>
+<h4 class="font-label-bold text-body-lg text-on-surface-variant">Contextual Translation</h4>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface-variant bg-surface-variant/50 px-2 py-1 rounded">Lvl 45 Req</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant/70">Integrate regional colloquialisms into formal business contexts.</p>
+</button>
+</div>
+</div>
+<!-- Skill Tree Preview -->
+<div class="glass-panel rounded-xl p-lg flex flex-col gap-md">
+<div class="flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary">account_tree</span>
+                        Linguistic Tree
+                    </h2>
+<a class="font-label-bold text-label-bold text-secondary hover:text-secondary-fixed transition-colors" href="#">View Full Path →</a>
+</div>
+<div class="relative w-full h-48 bg-surface-container-lowest rounded-lg border border-outline-variant/20 p-md flex items-center justify-center overflow-hidden">
+<!-- Tree Background Lines -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" style="stroke: rgba(91, 64, 62, 0.5); stroke-width: 2;">
+<line stroke-dasharray="4" x1="20%" x2="50%" y1="50%" y2="50%"></line>
+<line stroke-dasharray="4" x1="50%" x2="80%" y1="50%" y2="25%"></line>
+<line stroke-dasharray="4" x1="50%" x2="80%" y1="50%" y2="75%"></line>
+</svg>
+<!-- Nodes -->
+<div class="absolute left-[20%] transform -translate-x-1/2 flex flex-col items-center gap-2 z-10">
+<div class="w-12 h-12 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center text-primary neon-shadow-primary">
+<span class="material-symbols-outlined">check</span>
+</div>
+<span class="font-label-bold text-[10px] text-on-surface-variant uppercase tracking-wider">Present Tense</span>
+</div>
+<div class="absolute left-[50%] transform -translate-x-1/2 flex flex-col items-center gap-2 z-10 animate-pulse">
+<div class="w-16 h-16 rounded-full bg-secondary/10 border-2 border-secondary flex items-center justify-center text-secondary shadow-[0_0_15px_rgba(211,251,255,0.4)]">
+<span class="material-symbols-outlined text-2xl">pending</span>
+</div>
+<span class="font-label-bold text-[12px] text-secondary uppercase tracking-wider neon-text-primary" style="text-shadow: 0 0 5px rgba(211,251,255,0.5);">Subjunctive (Active)</span>
+</div>
+<div class="absolute left-[80%] top-[25%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2 z-10">
+<div class="w-12 h-12 rounded-full bg-surface-variant border-2 border-outline-variant flex items-center justify-center text-on-surface-variant opacity-50">
+<span class="material-symbols-outlined">lock</span>
+</div>
+<span class="font-label-bold text-[10px] text-on-surface-variant uppercase tracking-wider">Conditional</span>
+</div>
+<div class="absolute left-[80%] top-[75%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2 z-10">
+<div class="w-12 h-12 rounded-full bg-surface-variant border-2 border-outline-variant flex items-center justify-center text-on-surface-variant opacity-50">
+<span class="material-symbols-outlined">lock</span>
+</div>
+<span class="font-label-bold text-[10px] text-on-surface-variant uppercase tracking-wider">Future Perf.</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container/80 dark:bg-surface-container/80 backdrop-blur-xl shadow-[0_-4px_24px_rgba(0,0,0,0.6)] flex justify-around items-center px-4 pb-4 pt-2">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">map</span>
+<span class="font-label-bold text-label-bold mt-1">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container/20 text-primary dark:text-primary-fixed-dim rounded-xl px-4 py-2 ring-1 ring-primary/40 shadow-[0_0_12px_rgba(255,179,174,0.3)] hover:text-primary transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">swords</span>
+<span class="font-label-bold text-label-bold mt-1">Mastery</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person_filled</span>
+<span class="font-label-bold text-label-bold mt-1">Profile</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+<span class="font-label-bold text-label-bold mt-1">Settings</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,35 @@
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# Env
+.env
+.env.local
+.env*.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Supabase
+supabase/.branches
+supabase/.temp
+
+# Backup files (no committearlos)
+respaldo/
+*respaldo*.txt
+"main (3).py"
+"requirements.txt.txt"
+
+# Personal family context (NEVER commit)
+family-data.json

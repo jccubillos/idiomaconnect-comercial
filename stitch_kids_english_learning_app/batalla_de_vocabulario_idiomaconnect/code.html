@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cyber-Linguist: Vocabulary Battle</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#272a2d",
+                    "surface-tint": "#ffb3ae",
+                    "tertiary-fixed-dim": "#e5b4ff",
+                    "surface-bright": "#363a3d",
+                    "outline-variant": "#5b403e",
+                    "inverse-primary": "#bb1522",
+                    "on-surface-variant": "#e4bdba",
+                    "surface-dim": "#101417",
+                    "on-secondary-fixed": "#002022",
+                    "surface": "#101417",
+                    "on-tertiary-fixed-variant": "#7000a7",
+                    "on-primary-container": "#5c0008",
+                    "inverse-surface": "#e0e2e6",
+                    "secondary": "#d3fbff",
+                    "on-primary": "#68000b",
+                    "error": "#ffb4ab",
+                    "primary": "#ffb3ae",
+                    "on-tertiary-container": "#450069",
+                    "surface-variant": "#323538",
+                    "surface-container": "#1d2023",
+                    "primary-fixed": "#ffdad7",
+                    "on-secondary-fixed-variant": "#004f54",
+                    "primary-fixed-dim": "#ffb3ae",
+                    "on-primary-fixed-variant": "#930014",
+                    "surface-container-lowest": "#0b0f11",
+                    "tertiary-fixed": "#f5d9ff",
+                    "on-error": "#690005",
+                    "error-container": "#93000a",
+                    "secondary-fixed-dim": "#00dbe9",
+                    "on-tertiary-fixed": "#30004b",
+                    "secondary-fixed": "#7df4ff",
+                    "surface-container-highest": "#323538",
+                    "on-background": "#e0e2e6",
+                    "on-surface": "#e0e2e6",
+                    "tertiary-container": "#c464ff",
+                    "secondary-container": "#00eefc",
+                    "primary-container": "#ff5351",
+                    "inverse-on-surface": "#2d3134",
+                    "on-primary-fixed": "#410004",
+                    "tertiary": "#e5b4ff",
+                    "on-secondary": "#00363a",
+                    "on-secondary-container": "#00686f",
+                    "surface-container-low": "#191c1f",
+                    "outline": "#ab8886",
+                    "background": "#101417",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary": "#4f0077"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "container-margin": "20px",
+                    "xs": "4px",
+                    "unit": "4px",
+                    "md": "16px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "display-hero": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body-md": [
+                            "Source Sans 3"
+                    ],
+                    "headline-lg": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body-lg": [
+                            "Source Sans 3"
+                    ],
+                    "label-bold": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-md": [
+                            "Plus Jakarta Sans"
+                    ]
+            },
+            "fontSize": {
+                    "display-hero": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "800"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-bold": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.0",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "700"
+                            }
+                    ]
+            }
+          }
+        }
+      }
+    </script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Source+Sans+3:wght@400&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant/20 shadow-[0_4px_20px_rgba(0,0,0,0.5)] fixed top-0 w-full z-50 flex justify-between items-center px-container-margin py-sm w-full">
+<div class="flex items-center gap-sm">
+<img alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-secondary object-cover shadow-[0_0_8px_theme(colors.secondary)]" data-alt="A slick, stylized cyberpunk avatar of a futuristic hacker-student. The character wears a glowing neon cyan visor and a sleek dark jacket with luminescent circuitry patterns. The background is a moody, midnight navy environment with subtle bokeh effects from glowing interface elements, matching the premium electric academic visual style. High quality, digital art." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIOdPan_zjROQL-0RjO4wgRdZUD7RfQXODK4fLF7T-fHSEo90p-Bk6J3fiUZVGRO0Z9Ker68gWVkk5Uog6KFGqvO5khbhsSROG59ugh8Bl6i2z2SKjWrPE2fsmErPzZ-4xlvaq4AdLpvD_ekZrT-QMw02E4CfdQxfzP9pX8WOGey5T2dpihcZfg8wLg_BIMwvG3l7wOOTh5-Rh_iMdLbyuXz7rnlXDN-71jqfqj-dHJQsZSBK3CvvUC11ozvJ56N66AuoNh4wLmZut"/>
+</div>
+<h1 class="font-display-hero text-headline-md tracking-tighter text-primary dark:text-primary-fixed-dim drop-shadow-[0_0_8px_rgba(255,179,174,0.6)]">
+            CYBER-LINGUIST
+        </h1>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-primary dark:text-primary-fixed-dim hover:bg-surface-variant/50 transition-colors duration-300 active:scale-95 transition-transform" data-icon="bolt">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-[80px] pb-[100px] px-container-margin flex flex-col md:max-w-2xl md:mx-auto w-full">
+<!-- Battle HUD: Health Bars -->
+<section class="flex justify-between items-center w-full mb-xl mt-md">
+<!-- Player Status -->
+<div class="flex flex-col gap-xs w-[45%]">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-secondary text-sm">shield</span>
+<span class="font-label-bold text-label-bold text-secondary tracking-widest uppercase">Student</span>
+</div>
+<div class="h-4 w-full bg-surface-container rounded-full overflow-hidden border border-secondary/20 shadow-inner">
+<div class="h-full bg-gradient-to-r from-secondary-container to-secondary w-[85%] rounded-full shadow-[4px_0_12px_theme(colors.secondary)] relative">
+<div class="absolute right-0 top-0 bottom-0 w-4 bg-white/50 blur-[2px]"></div>
+</div>
+</div>
+</div>
+<!-- VS Badge -->
+<div class="flex-shrink-0 mx-sm animate-pulse">
+<span class="font-headline-md text-headline-md text-surface-tint drop-shadow-[0_0_8px_theme(colors.surface-tint)]">VS</span>
+</div>
+<!-- Virus Status -->
+<div class="flex flex-col gap-xs w-[45%] items-end">
+<div class="flex items-center gap-xs flex-row-reverse">
+<span class="material-symbols-outlined text-primary text-sm">bug_report</span>
+<span class="font-label-bold text-label-bold text-primary tracking-widest uppercase">Syntax Virus</span>
+</div>
+<div class="h-4 w-full bg-surface-container rounded-full overflow-hidden border border-primary/20 shadow-inner flex justify-end">
+<div class="h-full bg-gradient-to-l from-primary-container to-primary w-[60%] rounded-full shadow-[-4px_0_12px_theme(colors.primary)] relative">
+<div class="absolute left-0 top-0 bottom-0 w-4 bg-white/50 blur-[2px]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- The Arena: Target & Enemy -->
+<section class="relative bg-surface/80 backdrop-blur-[20px] rounded-xl border border-primary/20 shadow-[0_8px_32px_rgba(0,0,0,0.5)] p-lg flex flex-col items-center justify-center min-h-[250px] mb-xl overflow-hidden group">
+<!-- Atmospheric Background Glow -->
+<div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none"></div>
+<!-- Enemy Visual -->
+<div class="relative w-32 h-32 mb-lg rounded-full border-2 border-primary border-dashed p-1 animate-[spin_10s_linear_infinite]">
+<img alt="Virus Entity" class="w-full h-full rounded-full object-cover animate-[spin_10s_linear_infinite_reverse]" data-alt="A menacing, abstract digital virus entity floating in a dark, cyberpunk digital arena. The virus is composed of jagged, glowing red polygons and corrupted code fragments, radiating a hostile, neon-crimson aura. The background is a deep midnight navy void with subtle grid lines and drifting glowing particles, embodying an electric, high-stakes gamified learning environment. High contrast, neon glow, cybernetic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4CNfarcRpwocCqRptXYUkvxj053Ne0oP0Mz4uIBqwW1gVqDUnEQR-pdvuHx-TOegJPudZyG_gJkzR601eZuBRt625JvGndz7msXM7KQlR_Xhm7AIP4b2c3L2ciWvbpLts7PIgrTAGaXlRGO5jQdx-hMHTlQoHZWPHixWWbY7awFXstSye1EoqxBL-gIqdi350FkzwKjthFdxDBzh9qdPvyzFv-gmCcYqfLkKE3LbK0BayhLwrNqGO8Bwuc937rpYR2rUbBX0-1Q_0"/>
+<!-- Inner glow ring -->
+<div class="absolute inset-0 rounded-full shadow-[inset_0_0_20px_theme(colors.primary)] mix-blend-overlay"></div>
+</div>
+<!-- Target Word -->
+<div class="z-10 text-center flex flex-col items-center gap-sm">
+<span class="font-label-bold text-label-bold text-on-surface-variant tracking-widest uppercase bg-surface-container/50 px-3 py-1 rounded-full border border-outline-variant/30 backdrop-blur-sm">Decode</span>
+<h2 class="font-display-hero text-display-hero text-primary drop-shadow-[0_0_15px_rgba(255,75,75,0.8)]">
+                    Entrenar
+                </h2>
+</div>
+</section>
+<!-- Action Area: Options -->
+<section class="grid grid-cols-2 gap-md mt-auto">
+<!-- Option 1 -->
+<button class="relative bg-surface/40 backdrop-blur-[10px] border border-secondary/30 rounded-xl p-md flex flex-col items-center justify-center gap-sm hover:bg-secondary/10 hover:border-secondary hover:shadow-[0_0_15px_rgba(0,238,252,0.4)] transition-all duration-300 active:scale-95 group overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-tr from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="material-symbols-outlined text-secondary opacity-70 group-hover:opacity-100 transition-opacity text-[32px]">fitness_center</span>
+<span class="font-headline-md text-headline-md text-on-surface group-hover:text-secondary transition-colors">Train</span>
+</button>
+<!-- Option 2 -->
+<button class="relative bg-surface/40 backdrop-blur-[10px] border border-secondary/30 rounded-xl p-md flex flex-col items-center justify-center gap-sm hover:bg-secondary/10 hover:border-secondary hover:shadow-[0_0_15px_rgba(0,238,252,0.4)] transition-all duration-300 active:scale-95 group overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-tr from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="material-symbols-outlined text-secondary opacity-70 group-hover:opacity-100 transition-opacity text-[32px]">flight_takeoff</span>
+<span class="font-headline-md text-headline-md text-on-surface group-hover:text-secondary transition-colors">Travel</span>
+</button>
+<!-- Option 3 -->
+<button class="relative bg-surface/40 backdrop-blur-[10px] border border-secondary/30 rounded-xl p-md flex flex-col items-center justify-center gap-sm hover:bg-secondary/10 hover:border-secondary hover:shadow-[0_0_15px_rgba(0,238,252,0.4)] transition-all duration-300 active:scale-95 group overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-tr from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="material-symbols-outlined text-secondary opacity-70 group-hover:opacity-100 transition-opacity text-[32px]">forum</span>
+<span class="font-headline-md text-headline-md text-on-surface group-hover:text-secondary transition-colors">Talk</span>
+</button>
+<!-- Option 4 -->
+<button class="relative bg-surface/40 backdrop-blur-[10px] border border-secondary/30 rounded-xl p-md flex flex-col items-center justify-center gap-sm hover:bg-secondary/10 hover:border-secondary hover:shadow-[0_0_15px_rgba(0,238,252,0.4)] transition-all duration-300 active:scale-95 group overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-tr from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="material-symbols-outlined text-secondary opacity-70 group-hover:opacity-100 transition-opacity text-[32px]">touch_app</span>
+<span class="font-headline-md text-headline-md text-on-surface group-hover:text-secondary transition-colors">Try</span>
+</button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface-container/80 dark:bg-surface-container/80 backdrop-blur-xl border-t border-outline-variant/20 shadow-[0_-4px_24px_rgba(0,0,0,0.6)] fixed bottom-0 w-full z-50 rounded-t-xl flex justify-around items-center px-4 pb-4 pt-2 md:hidden">
+<!-- Inactive: Map -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90" data-icon="map" href="#">
+<span class="material-symbols-outlined mb-1">map</span>
+<span class="font-label-bold text-label-bold">Map</span>
+</a>
+<!-- Active: Arena -->
+<a class="flex flex-col items-center justify-center bg-primary-container/20 text-primary dark:text-primary-fixed-dim rounded-xl px-4 py-2 ring-1 ring-primary/40 shadow-[0_0_12px_rgba(255,179,174,0.3)] hover:text-primary transition-all duration-200 active:scale-90 transition-transform duration-150" data-icon="swords" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">swords</span>
+<span class="font-label-bold text-label-bold">Arena</span>
+</a>
+<!-- Inactive: Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90" data-icon="person_filled" href="#">
+<span class="material-symbols-outlined mb-1">person_filled</span>
+<span class="font-label-bold text-label-bold">Profile</span>
+</a>
+<!-- Inactive: Settings -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-surface-variant/70 px-4 py-2 hover:text-primary transition-all duration-200 active:scale-90" data-icon="settings" href="#">
+<span class="material-symbols-outlined mb-1">settings</span>
+<span class="font-label-bold text-label-bold">Settings</span>
+</a>
+</nav>
+</body></html>

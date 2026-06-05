@@ -1,0 +1,8 @@
+streamlit
+groq
+gspread
+oauth2client
+audio-recorder-streamlit
+edge-tts
+tzdata
+phonemizer
