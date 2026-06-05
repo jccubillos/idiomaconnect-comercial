@@ -143,7 +143,9 @@ export function buildPersonalWorld(input: {
     key: "personal",
     emoji: input.emoji,
     name: `Mundo de ${input.kidName}`,
-    tagline: hobbies || "Tu mundo personal",
+    // Subtítulo genérico: NUNCA exponer en pantalla el contexto familiar/hobbies
+    // (papás, hermanos, dónde vive, etc.). Ese contexto solo alimenta el prompt de la IA.
+    tagline: "Aventuras de inglés hechas para ti",
     intro: "Tu mundo personal te espera. Cada misión está tejida con lo que te apasiona.",
     accent: input.color,
     topic,

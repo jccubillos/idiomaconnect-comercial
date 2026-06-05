@@ -116,6 +116,22 @@ export default async function WorldsPage({ searchParams }: PageProps) {
           <div className="text-xs text-ink-dim mt-1.5">{cefr.nextLabel}</div>
         </GlassCard>
 
+        {/* Acceso al examen diagnóstico — mide y ajusta el nivel real */}
+        <Link href={`/exam?kid=${kid.id}`}>
+          <GlassCard className="mb-6 p-4 flex items-center justify-between border border-neon-purple/30 hover:border-neon-purple/60 transition-colors">
+            <div className="flex items-center gap-3">
+              <div className="text-3xl">🎓</div>
+              <div>
+                <div className="font-bold text-sm">Mide tu nivel de inglés</div>
+                <div className="text-xs text-ink-dim">
+                  Test rápido (2-3 min) que ajusta las lecciones a tu nivel real
+                </div>
+              </div>
+            </div>
+            <span className="text-neon-purple text-sm font-bold whitespace-nowrap">Empezar →</span>
+          </GlassCard>
+        </Link>
+
         <div className="flex flex-col gap-4">
           {/* Personal world — always first, always unlocked */}
           <WorldCard
