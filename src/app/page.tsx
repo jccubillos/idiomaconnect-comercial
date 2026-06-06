@@ -23,7 +23,7 @@ export default async function HomePage() {
         </h1>
         <p className="text-lg md:text-xl text-ink-dim max-w-2xl mx-auto mb-8 text-balance">
           La única app que menciona a tus hijos por nombre, usa a sus mascotas en los ejemplos
-          y se adapta a sus hobbies reales. Para chicos de 8 a 14 años.
+          y se adapta a sus hobbies reales. Para chicos y adolescentes de 8 a 16 años.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
@@ -166,7 +166,7 @@ export default async function HomePage() {
       <section className="px-5 py-16 max-w-3xl mx-auto">
         <h2 className="text-2xl font-extrabold text-center mb-8">Preguntas frecuentes</h2>
         <div className="space-y-3">
-          <Faq q="¿Para qué edades es?" a="Diseñada para chicos de 8 a 14 años. El contenido se adapta automáticamente al nivel CEFR (A1 a C2)." />
+          <Faq q="¿Para qué edades es?" a="Diseñada para chicos y adolescentes de 8 a 16 años. El contenido se adapta automáticamente al nivel CEFR (A1 a C2)." />
           <Faq q="¿Mis datos están seguros?" a="Sí. El audio nunca se almacena (solo se transcribe en tiempo real). Los nombres de la familia están cifrados. Tienes derecho de exportación y borrado en un click." />
           <Faq q="¿Funciona en celular?" a="Sí. Es una PWA: la instalas en el celular como una app nativa y funciona en iOS y Android sin pasar por la tienda." />
           <Faq q="¿Qué pasa si cancelo?" a="Pierdes el acceso pero tus datos quedan 30 días por si decides volver. Después se borran automáticamente." />
