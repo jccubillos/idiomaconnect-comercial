@@ -60,11 +60,11 @@ export function computeStats(sessions: LessonSessionRow[]): KidStats {
   };
 }
 
-export function computeStreakDays(sessions: LessonSessionRow[]): number {
+export function computeStreakDays(sessions: LessonSessionRow[], now: Date = new Date()): number {
   if (!sessions.length) return 0;
   const days = new Set(sessions.map((s) => s.created_at.slice(0, 10)));
   let streak = 0;
-  const today = new Date();
+  const today = now;
   for (let i = 0; i < 365; i++) {
     const d = new Date(today);
     d.setUTCDate(d.getUTCDate() - i);

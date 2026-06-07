@@ -1,5 +1,7 @@
 "use client";
 
+import { LumiCelebration } from "@/components/coach/LumiCelebration";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -85,7 +87,7 @@ export function TranslateInverseRunner({ kid }: { kid: { id: string; name: strin
     return (
       <main className="min-h-dvh flex items-center justify-center px-5 py-12">
         <GlassCard strong glowColor={avg >= 70 ? "green" : "cyan"} className="p-8 max-w-md w-full text-center">
-          <div className="text-5xl mb-3">🔁</div>
+          <LumiCelebration score={avg} size={150} className="mb-3" />
           <h2 className="text-2xl font-extrabold mb-1">Promedio: {avg}%</h2>
           <p className="text-sm text-ink-dim mb-6">{items.length} oraciones traducidas</p>
           <div className="flex gap-3">

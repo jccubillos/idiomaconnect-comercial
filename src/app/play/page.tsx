@@ -6,7 +6,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { BottomNav } from "@/components/ui/BottomNav";
 import { UNLOCKED_MODES, MODES, type LessonMode, type ModeMeta } from "@/lib/content/modes";
 import { getUniversalWorld, buildPersonalWorld } from "@/lib/content/worlds";
-import { RECOMMENDED_MODES, WORLD_FOCUS_LABEL } from "@/lib/content/world-tracks";
+import { WORLD_MODES, WORLD_FOCUS_LABEL } from "@/lib/content/world-tracks";
 
 interface PageProps {
   searchParams: { kid?: string; world?: string };
@@ -35,11 +35,9 @@ export default async function PlayPage({ searchParams }: PageProps) {
       ? buildPersonalWorld({ kidName: kid.name, hobbies: kid.hobbies, color: kid.color_hex, emoji: kid.emoji })
       : getUniversalWorld(worldKey) ?? getUniversalWorld("vocab")!;
 
-  // Modos destacados de este mundo (van primero) + el resto.
-  const recommended = (RECOMMENDED_MODES[worldKey] ?? []) as LessonMode[];
-  const featured = recommended.map((k) => MODES[k]).filter((m) => m && m.unlocked);
-  const featuredKeys = new Set(featured.map((m) => m.key));
-  const rest = UNLOCKED_MODES.filter((m) => !featuredKeys.has(m.key));
+  // SOLO los modos de este mundo (nada más). Fallback: todos, por si el mundo no está mapeado.
+  const modeKeys = (WORLD_MODES[worldKey] ?? UNLOCKED_MODES.map((m) => m.key)) as LessonMode[];
+  const worldModes = modeKeys.map((k) => MODES[k]).filter((m) => m && m.unlocked);
 
   return (
     <>
@@ -77,27 +75,13 @@ export default async function PlayPage({ searchParams }: PageProps) {
           )}
         </div>
 
-        {/* Modos DESTACADOS para este mundo */}
-        {featured.length > 0 && (
-          <>
-            <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3">
-              ⭐ Recomendado en {world.name}
-            </div>
-            <div className="grid grid-cols-2 gap-3 mb-6">
-              {featured.map((mode) => (
-                <ModeCard key={mode.key} mode={mode} kidId={kid.id} worldKey={worldKey} accent={world.accent} featured />
-              ))}
-            </div>
-          </>
-        )}
-
-        {/* Resto de los modos */}
-        <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3">
-          {featured.length > 0 ? "Otros modos" : "¿Cómo quieres practicar hoy?"}
+        {/* SOLO los modos propios de este mundo */}
+        <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-3 text-center">
+          ◆ Elige tu modo ◆
         </div>
         <div className="grid grid-cols-2 gap-3">
-          {rest.map((mode) => (
-            <ModeCard key={mode.key} mode={mode} kidId={kid.id} worldKey={worldKey} accent={world.accent} />
+          {worldModes.map((mode) => (
+            <ModeCard key={mode.key} mode={mode} kidId={kid.id} worldKey={worldKey} accent={world.accent} featured />
           ))}
         </div>
       </main>

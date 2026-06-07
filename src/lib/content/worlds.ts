@@ -115,6 +115,24 @@ export function getUniversalWorld(key: string): UniversalWorld | undefined {
 }
 
 /**
+ * Mundo "Tema del Colegio" — el alumno indica (por voz o texto) qué está viendo en
+ * el colegio y la IA arma una lección + quiz a su medida. Es la función estrella de
+ * personalización (heredada del MVP Streamlit: "Misión Personalizada").
+ *
+ * Vive APARTE de UNIVERSAL_WORLDS porque tiene su propio flujo de entrada
+ * (/school → escribir/hablar el tema → /lesson), no el hub de modos genérico.
+ */
+export const SCHOOL_WORLD = {
+  key: "school",
+  emoji: "🎒",
+  name: "Tema del Colegio",
+  tagline: "Trae lo que estás viendo en clase",
+  intro:
+    "Dime qué estás viendo en el colegio (por voz o texto) y te armo una lección y un quiz a tu medida.",
+  accent: "#ffd23f",
+} as const;
+
+/**
  * Construye un "personal world" basado en los hobbies del kid.
  * Reemplaza la PERSONAL_WORLDS tabla hardcoded del MVP Streamlit.
  */

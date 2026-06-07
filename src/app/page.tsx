@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { LumiCharacter } from "@/components/coach/LumiCharacter";
 
 export default async function HomePage() {
   const supabase = createClient();
@@ -12,7 +13,14 @@ export default async function HomePage() {
   return (
     <main className="relative z-10">
       {/* HERO */}
-      <section className="px-5 pt-16 pb-20 max-w-4xl mx-auto text-center">
+      <section className="px-5 pt-10 pb-20 max-w-4xl mx-auto text-center">
+        {/* Lumi da la bienvenida desde la primera pantalla (presencia de marca) */}
+        <div className="flex flex-col items-center mb-7">
+          <LumiCharacter mood="greet" size={184} />
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-sm font-bold text-neon-cyan">
+            👋 ¡Hola! Soy Lumi, tu guía de inglés
+          </div>
+        </div>
         <div className="inline-block mb-5 px-3 py-1 rounded-full glass text-xs font-bold uppercase tracking-widest text-neon-cyan">
           v2 · Cyber-Linguist HUD
         </div>
@@ -176,6 +184,9 @@ export default async function HomePage() {
 
       {/* FINAL CTA */}
       <section className="px-5 py-16 max-w-3xl mx-auto text-center">
+        <div className="flex justify-center mb-6">
+          <LumiCharacter mood="celebrate" size={132} />
+        </div>
         <h2 className="text-3xl md:text-4xl font-extrabold mb-3 text-balance">
           Empieza hoy. Sin tarjeta.
         </h2>

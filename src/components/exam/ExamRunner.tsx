@@ -1,5 +1,7 @@
 "use client";
 
+import { LumiCelebration } from "@/components/coach/LumiCelebration";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -122,7 +124,7 @@ export function ExamRunner({
     return (
       <main className="min-h-dvh px-5 py-12 max-w-xl mx-auto relative z-10">
         <GlassCard strong glowColor="purple" className="p-8 text-center mb-4">
-          <div className="text-5xl mb-3">🎓</div>
+          <LumiCelebration mood="celebrate" size={120} className="mb-3" />
           <div className="text-xs uppercase tracking-widest text-ink-dim">Nivel sugerido</div>
           <div className="text-5xl font-extrabold text-neon-purple text-glow-purple my-2">{suggested}</div>
           <p className="text-sm text-ink-dim">{correctTotal} / {questions.length} correctas</p>

@@ -1,5 +1,7 @@
 "use client";
 
+import { LumiCelebration } from "@/components/coach/LumiCelebration";
+
 import { GlassCard } from "@/components/ui/GlassCard";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 
@@ -30,7 +32,7 @@ export function EvalResult({
   return (
     <div className="space-y-4">
       <GlassCard strong glowColor={avg >= 70 ? "green" : "cyan"} className="p-6 text-center">
-        <div className="text-5xl mb-2">{avg >= 85 ? "🏆" : avg >= 70 ? "⭐" : "💪"}</div>
+        <LumiCelebration score={avg} size={132} className="mb-2" />
         <div className="text-4xl font-extrabold text-neon-green mb-1">{avg}</div>
         <div className="text-xs text-ink-dim">promedio general</div>
       </GlassCard>

@@ -1,5 +1,7 @@
 "use client";
 
+import { LumiCelebration } from "@/components/coach/LumiCelebration";
+
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -168,7 +170,7 @@ export function BattleRunner({ kid, worldKey }: { kid: KidMini; worldKey: string
     return (
       <main className="min-h-dvh flex items-center justify-center px-5 py-12 relative z-10">
         <GlassCard strong glowColor={won ? "green" : "red"} className="p-8 max-w-md w-full text-center">
-          <div className="text-5xl mb-3">{won ? "🥇" : "💀"}</div>
+          <LumiCelebration mood={won ? "celebrate" : "encourage"} size={150} className="mb-3" />
           <h2 className="text-2xl font-extrabold mb-1">
             {won ? "¡Victoria!" : "El virus te ganó"}
           </h2>

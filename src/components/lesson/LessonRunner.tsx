@@ -9,6 +9,7 @@ import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Avatar } from "@/components/ui/Avatar";
 import type { LessonPayload } from "@/lib/groq/lesson";
 import { LessonMarkdown } from "./LessonMarkdown";
+import { LumiCharacter } from "@/components/coach/LumiCharacter";
 
 interface KidMini {
   id: string;
@@ -21,8 +22,20 @@ interface KidMini {
 
 type Phase = "loading" | "ready" | "quiz" | "results" | "error";
 
-export function LessonRunner({ kid, worldKey }: { kid: KidMini; worldKey: string }) {
+export function LessonRunner({
+  kid,
+  worldKey,
+  schoolTopic,
+  unitId,
+}: {
+  kid: KidMini;
+  worldKey: string;
+  schoolTopic?: string;
+  unitId?: string;
+}) {
   const router = useRouter();
+  const isSchool = worldKey === "school" && !!schoolTopic;
+  const isSendero = !!unitId;
   const [phase, setPhase] = useState<Phase>("loading");
   const [lesson, setLesson] = useState<LessonPayload | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -43,7 +56,14 @@ export function LessonRunner({ kid, worldKey }: { kid: KidMini; worldKey: string
         const res = await fetch("/api/lessons/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ kidId: kid.id, worldKey }),
+          body: JSON.stringify({
+            kidId: kid.id,
+            worldKey,
+            // Modo "Tema del Colegio": el tema escrito/hablado dirige la lección.
+            ...(isSchool ? { topicOverride: schoolTopic, schoolMode: true } : {}),
+            // Sendero: lección de la unidad específica del currículo.
+            ...(unitId ? { unitId } : {}),
+          }),
         });
         if (cancelled) return;
         if (res.status === 402) {
@@ -68,7 +88,7 @@ export function LessonRunner({ kid, worldKey }: { kid: KidMini; worldKey: string
       }
     })();
     return () => { cancelled = true; };
-  }, [kid.id, worldKey]);
+  }, [kid.id, worldKey, schoolTopic, isSchool, unitId]);
 
   async function handleGenerateAudio() {
     if (!lesson) return;
@@ -143,9 +163,13 @@ export function LessonRunner({ kid, worldKey }: { kid: KidMini; worldKey: string
     return (
       <main className="min-h-dvh flex items-center justify-center px-5 relative z-10">
         <GlassCard strong className="p-8 text-center">
-          <div className="text-4xl mb-3 animate-pulse">🧬</div>
+          <div className="text-4xl mb-3 animate-pulse">{isSchool ? "🎒" : "🧬"}</div>
           <h2 className="font-bold text-lg mb-1">Generando tu lección…</h2>
-          <p className="text-sm text-ink-dim">Tejiéndola con tu mundo y tu familia</p>
+          <p className="text-sm text-ink-dim">
+            {isSchool
+              ? `Armándola sobre: ${schoolTopic}`
+              : "Tejiéndola con tu mundo y tu familia"}
+          </p>
         </GlassCard>
       </main>
     );
@@ -171,7 +195,9 @@ export function LessonRunner({ kid, worldKey }: { kid: KidMini; worldKey: string
     return (
       <main className="min-h-dvh flex items-center justify-center px-5 py-12 relative z-10">
         <GlassCard strong glowColor={pct >= 80 ? "green" : pct >= 60 ? "cyan" : "red"} className="p-8 max-w-md w-full text-center">
-          <div className="text-5xl mb-3">{pct >= 80 ? "🏆" : pct >= 60 ? "⭐" : "💪"}</div>
+          <div className="flex justify-center mb-4">
+            <LumiCharacter mood={pct >= 60 ? "celebrate" : "encourage"} size={156} />
+          </div>
           <h2 className="text-2xl font-extrabold mb-1">
             {pct >= 80 ? "¡Excelente!" : pct >= 60 ? "¡Bien hecho!" : "Sigue practicando"}
           </h2>
@@ -184,8 +210,19 @@ export function LessonRunner({ kid, worldKey }: { kid: KidMini; worldKey: string
             <Link href={`/worlds?kid=${kid.id}`} className="flex-1">
               <NeonButton variant="ghost-cyan" className="w-full">Worlds</NeonButton>
             </Link>
-            <Link href={`/lesson?kid=${kid.id}&world=${worldKey}`} className="flex-1">
-              <NeonButton variant="primary" className="w-full">Otra lección</NeonButton>
+            <Link
+              href={
+                isSendero
+                  ? `/sendero?kid=${kid.id}`
+                  : isSchool
+                  ? `/school?kid=${kid.id}`
+                  : `/lesson?kid=${kid.id}&world=${worldKey}`
+              }
+              className="flex-1"
+            >
+              <NeonButton variant="primary" className="w-full">
+                {isSendero ? "Ver Sendero" : isSchool ? "Otro tema" : "Otra lección"}
+              </NeonButton>
             </Link>
           </div>
         </GlassCard>

@@ -1,5 +1,7 @@
 "use client";
 
+import { LumiCelebration } from "@/components/coach/LumiCelebration";
+
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -72,7 +74,7 @@ export function StoryFillRunner({
     return (
       <main className="min-h-dvh flex items-center justify-center px-5 py-12">
         <GlassCard strong glowColor={pct >= 70 ? "green" : "cyan"} className="p-8 max-w-md w-full text-center">
-          <div className="text-5xl mb-3">📜</div>
+          <LumiCelebration score={pct} size={150} className="mb-3" />
           <h2 className="text-2xl font-extrabold mb-1">{correct} / {story.blanks.length} correctas</h2>
           <p className="text-sm text-ink-dim mb-6">{pct}% de aciertos</p>
           <div className="flex gap-3">

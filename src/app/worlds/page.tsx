@@ -6,8 +6,12 @@ import { NeonButton } from "@/components/ui/NeonButton";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Avatar } from "@/components/ui/Avatar";
 import { BottomNav } from "@/components/ui/BottomNav";
-import { UNIVERSAL_WORLDS, buildPersonalWorld } from "@/lib/content/worlds";
+import { UNIVERSAL_WORLDS, buildPersonalWorld, SCHOOL_WORLD } from "@/lib/content/worlds";
 import { getCefrInfo } from "@/lib/content/cefr";
+import { getCoachPlan } from "@/lib/coach/coach";
+import { Lumi } from "@/components/coach/Lumi";
+import { DailyMission } from "@/components/coach/DailyMission";
+import { buildSendero, senderoSummary } from "@/lib/content/sendero";
 
 interface PageProps {
   searchParams: { kid?: string };
@@ -33,7 +37,7 @@ export default async function WorldsPage({ searchParams }: PageProps) {
   // Per-world progress: count completed sessions per world_key
   const { data: sessions = [] } = await supabase
     .from("lesson_sessions")
-    .select("world_key, score_pct, lesson_type, created_at, duration_seconds")
+    .select("world_key, score_pct, lesson_type, skill, xp_gained, created_at, duration_seconds")
     .eq("kid_id", kid.id);
 
   const worldStats: Record<string, { sessions: number; avgScore: number }> = {};
@@ -50,6 +54,32 @@ export default async function WorldsPage({ searchParams }: PageProps) {
   }
 
   const cefr = getCefrInfo(kid.total_xp);
+
+  // Coach Lumi: tarjetas SRS pendientes (señal para la Misión del Día) + plan del día.
+  const { count: srsDueCount } = await supabase
+    .from("srs_cards")
+    .select("id", { count: "exact", head: true })
+    .eq("kid_id", kid.id)
+    .lte("due_at", new Date().toISOString());
+
+  const coachPlan = getCoachPlan({
+    kidId: kid.id,
+    kidName: kid.name,
+    cefrCode: cefr.code,
+    sessions: (sessions ?? []).map((s) => ({
+      lesson_type: s.lesson_type,
+      world_key: s.world_key,
+      skill: s.skill,
+      score_pct: s.score_pct,
+      xp_gained: s.xp_gained ?? 0,
+      created_at: s.created_at,
+    })),
+    srsDueCount: srsDueCount ?? 0,
+  });
+
+  // Progreso del Sendero (lecciones de gramática completadas).
+  const grammarCount = (sessions ?? []).filter((s) => s.world_key === "grammar").length;
+  const senderoSum = senderoSummary(buildSendero(cefr.code, grammarCount));
 
   // Estado del diagnóstico: ¿nunca lo hizo? ¿toca re-medir el nivel?
   // Se invita a re-test tras >=30 días desde el último examen Y >=3 h de práctica.
@@ -137,12 +167,48 @@ export default async function WorldsPage({ searchParams }: PageProps) {
       </header>
 
       <main className="pt-24 pb-32 px-5 max-w-3xl mx-auto relative z-10">
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <h2 className="text-3xl font-extrabold mb-1">Active Worlds</h2>
           <p className="text-sm text-ink-dim">
             Plot your course through the linguistic grid.
           </p>
         </div>
+
+        {/* Coach Lumi — guía el siguiente paso (nube de diálogo) */}
+        <Lumi mood={coachPlan.lumi.mood} message={coachPlan.lumi.message} cta={coachPlan.lumi.cta} />
+
+        {/* Misión del día — 3 tareas variadas para evitar el grindeo */}
+        <DailyMission
+          tasks={coachPlan.mission.tasks}
+          doneCount={coachPlan.mission.doneCount}
+          total={coachPlan.mission.total}
+        />
+
+        {/* Sendero — el camino guiado ordenado (A1 → C1) */}
+        <Link href={`/sendero?kid=${kid.id}`}>
+          <GlassCard className="p-4 mb-6 border border-neon-purple/40 hover:border-neon-purple/70 transition-colors">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">🌌</span>
+                <h3 className="font-bold text-sm">Tu Sendero</h3>
+              </div>
+              <span className="text-xs font-extrabold text-neon-purple">
+                {senderoSum.completed}/{senderoSum.total}
+              </span>
+            </div>
+            <div className="progress-track mb-2">
+              <div
+                className="progress-fill"
+                style={{ width: `${senderoSum.pct}%`, background: "linear-gradient(90deg,#00eefc,#c464ff)" }}
+              />
+            </div>
+            <div className="text-xs text-ink-dim truncate">
+              {senderoSum.current
+                ? `Siguiente: unidad ${senderoSum.current.number} · ${senderoSum.current.unit.title}`
+                : "¡Camino completado! 🎉"}
+            </div>
+          </GlassCard>
+        </Link>
 
         {/* Cápsula CEFR */}
         <GlassCard className="mb-6 p-4">
@@ -195,6 +261,21 @@ export default async function WorldsPage({ searchParams }: PageProps) {
             unlocked={true}
           />
 
+          {/* Tema del Colegio — función estrella de personalización (voz + texto).
+              Tiene su propia pantalla de entrada (/school), no el hub de modos. */}
+          <WorldCard
+            worldKey={SCHOOL_WORLD.key}
+            kidId={kid.id}
+            emoji={SCHOOL_WORLD.emoji}
+            name={SCHOOL_WORLD.name}
+            tagline={SCHOOL_WORLD.tagline}
+            accent={SCHOOL_WORLD.accent}
+            badge={{ text: "PERSONALIZADO", color: SCHOOL_WORLD.accent }}
+            stats={worldStats["school"]}
+            unlocked={true}
+            href={`/school?kid=${kid.id}`}
+          />
+
           {/* Universal worlds */}
           {UNIVERSAL_WORLDS.map((w) => {
             const unlocked = isUnlocked(w.minCefr);
@@ -237,6 +318,8 @@ interface WorldCardProps {
   badge: { text: string; color: string } | null;
   stats: { sessions: number; avgScore: number } | undefined;
   unlocked: boolean;
+  /** Destino del card. Por defecto el hub de modos; el mundo "colegio" usa su propia pantalla. */
+  href?: string;
 }
 
 function WorldCard({
@@ -249,6 +332,7 @@ function WorldCard({
   badge,
   stats,
   unlocked,
+  href,
 }: WorldCardProps) {
   const sessions = stats?.sessions ?? 0;
   const avgScore = stats?.avgScore ?? 0;
@@ -327,7 +411,7 @@ function WorldCard({
 
   if (!unlocked) return content;
   return (
-    <Link href={`/play?kid=${kidId}&world=${worldKey}`}>
+    <Link href={href ?? `/play?kid=${kidId}&world=${worldKey}`}>
       {content}
     </Link>
   );

@@ -1,5 +1,7 @@
 "use client";
 
+import { LumiCelebration } from "@/components/coach/LumiCelebration";
+
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -119,7 +121,7 @@ export function ConversationRunner({
     return (
       <main className="min-h-dvh px-5 py-12 max-w-xl mx-auto relative z-10">
         <GlassCard strong glowColor={avg >= 70 ? "green" : "cyan"} className="p-6 mb-4 text-center">
-          <div className="text-5xl mb-3">{avg >= 85 ? "🏆" : avg >= 70 ? "💬" : "💪"}</div>
+          <LumiCelebration score={avg} size={150} className="mb-3" />
           <h2 className="text-2xl font-extrabold mb-1">Conversación terminada</h2>
           <p className="text-sm text-ink-dim mb-4">{scenario.emoji} {scenario.name}</p>
           <div className="text-4xl font-extrabold text-neon-green">{avg}</div>

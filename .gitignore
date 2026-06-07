@@ -39,4 +39,12 @@ family-data.json
 Notas Project Idiomaconnect APP comercial.txt
 
 # Settings locales de Claude (máquina-local)
-.claude/settings.local.json
+.claude/
+
+# Mockups e ilustraciones fuente y materiales de postulación (NO van al repo de deploy)
+/Lumi/
+/Senderos/
+/presentacion y postulacion a fondos/
+
+# Artefacto incremental de TypeScript (build)
+tsconfig.tsbuildinfo
