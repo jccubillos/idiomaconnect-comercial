@@ -43,7 +43,7 @@ export const MODES: Record<LessonMode, ModeMeta> = {
   srs_review: { key: "srs_review", emoji: "🧠", name: "Repaso (SRS)", short: "Tarjetas que tocan hoy", skill: "vocabulary", unlocked: true },
   conversation: { key: "conversation", emoji: "💬", name: "Conversación", short: "Role-play con la IA", skill: "speaking", unlocked: true, minCefr: "A1" },
   sentence_builder: { key: "sentence_builder", emoji: "🧩", name: "Armar Oraciones", short: "Ordena las piezas", skill: "grammar", unlocked: true },
-  story_fill: { key: "story_fill", emoji: "📜", name: "Historia con Huecos", short: "Cloze en relato corto", skill: "reading", unlocked: true },
+  story_fill: { key: "story_fill", emoji: "📜", name: "Historias para Completar", short: "Completa el relato", skill: "reading", unlocked: true },
   speaking_journal: { key: "speaking_journal", emoji: "📔", name: "Diario Hablado", short: "30-60s sobre el prompt", skill: "speaking", unlocked: true, minCefr: "A2" },
   exam: { key: "exam", emoji: "🎓", name: "Examen Diagnóstico", short: "Mide tu CEFR", skill: "grammar", unlocked: true },
   shadow_speaking: { key: "shadow_speaking", emoji: "🔊", name: "Shadowing", short: "Repite después de mí", skill: "speaking", unlocked: true },
