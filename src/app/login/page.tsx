@@ -24,11 +24,26 @@ function LoginForm() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) {
-      setError(error.message);
+      setError(translateLoginError(error.message));
       return;
     }
     router.push(next);
     router.refresh();
+  }
+
+  /** Traduce los mensajes de error de login (en inglés) a español claro. */
+  function translateLoginError(msg: string): string {
+    const m = msg.toLowerCase();
+    if (m.includes("email not confirmed") || m.includes("not confirmed")) {
+      return "Tu cuenta aún no está confirmada. Revisa tu correo y haz clic en el enlace de confirmación. Si no llega, contáctanos.";
+    }
+    if (m.includes("invalid login credentials") || m.includes("invalid credentials")) {
+      return "Correo o contraseña incorrectos. Verifica tus datos e inténtalo de nuevo.";
+    }
+    if (m.includes("rate limit") || m.includes("too many")) {
+      return "Demasiados intentos. Espera unos minutos e inténtalo de nuevo.";
+    }
+    return msg;
   }
 
   return (

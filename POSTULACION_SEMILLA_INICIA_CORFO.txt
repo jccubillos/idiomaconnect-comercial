@@ -1,0 +1,528 @@
+================================================================
+IDIOMACONNECT — DESCRIPCIÓN TÉCNICA Y COMERCIAL DE LA PLATAFORMA
+Documento preparado para postulación Fondo Semilla Inicia · CORFO
+Fecha: junio 2026
+================================================================
+
+
+1. DESCRIPCIÓN GENERAL
+─────────────────────────────────────────────────────────────────
+
+IdiomaConnect es una plataforma digital de aprendizaje de inglés dirigida a niños y
+adolescentes entre 8 y 16 años, con dos versiones complementarias: una versión familiar
+(B2C) y una versión institucional para colegios (B2B).
+
+La propuesta de valor central es un modelo pedagógico HÍBRIDO, único en el mercado
+latinoamericano, que combina:
+
+  (a) Un currículo CURADO por expertos, con 34 unidades progresivas alineadas al
+      estándar internacional CEFR (Marco Común Europeo de Referencia para las Lenguas),
+      que garantiza rigor pedagógico y secuencia lógica de aprendizaje.
+
+  (b) Personalización mediante Inteligencia Artificial, que adapta el CÓMO se enseña
+      en función de los intereses, pasatiempos, gustos, familia y contexto individual
+      de cada alumno, generando experiencias únicas e irrepetibles.
+
+Esta combinación asegura lo mejor de dos mundos: el rigor de un plan de estudios
+diseñado por profesores, con la motivación y relevancia de un contenido 100% a medida
+de cada niño.
+
+La plataforma funciona como Progressive Web App (PWA), lo que significa que se puede
+instalar y usar en cualquier dispositivo móvil o computador sin necesidad de descarga
+en tiendas de aplicaciones, reduciendo la fricción de adopción al mínimo.
+
+
+2. PROBLEMA QUE RESUELVE
+─────────────────────────────────────────────────────────────────
+
+El aprendizaje de inglés en Chile presenta tres brechas críticas:
+
+  1. CONTENIDO GENÉRICO: Las apps de idiomas más populares (Duolingo, Babbel, etc.)
+     ofrecen rutas de contenido rígidas y genéricas, sin adaptación al nivel, contexto
+     ni intereses reales del estudiante. Un niño que ama el fútbol aprende inglés con
+     los mismos ejemplos que uno que ama la música. Resultado: baja motivación y
+     alta deserción.
+
+  2. SIN RIGOR CURRICULAR: Las plataformas basadas exclusivamente en IA generativa
+     carecen de estructura pedagógica. El contenido se genera sin planificación de
+     secuencia ni objetivos CEFR verificables.
+
+  3. DESCONEXIÓN ENTRE COLEGIO Y HOGAR: No existe hoy en el mercado una herramienta
+     que conecte los contenidos que el profesor enseña en el aula con el repaso que
+     el alumno puede hacer en casa o en el celular.
+
+IdiomaConnect resuelve los tres problemas simultáneamente.
+
+
+3. SOLUCIÓN TECNOLÓGICA — ARQUITECTURA HÍBRIDA
+─────────────────────────────────────────────────────────────────
+
+3.1 Currículo curado: 34 unidades CEFR
+·······································
+El núcleo de la plataforma es un currículo diseñado por expertos en educación de idiomas,
+organizado en 34 unidades progresivas que cubren desde el nivel más básico (A1) hasta
+el dominio avanzado (C1). Cada unidad tiene un objetivo gramatical claro, un campo de
+vocabulario específico y un descriptor "can-do" (qué es capaz de hacer el alumno al
+terminarla).
+
+NIVEL A1 — Explorer (8 unidades)
+  · Saludos y presentaciones (verbo to be, nationalities)
+  · Mi familia (adjetivos posesivos, genitivo sajón)
+  · Mis cosas (artículos a/an, this/that/these/those)
+  · Mi día a día (presente simple, adverbios de frecuencia)
+  · Él y ella (3ª persona, do/does)
+  · Me gusta (like/love/hate + gerundio)
+  · ¿Dónde está? (there is/are, preposiciones de lugar)
+  · Puedo hacerlo (can/can't)
+
+NIVEL A2 — Cadet (8 unidades)
+  · Ayer (pasado simple, verbos irregulares)
+  · Planes (be going to)
+  · Comparaciones (comparativos y superlativos)
+  · ¿Cuánto? (countables/uncountables, some/any)
+  · Justo ahora (presente continuo)
+  · ¿Alguna vez? (presente perfecto ever/never)
+  · Consejos y reglas (should, must, have to)
+  · Contar historias (conectores, pasado continuo)
+
+NIVEL B1 — Pilot (7 unidades)
+  · Si pasa, entonces… (primer condicional)
+  · Voz pasiva (presente y pasado simple)
+  · Dijo que… (estilo indirecto)
+  · Desde hace tiempo (presente perfecto vs pasado simple, for/since)
+  · Predicciones (will vs going to, may/might)
+  · Cláusulas relativas (who/which/that/where)
+  · Gerundios e infinitivos
+
+NIVEL B2 — Captain (6 unidades)
+  · Hipótesis (segundo y tercer condicional)
+  · Perfectos continuos
+  · Pasiva avanzada (todos los tiempos y modales)
+  · Deducciones (must/might/can't + have + participio)
+  · Argumentar (although/however/despite/whereas)
+  · Énfasis y deseos (wish/if only, would rather)
+
+NIVEL C1 — Commander (5 unidades)
+  · Inversión (hardly/never/not only…)
+  · Cláusulas avanzadas (participio, cleft sentences)
+  · Matices modales y hedging académico
+  · Colocaciones e idioms avanzados
+  · Cohesión y registro formal vs informal
+
+Este currículo garantiza que NINGÚN alumno avanza sin dominar la base anterior, y que
+la IA siempre trabaja sobre un objetivo pedagógico definido por expertos.
+
+3.2 Personalización por Inteligencia Artificial
+·················································
+La IA (modelo LLaMA-3.3-70B vía Groq) recibe para cada lección:
+  - El objetivo CEFR curado del nivel actual del alumno
+  - El nombre, edad, intereses, pasatiempos y deportes favoritos del alumno
+  - Los miembros de su familia (para usar ejemplos cercanos)
+  - El historial de temas recientes (para evitar repetición)
+  - El "mundo" temático elegido (viajes, gramática, vocabulario, etc.)
+  - (En colegios) El tema de la semana definido por el profesor
+
+Con todo esto, la IA genera lecciones únicas: el mismo objetivo gramatical (ej. "pasado
+simple") puede enseñarse a través de un ejemplo de fútbol, de videojuegos, de música o
+de la mascota de la familia del alumno. El rigor es del currículo; la motivación es de
+la IA.
+
+
+4. MUNDOS DE APRENDIZAJE — CONTEXTOS TEMÁTICOS (9 mundos)
+─────────────────────────────────────────────────────────────────
+
+La plataforma organiza el aprendizaje en "mundos" gamificados, cada uno con un contexto
+temático distinto que mantiene la motivación alta y cubre las diferentes habilidades
+del idioma:
+
+  🇬🇧 London Hub — Inglés cotidiano para viajes y rutinas
+  🌌 Galaxia Gramatical — Reglas, estructuras y patrones
+  📚 Bóveda de Vocabulario — Vocabulario práctico y cotidiano
+  🎙 Estudio de Sonido — Pronunciación y comprensión auditiva
+  💬 Café Conversación — Role-play con misiones reales
+  🖋 Taller de Letras — Escritura: traducir, describir, producir
+  📔 Diario Hablado — Producción oral espontánea (30 segundos)
+  🗼 Cyber-Tokyo — Gramática intermedia-avanzada e idioms (B1+)
+  🌟 Mundo Personal — Mundo generado 100% a partir de los gustos
+                       del alumno (pasatiempos, deportes, hobbies)
+
+El "Mundo Personal" es especialmente innovador: la IA construye un contexto educativo
+completamente personalizado usando los propios intereses del niño como hilo conductor.
+
+
+5. MODALIDADES DE PRÁCTICA — 17 MODOS DE APRENDIZAJE
+─────────────────────────────────────────────────────────────────
+
+Cada mundo puede practicarse en múltiples modalidades, cubriendo las cuatro habilidades
+del idioma (hablar, escuchar, leer, escribir) de forma gamificada:
+
+VOCABULARIO
+  🃏 Flashcards Visuales — Imágenes de objetos reales con opciones múltiples
+  ⚔️ Battle Mode — Duelo gamificado con barras de vida (HP) contra el "Syntax Virus"
+  🧠 Repaso SRS — Sistema de repetición espaciada (algoritmo SM-2) para memorización
+      duradera
+  🎴 Memoria — Juego de emparejar palabras e imágenes
+
+GRAMÁTICA
+  📖 Lección Clásica — Quiz de opción múltiple + completar espacios
+  🧩 Armar Oraciones — Ordenar piezas de una oración (drag & drop)
+  📜 Historias para Completar — Completar un relato corto (cloze test)
+  🎓 Examen Diagnóstico — Evalúa el nivel CEFR actual del alumno
+
+HABLAR (Speaking)
+  🎤 Pronunciación — El alumno se graba y recibe puntuación de precisión
+  🔊 Shadowing — Repite después de un hablante nativo con audio generado por IA
+  📔 Diario Hablado — 30-60 segundos de habla espontánea sobre un tema
+  💬 Conversación con IA — Role-play en tiempo real con retroalimentación
+  🗣️ Háblame de ti — Conversación libre sobre la vida real del alumno
+
+ESCUCHAR (Listening)
+  👂 Escucha & Identifica — Escucha la palabra, elige su significado
+  🎧 Pares Mínimos — Distingue sonidos parecidos (th/d, r/l, i/ee)
+
+ESCRITURA (Writing)
+  🔁 Traduce al Inglés — Traducción ES → EN con evaluación de la IA
+  🖼 Describe la Escena — Escribe lo que ves en una imagen o situación
+
+Este conjunto de 17 modos cubre la totalidad de las habilidades lingüísticas reconocidas
+por el CEFR, algo que ninguna app de la región ofrece de manera integrada.
+
+
+6. SISTEMA DE PROGRESIÓN CEFR Y GAMIFICACIÓN
+─────────────────────────────────────────────────────────────────
+
+El progreso del alumno está mapeado directamente al estándar internacional CEFR,
+con nombres gamificados para motivar a los niños:
+
+  A1 — Explorer     (primeros pasos)
+  A2 — Cadet        (frases cotidianas)
+  B1 — Pilot        (conversaciones independientes)
+  B2 — Captain      (fluidez en temas complejos)
+  C1 — Commander    (dominio académico)
+  C2 — Legend       (maestría casi nativa)
+
+Sistema de puntos XP: cada lección completada otorga XP. El nivel CEFR sube
+automáticamente al acumular los puntos requeridos.
+
+Sistema de rachas: el alumno construye una racha de días consecutivos de práctica,
+visible en el panel familiar y de profesores, que incentiva la constancia.
+
+Sistema de trofeos: logros especiales desbloqueables (primera lección, racha de
+7 días, primera batalla ganada, etc.).
+
+Examen diagnóstico CEFR: evaluación automatizada que ubica al alumno en su nivel
+real desde el primer día, sin necesidad de que un adulto evalúe.
+
+
+7. VERSIÓN FAMILIAR (B2C)
+─────────────────────────────────────────────────────────────────
+
+7.1 Características principales
+  · Hasta 6 perfiles de alumnos por cuenta familiar
+  · Cada perfil completamente independiente (nivel, progreso, gustos)
+  · Panel de seguimiento para padres con:
+    - Nivel CEFR actual y progreso al siguiente nivel
+    - XP total acumulado
+    - Racha de práctica
+    - Sesiones recientes y puntajes
+    - Desglose de habilidades (vocabulario, gramática, speaking, writing, listening)
+  · Sin contratos: suscripción mensual o anual cancelable en cualquier momento
+
+7.2 Personalización del perfil del alumno
+  Al crear el perfil, se registra:
+  · Nombre, edad y curso escolar
+  · Intereses y pasatiempos (deportes, música, juegos, etc.)
+  · Miembros de la familia (para ejemplos personalizados)
+  · Tono de aprendizaje preferido (divertido, desafiante, tranquilo)
+
+  Toda esta información es inyectada en cada generación de lección, haciendo que
+  el contenido se sienta diseñado exclusivamente para ese niño.
+
+7.3 Audio e interacción oral
+  · Pronunciación de palabras y frases a cargo de OpenAI TTS (voz nativa)
+  · Transcripción del habla del alumno mediante Groq Whisper
+  · Caché local de audios para evitar latencia en repeticiones
+
+7.4 Planes
+  · Plan Mensual: USD 9.99/mes (hasta 6 perfiles)
+  · Plan Anual: USD 79/año (~USD 6.58/mes), con 34% de descuento
+
+
+8. VERSIÓN INSTITUCIONAL PARA COLEGIOS (B2B)
+─────────────────────────────────────────────────────────────────
+
+Esta versión transforma IdiomaConnect en una herramienta de gestión pedagógica completa
+para instituciones educativas. Es la diferenciación más significativa respecto a cualquier
+competidor en el mercado latinoamericano de ed-tech de idiomas.
+
+8.1 Tres roles con paneles diferenciados
+
+ADMINISTRADOR DEL COLEGIO
+  · Panel completo de la institución
+  · Gestión de cupos (número de alumnos contratados)
+  · Creación de cursos (7°A, 7°B, 8°A, etc.) con nombre y nivel
+  · Creación de cuentas de profesores con contraseña temporal generada automáticamente
+  · Asignación de profesores a cursos
+  · Alta de alumnos con asignación a cursos
+  · Estadísticas globales del colegio: cupos usados, cursos activos, profesores, alumnos
+  · Acceso al Modo Aula
+
+PROFESOR
+  · Panel de sus cursos asignados
+  · Vista detallada de cada curso con:
+    - Número de alumnos y activos en los últimos 7 días
+    - Sesiones y promedio de aciertos del curso
+  · Tabla de avance por alumno:
+    - Nivel CEFR actual
+    - XP acumulado
+    - Sesiones totales
+    - Promedio de aciertos
+    - Racha de práctica
+    - Última actividad (alerta roja si lleva más de 7 días sin practicar)
+  · "Tema de la semana" (Fase 2, ver punto 8.2)
+  · Acceso al Modo Aula
+
+ALUMNO (Fase 1)
+  · Practica en el dispositivo del profesor o en computador de sala
+  · Elige su perfil en el "Modo Aula"
+  · Su progreso queda registrado y visible para el profesor en tiempo real
+
+8.2 INNOVACIÓN CLAVE: Contexto institucional alineado al aula (Fase 2)
+
+Esta es la funcionalidad más diferenciadora de la plataforma: el profesor puede definir
+un "Tema de la semana" para cada curso (por ejemplo: "Present continuous · deportes"),
+y a partir de ese momento, TODAS las lecciones que genere la IA para los alumnos de ese
+curso estarán alineadas a ese tema.
+
+Ejemplo práctico:
+  · El profesor está enseñando en clases el "Present Continuous"
+  · Define en la plataforma: Tema = "Present continuous · deportes"
+    Instrucción = "Refuerza el uso del Present Continuous para describir acciones
+    en el momento. Usa vocabulario de deportes y actividades físicas."
+  · A partir de ese momento, cuando un alumno del curso practica en casa o en la sala,
+    las lecciones que recibe están alineadas exactamente a lo que el profesor enseñó.
+
+AISLAMIENTO GARANTIZADO: El contexto de un curso aplica ÚNICAMENTE a los alumnos de
+ese curso. No afecta a alumnos de otros cursos ni a las familias registradas.
+
+8.3 Modo Aula
+  · Pantalla diseñada para uso en sala de clases o sala de computación
+  · El profesor abre la pantalla en el dispositivo y los alumnos eligen su perfil
+  · Los alumnos practican y su progreso queda registrado automáticamente
+  · El profesor puede monitorear el avance en su panel
+
+8.4 Personalización del alumno de colegio
+  Igual que en la versión familiar, cada alumno tiene un perfil con:
+  · Nombre y curso
+  · Intereses y pasatiempos
+  La IA usa esta información para personalizar las lecciones dentro del marco del
+  tema definido por el profesor, combinando la dirección curricular institucional
+  con la motivación individual de cada alumno.
+
+8.5 Formulario de contacto institucional
+  · Página pública /colegios con propuesta de valor para instituciones
+  · Formulario completo de contacto: nombre de institución, dirección, comuna, región,
+    número de alumnos, niveles educativos, si cuentan con profesor de inglés, etc.
+  · Las solicitudes quedan registradas automáticamente para seguimiento comercial
+
+8.6 Precios institucionales (modelo por alumno/año, escala por volumen)
+  · 50 a 200 alumnos: CLP ~7.000 – 9.000/alumno/año
+  · 201 a 500 alumnos: CLP ~5.000 – 6.500/alumno/año
+  · 501 a 1.500 alumnos: CLP ~3.500 – 5.000/alumno/año
+  · Más de 1.500 alumnos: a convenir
+  · Contratación mínima: anual (alineada al año escolar marzo–diciembre)
+  · Piloto sin costo: 1 curso por 1-2 meses como herramienta de venta
+
+
+9. DIFERENCIADORES COMPETITIVOS
+─────────────────────────────────────────────────────────────────
+
+9.1 vs. Duolingo
+  · Duolingo tiene contenido completamente genérico; IdiomaConnect personaliza cada
+    lección a los intereses reales del niño.
+  · Duolingo no tiene currículo CEFR curado; IdiomaConnect garantiza progresión
+    pedagógica con 34 unidades diseñadas por expertos.
+  · Duolingo no tiene versión institucional B2B; IdiomaConnect sí.
+  · Duolingo no se alinea a lo que el profesor enseña en clase; IdiomaConnect sí.
+
+9.2 vs. Plataformas de IA pura (ChatGPT, etc.)
+  · Sin estructura pedagógica ni progresión verificable; IdiomaConnect tiene
+    un currículo curado que la IA sigue.
+  · Sin gamificación ni seguimiento de progreso; IdiomaConnect tiene XP, CEFR,
+    rachas y trofeos.
+  · Sin panel para padres ni profesores; IdiomaConnect tiene ambos.
+
+9.3 vs. Plataformas de colegios locales (Smartick, etc.)
+  · No tienen idiomas como foco principal.
+  · No tienen el modelo híbrido curado + IA.
+  · No tienen alineación dinámica a los contenidos del profesor.
+
+9.4 Ventaja tecnológica sostenible
+  · El modelo híbrido (currículo curado + IA) NO es fácil de copiar: requiere el
+    diseño pedagógico experto del currículo Y la ingeniería de prompts sofisticada.
+  · La conexión profesor-alumno-contenido (Fase 2) es una innovación de producto
+    con alto valor percibido para colegios y baja presencia en el mercado.
+  · La personalización por hobbies crea una barrera de switching: el alumno que
+    ve sus intereses reflejados en las lecciones no quiere cambiar de plataforma.
+
+
+10. INFRAESTRUCTURA TECNOLÓGICA
+─────────────────────────────────────────────────────────────────
+
+La plataforma está construida sobre un stack tecnológico moderno, escalable y de
+bajo costo operativo:
+
+CAPA FRONTEND
+  · Next.js 14 (React, TypeScript) — framework web de última generación
+  · Tailwind CSS — diseño responsive y rápido
+  · Progressive Web App (PWA) — instalable en móvil sin tienda de apps
+
+CAPA BACKEND (serverless)
+  · Vercel — hosting serverless con deploys automáticos
+  · Supabase (PostgreSQL) — base de datos relacional, autenticación y seguridad RLS
+  · Row Level Security (RLS) — políticas de acceso que garantizan que cada usuario
+    solo ve sus propios datos (y el profesor solo ve sus alumnos)
+
+INTELIGENCIA ARTIFICIAL
+  · Groq + LLaMA-3.3-70B — generación de lecciones, evaluación, conversación
+    (el modelo de IA de texto más rápido disponible; latencia <1 seg por lección)
+  · Groq Whisper large-v3 — transcripción de voz del alumno a texto
+  · OpenAI TTS-1 — síntesis de voz nativa de alta calidad
+
+CONTROL DE COSTOS
+  · Sistema de registro de uso (usage_events) que mide el costo real de cada
+    llamada a IA en tiempo real
+  · Límites automáticos de uso por usuario/hora para proteger contra abuso
+  · Costo estimado de IA: USD 0.50–1.50 por usuario activo/mes (muy bajo)
+
+PAGOS Y SUSCRIPCIONES
+  · Lemon Squeezy (Merchant of Record) — acepta pagos en CLP y USD, emite
+    facturas, maneja IVA (solución clave para Chile donde Stripe no opera como MOR)
+
+SEGURIDAD Y PRIVACIDAD
+  · Datos de menores protegidos por políticas RLS de base de datos
+  · Ningún dato de IA (tokens, costos) es visible para padres o alumnos
+  · Arquitectura multi-tenant: cada colegio es completamente aislado
+
+
+11. IMPACTO SOCIAL Y EDUCATIVO
+─────────────────────────────────────────────────────────────────
+
+11.1 Democratización del aprendizaje de calidad
+El inglés de alta calidad hoy es un privilegio de quienes pueden pagar colegios bilingües
+o profesores particulares. IdiomaConnect lleva esa experiencia personalizada a cualquier
+familia con un celular y conexión a internet, a un precio accesible.
+
+11.2 Alineación al sistema educativo chileno
+La plataforma está diseñada para complementar —no reemplazar— al profesor de inglés.
+La Fase 2 (contexto institucional) convierte la app en una extensión del trabajo del
+docente, alineando el refuerzo en casa exactamente a lo que se enseña en el aula.
+
+11.3 Niños que aprenden mejor
+La personalización por intereses no es solo un diferenciador comercial: tiene base
+en la investigación pedagógica. Los niños aprenden idiomas más rápido y los retienen
+mejor cuando el contenido se conecta con su vida real y sus pasiones. Un niño que
+ama el fútbol y aprende inglés a través del fútbol tiene el doble de motivación que
+uno que recibe contenido genérico.
+
+11.4 Rango de edad
+La plataforma está diseñada y probada para niños de 8 a 16 años, el rango crítico
+de formación del idioma según la evidencia educativa internacional.
+
+
+12. ESTADO DE DESARROLLO Y TRACCIÓN
+─────────────────────────────────────────────────────────────────
+
+  · La plataforma está 100% construida, operativa y desplegada en producción
+    (https://idiomaconnect-comercial.vercel.app)
+  · Motor de IA funcionando: generación de lecciones, evaluación, TTS, Whisper
+  · Sistema de colegios completamente implementado (Fase 1 y Fase 2)
+  · 17 modalidades de práctica operativas
+  · 34 unidades curriculares CEFR integradas
+  · Sistema de pagos en configuración final
+  · 112 pruebas automatizadas de calidad (unit tests) — todas pasando
+  · Build de producción verificado sin errores
+
+  La plataforma no es un prototipo ni una idea: es un producto funcional y completo
+  listo para su lanzamiento comercial al mercado.
+
+
+13. MODELO DE NEGOCIO Y PROYECCIONES
+─────────────────────────────────────────────────────────────────
+
+INGRESOS FAMILIARES (B2C)
+  Escenario conservador (año 1): 200 familias activas
+  · Ingreso mensual: 200 × USD 9.99 = ~USD 2.000/mes (~CLP 1.900.000/mes)
+  · Costo IA: ~USD 0.80/familia/mes = USD 160/mes
+  · Margen bruto de IA: >90%
+
+INGRESOS COLEGIOS (B2B)
+  Escenario conservador (año 1): 3 colegios piloto × 200 alumnos × CLP 7.000
+  · Ingreso anual: CLP 4.200.000 (~USD 4.500)
+  · Un colegio mediano (500 alumnos a CLP 6.000) = CLP 3.000.000/año
+  · Alta recurrencia: contratos anuales alineados al año escolar
+
+COSTO OPERATIVO BASE
+  · Infraestructura (Vercel Pro + Supabase Pro): ~USD 50/mes
+  · IA (Groq + OpenAI): variable según usuarios activos (~USD 1.50/usuario/mes)
+  · Punto de equilibrio: ~25-30 familias activas cubren toda la infraestructura
+
+ESCALABILIDAD
+  La arquitectura serverless escala automáticamente con la demanda sin necesidad de
+  inversión en servidores propios. Pasar de 100 a 10.000 usuarios no requiere cambio
+  tecnológico, solo subir de plan en los proveedores actuales.
+
+
+14. USO DEL FONDO SEMILLA INICIA
+─────────────────────────────────────────────────────────────────
+
+Los recursos del fondo se destinarán a:
+
+  1. MARKETING Y ADQUISICIÓN (40%)
+     · Campaña digital dirigida a padres de niños 8-16 años
+     · Material de venta para colegios (presentaciones, propuestas, demos)
+     · SEO y presencia en redes sociales educativas
+
+  2. LANZAMIENTO COMERCIAL (25%)
+     · Activación del sistema de pagos (Lemon Squeezy)
+     · Correos transaccionales (bienvenida, recuperación, facturas)
+     · Dominio propio y certificados SSL (idiomaconnect.cl / .app)
+
+  3. DESARROLLO DE PRODUCTO — PRÓXIMAS FUNCIONALIDADES (20%)
+     · Login individual de alumnos en colegios (Fase 3)
+     · Panel de costos IA en producción
+     · Caché de audio en servidor (reduce costo IA 70%)
+     · App nativa iOS/Android (conversión de PWA)
+
+  4. VALIDACIÓN Y PILOTOS (15%)
+     · Piloto gratuito en 2-3 colegios (herramienta de venta para contratos)
+     · Encuestas de NPS y mejora continua basada en feedback real
+     · Mentoría y asesoría legal (privacidad de datos de menores)
+
+
+================================================================
+RESUMEN EJECUTIVO
+================================================================
+
+IdiomaConnect es una plataforma SaaS de aprendizaje de inglés para niños de 8 a 16
+años que combina, por primera vez en Latinoamérica, un currículo CEFR curado con
+personalización por Inteligencia Artificial. El resultado: cada lección se adapta
+al nivel real del alumno, a sus intereses personales y —en el caso de los colegios—
+a los contenidos que el profesor está enseñando en ese momento.
+
+El producto está 100% construido y operativo. No es un prototipo ni una idea: es
+una plataforma funcional con 34 unidades curriculares, 17 modalidades de práctica,
+9 mundos temáticos, sistema de progresión CEFR, gamificación, panel para padres
+y un sistema institucional completo para colegios con roles de administrador, profesor
+y alumno.
+
+La innovación pedagógica y tecnológica es real, verificable y sostenible. La
+oportunidad de mercado es significativa: millones de familias chilenas buscan una
+alternativa de calidad para el inglés de sus hijos, y miles de colegios necesitan
+una herramienta que conecte el aula con el hogar.
+
+IdiomaConnect ya existe. El fondo Semilla Inicia permitirá llevarlo al mercado.
+
+================================================================
+FIN DEL DOCUMENTO
+================================================================

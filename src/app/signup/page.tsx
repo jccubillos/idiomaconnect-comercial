@@ -16,10 +16,12 @@ export default function SignupPage() {
   const [parentalConsent, setParentalConsent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    setInfo(null);
 
     if (!acceptedTos || !parentalConsent) {
       setError("Debes aceptar los términos y otorgar consentimiento parental.");
@@ -32,7 +34,7 @@ export default function SignupPage() {
 
     setLoading(true);
     const supabase = createClient();
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -43,13 +45,35 @@ export default function SignupPage() {
     setLoading(false);
 
     if (error) {
-      setError(error.message);
+      setError(translateAuthError(error.message));
       return;
     }
 
-    // Trigger handle_new_user() will create the family row.
-    router.push("/onboarding");
-    router.refresh();
+    // Trigger handle_new_user() crea la fila de familia automáticamente.
+    if (data.session) {
+      // Confirmación de email DESACTIVADA → ya hay sesión, entramos directo.
+      router.push("/onboarding");
+      router.refresh();
+    } else {
+      // Confirmación de email ACTIVADA → no hay sesión hasta confirmar el correo.
+      setInfo(
+        "¡Cuenta creada! Te enviamos un correo de confirmación. Ábrelo y haz clic en el enlace para activar tu cuenta. Si no llega en unos minutos, revisa la carpeta de spam.",
+      );
+    }
+  }
+
+  /** Traduce los mensajes de error de Supabase (en inglés) a español claro. */
+  function translateAuthError(msg: string): string {
+    const m = msg.toLowerCase();
+    if (m.includes("already registered") || m.includes("already exists")) {
+      return "Ese correo ya tiene una cuenta. Intenta iniciar sesión.";
+    }
+    if (m.includes("invalid email")) return "El correo no es válido.";
+    if (m.includes("password")) return "La contraseña debe tener al menos 8 caracteres.";
+    if (m.includes("rate limit") || m.includes("too many")) {
+      return "Demasiados intentos. Espera unos minutos e inténtalo de nuevo.";
+    }
+    return msg;
   }
 
   return (
@@ -131,6 +155,11 @@ export default function SignupPage() {
           {error && (
             <div className="text-sm text-neon-red bg-neon-red/10 border border-neon-red/30 rounded-lg p-3">
               {error}
+            </div>
+          )}
+          {info && (
+            <div className="text-sm text-neon-green bg-neon-green/10 border border-neon-green/30 rounded-lg p-3">
+              {info}
             </div>
           )}
 
