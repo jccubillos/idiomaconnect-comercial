@@ -7,6 +7,7 @@ import { NeonButton } from "@/components/ui/NeonButton";
 import { Avatar } from "@/components/ui/Avatar";
 import { LumiCharacter } from "@/components/coach/LumiCharacter";
 import { LumiCelebration } from "@/components/coach/LumiCelebration";
+import { playTTS } from "@/lib/client/tts";
 import type { BattleWord } from "@/lib/content/vocabulary";
 
 interface KidMini {
@@ -58,7 +59,6 @@ export function BattleRunner({
   const [wrongCount, setWrongCount] = useState(0);
   const [startedAt] = useState(Date.now());
   const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const total = words.length;
   const currentIdx = queue[0];
@@ -69,19 +69,8 @@ export function BattleRunner({
   async function playWord(en: string) {
     setLoadingWord(en);
     try {
-      const res = await fetch("/api/audio/tts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: en, kidId: kid.id }),
-      });
-      if (res.ok) {
-        const buf = await res.arrayBuffer();
-        const url = URL.createObjectURL(new Blob([buf], { type: "audio/mpeg" }));
-        audioRef.current?.pause();
-        const a = new Audio(url);
-        audioRef.current = a;
-        await a.play().catch(() => {});
-      }
+      // Reutiliza el helper de audio compartido (mismo que lecciones, listen-id, etc.).
+      await playTTS(en, kid.id);
     } catch {
       // El audio es opcional: si falla (p. ej. sin API key), igual marcamos como escuchada.
     } finally {
