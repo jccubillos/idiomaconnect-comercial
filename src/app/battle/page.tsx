@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { BattleRunner } from "@/components/battle/BattleRunner";
+import { getCefrInfo } from "@/lib/content/cefr";
+import { buildBattleSession } from "@/lib/content/vocabulary";
 
 interface PageProps {
   searchParams: { kid?: string; world?: string };
@@ -22,5 +24,9 @@ export default async function BattlePage({ searchParams }: PageProps) {
     .single();
   if (!kid) redirect("/profiles");
 
-  return <BattleRunner kid={kid} worldKey={worldKey} />;
+  // Sesión curada según el nivel CEFR del niño (vocabulario planificado, sin IA).
+  const cefr = getCefrInfo(kid.total_xp);
+  const words = buildBattleSession(cefr.code, 12);
+
+  return <BattleRunner kid={kid} worldKey={worldKey} words={words} />;
 }

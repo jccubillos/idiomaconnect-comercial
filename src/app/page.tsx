@@ -13,7 +13,31 @@ export default async function HomePage() {
   return (
     <main className="relative z-10">
       {/* HERO */}
-      <section className="px-5 pt-10 pb-20 max-w-4xl mx-auto text-center">
+      <section className="px-5 pt-8 pb-20 max-w-4xl mx-auto text-center">
+        {/* LOGO IdiomaConnect — branding principal, parte superior */}
+        <div className="flex items-center justify-center gap-3 mb-8">
+          <svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true" className="flex-shrink-0">
+            <defs>
+              <linearGradient id="logoBolt" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#c464ff" />
+                <stop offset="100%" stopColor="#5b9dff" />
+              </linearGradient>
+            </defs>
+            <path fill="url(#logoBolt)" d="M13 2 L3 14 h7 l-1 8 11-13 h-7 z" />
+          </svg>
+          <span
+            className="text-4xl md:text-5xl font-extrabold tracking-tight"
+            style={{
+              backgroundImage: "linear-gradient(90deg, #c464ff 0%, #7aa8ff 100%)",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              color: "transparent",
+            }}
+          >
+            IdiomaConnect
+          </span>
+        </div>
+
         {/* Lumi da la bienvenida desde la primera pantalla (presencia de marca) */}
         <div className="flex flex-col items-center mb-7">
           <LumiCharacter mood="greet" size={184} />
