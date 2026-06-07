@@ -22,7 +22,8 @@ export type LessonMode =
   | "listen_id"         // hear word, pick meaning
   | "memory_match"      // pair matching
   | "srs_review"        // due flashcards (SM-2)
-  | "battle";           // gamified quiz with HP bars
+  | "battle"            // gamified quiz with HP bars
+  | "personal_talk";    // habla de tu vida real (speaking personalizado)
 
 export interface ModeMeta {
   key: LessonMode;
@@ -51,6 +52,7 @@ export const MODES: Record<LessonMode, ModeMeta> = {
   minimal_pairs: { key: "minimal_pairs", emoji: "🎧", name: "Pares Mínimos", short: "Distingue sonidos parecidos", skill: "listening", unlocked: true },
   listen_id: { key: "listen_id", emoji: "👂", name: "Escucha & Identifica", short: "Oye, elige significado", skill: "listening", unlocked: true },
   memory_match: { key: "memory_match", emoji: "🎴", name: "Memoria", short: "Empareja palabras", skill: "vocabulary", unlocked: true },
+  personal_talk: { key: "personal_talk", emoji: "🗣️", name: "Háblame de ti", short: "Habla de tu vida real", skill: "speaking", unlocked: true, minCefr: "A1" },
 };
 
 export const UNLOCKED_MODES = Object.values(MODES).filter((m) => m.unlocked);

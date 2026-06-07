@@ -108,7 +108,7 @@ export const WORLD_MODES: Record<string, string[]> = {
   journal: ["speaking_journal", "shadow_speaking", "conversation"],
   london_hub: ["lesson", "conversation", "listen_id", "battle"],
   cyber_tokyo: ["lesson", "story_fill", "translate_inverse", "battle"],
-  personal: ["lesson", "battle", "flashcards", "conversation"],
+  personal: ["lesson", "battle", "flashcards", "conversation", "personal_talk"],
 };
 
 /** Etiqueta corta de qué entrena cada mundo (para mostrar en el hub). */

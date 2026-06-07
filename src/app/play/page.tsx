@@ -108,6 +108,7 @@ function routeFor(modeKey: string): string {
     case "minimal_pairs": return "minimal-pairs";
     case "listen_id": return "listen-id";
     case "memory_match": return "memory-match";
+    case "personal_talk": return "personal-talk";
     default: return "lesson";
   }
 }
