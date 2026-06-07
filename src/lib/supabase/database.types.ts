@@ -4,7 +4,10 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type CEFRLevel = "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
-export type Plan = "trial" | "family_monthly" | "family_yearly" | "expired";
+export type Plan = "trial" | "family_monthly" | "family_yearly" | "school" | "expired";
+export type OrgType = "family" | "school";
+export type StaffRole = "admin" | "teacher";
+export type LeadStatus = "new" | "contacted" | "won" | "lost";
 export type PaymentProvider = "lemonsqueezy" | "stripe" | "paddle" | "mercadopago" | "flow";
 export type Skill = "vocabulary" | "grammar" | "listening" | "speaking" | "writing" | "reading";
 
@@ -16,6 +19,13 @@ export interface Database {
           id: string;
           owner_user_id: string;
           family_name: string;
+          org_type: OrgType;
+          seats: number | null;
+          contact_email: string | null;
+          contact_phone: string | null;
+          address: string | null;
+          comuna: string | null;
+          region: string | null;
           payment_provider: PaymentProvider;
           payment_customer_id: string | null;
           payment_subscription_id: string | null;
@@ -47,6 +57,7 @@ export interface Database {
           hobbies: string | null;
           tone: string | null;
           grade: string | null;
+          course_id: string | null;
           total_xp: number;
           cefr_level: CEFRLevel;
           current_world: string | null;
@@ -148,6 +159,77 @@ export interface Database {
         };
         Update: Partial<Database["public"]["Tables"]["usage_events"]["Row"]>;
       };
+      staff_members: {
+        Row: {
+          id: string;
+          org_id: string;
+          user_id: string;
+          full_name: string | null;
+          role: StaffRole;
+          created_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["staff_members"]["Row"]> & {
+          org_id: string;
+          user_id: string;
+          role: StaffRole;
+        };
+        Update: Partial<Database["public"]["Tables"]["staff_members"]["Row"]>;
+      };
+      courses: {
+        Row: {
+          id: string;
+          org_id: string;
+          name: string;
+          grade_label: string | null;
+          current_theme: string | null;
+          current_context: string | null;
+          context_updated_at: string | null;
+          created_at: string;
+          archived_at: string | null;
+        };
+        Insert: Partial<Database["public"]["Tables"]["courses"]["Row"]> & {
+          org_id: string;
+          name: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["courses"]["Row"]>;
+      };
+      course_teachers: {
+        Row: {
+          course_id: string;
+          user_id: string;
+          created_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["course_teachers"]["Row"]> & {
+          course_id: string;
+          user_id: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["course_teachers"]["Row"]>;
+      };
+      school_leads: {
+        Row: {
+          id: string;
+          institution_name: string;
+          address: string | null;
+          comuna: string | null;
+          region: string | null;
+          contact_name: string;
+          contact_role: string | null;
+          phone: string | null;
+          email: string;
+          num_students: number | null;
+          levels: string | null;
+          has_english_teacher: boolean | null;
+          message: string | null;
+          status: LeadStatus;
+          created_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["school_leads"]["Row"]> & {
+          institution_name: string;
+          contact_name: string;
+          email: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["school_leads"]["Row"]>;
+      };
     };
     Views: {
       leaderboard_weekly: {
@@ -167,6 +249,18 @@ export interface Database {
       current_family_id: {
         Args: Record<string, never>;
         Returns: string;
+      };
+      user_staff_org_ids: {
+        Args: Record<string, never>;
+        Returns: string[];
+      };
+      user_admin_org_ids: {
+        Args: Record<string, never>;
+        Returns: string[];
+      };
+      user_teacher_course_ids: {
+        Args: Record<string, never>;
+        Returns: string[];
       };
     };
     Enums: Record<string, never>;

@@ -7,11 +7,16 @@ import { Avatar } from "@/components/ui/Avatar";
 import { getCefrInfo } from "@/lib/content/cefr";
 import { BottomNav } from "@/components/ui/BottomNav";
 import { CulturalCapsule } from "@/components/cultural/CulturalCapsule";
+import { resolveRole, homePathForRole } from "@/lib/auth/role";
 
 export default async function ProfilesPage() {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
+
+  // Si es staff de colegio (admin/profesor), va a su panel, no al flujo familiar.
+  const { role } = await resolveRole(supabase, user.id);
+  if (role !== "family") redirect(homePathForRole(role));
 
   const { data: family } = await supabase
     .from("families")

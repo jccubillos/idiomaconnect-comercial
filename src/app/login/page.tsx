@@ -10,7 +10,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
-  const next = params.get("next") || "/profiles";
+  const next = params.get("next") || "/start";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);

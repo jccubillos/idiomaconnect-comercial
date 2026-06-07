@@ -60,7 +60,11 @@ export async function POST(req: Request) {
     .single();
   if (!family) return NextResponse.json({ error: "Family missing" }, { status: 500 });
   const trialActive = family.plan === "trial" && new Date(family.trial_ends_at) > new Date();
-  const subscribed = family.plan === "family_monthly" || family.plan === "family_yearly";
+  // 'school' = colegio con contrato institucional activo (cubre a todos sus alumnos).
+  const subscribed =
+    family.plan === "family_monthly" ||
+    family.plan === "family_yearly" ||
+    family.plan === "school";
   if (!trialActive && !subscribed) {
     return NextResponse.json({ error: "Subscription required", code: "paywall" }, { status: 402 });
   }
@@ -136,6 +140,27 @@ export async function POST(req: Request) {
     objective = pickWorldObjective(world.key, cefr.code, lessonCount ?? 0);
     lessonTopic = body.topicOverride ?? world.topic;
     lessonCustomContext = body.customContext ?? null;
+  }
+
+  // 5.b FASE 2 — Contexto institucional: si el alumno pertenece a un curso de
+  // colegio con "tema de la semana" definido por su profesor, se inyecta ese
+  // contexto. Aislado por curso: solo afecta a alumnos de ESE curso; familias y
+  // otros colegios no se ven alterados (cada lección se genera por separado).
+  if (kid.course_id) {
+    const { data: course } = await supabase
+      .from("courses")
+      .select("current_theme, current_context")
+      .eq("id", kid.course_id)
+      .single();
+    const parts: string[] = [];
+    if (course?.current_theme) parts.push(`Tema de clase actual: ${course.current_theme}.`);
+    if (course?.current_context) parts.push(course.current_context);
+    if (parts.length) {
+      const institutional = `[Contexto del colegio] ${parts.join(" ")} Adapta el vocabulario y los ejemplos a este foco cuando sea natural, sin romper el objetivo de la actividad.`;
+      lessonCustomContext = lessonCustomContext
+        ? `${lessonCustomContext}\n${institutional}`
+        : institutional;
+    }
   }
 
   // 6. Call Groq (objetivo CURADO + entrega personalizada por IA = híbrido)

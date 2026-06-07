@@ -8,7 +8,7 @@ import { LumiCharacter } from "@/components/coach/LumiCharacter";
 export default async function HomePage() {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (user) redirect("/profiles");
+  if (user) redirect("/start");
 
   return (
     <main className="relative z-10">
@@ -167,30 +167,62 @@ export default async function HomePage() {
       </section>
 
       {/* PRICING */}
-      <section className="px-5 py-16 max-w-3xl mx-auto">
+      <section className="px-5 py-16 max-w-5xl mx-auto">
         <div className="text-center mb-8">
-          <div className="text-xs font-bold uppercase tracking-widest text-neon-cyan mb-2">Plan único</div>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-balance">Una familia, una suscripción</h2>
+          <div className="text-xs font-bold uppercase tracking-widest text-neon-cyan mb-2">Planes</div>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-balance">Para tu familia o tu colegio</h2>
         </div>
-        <div className="grid md:grid-cols-2 gap-4">
-          <GlassCard className="p-6 text-center">
-            <div className="text-xs uppercase tracking-widest text-ink-dim mb-2">Mensual</div>
+        <div className="grid md:grid-cols-3 gap-4 items-stretch">
+          <GlassCard className="p-6 text-center flex flex-col">
+            <div className="text-xs uppercase tracking-widest text-ink-dim mb-2">Familiar mensual</div>
             <div className="text-4xl font-extrabold">$9.99</div>
             <div className="text-sm text-ink-dim mb-4">USD / mes</div>
-            <Link href="/signup"><NeonButton variant="ghost-cyan" className="w-full">Probar 7 días gratis</NeonButton></Link>
+            <ul className="text-xs text-ink-dim space-y-1 mb-5 text-left mx-auto">
+              <li>✓ Hasta 6 perfiles</li>
+              <li>✓ Todas las herramientas</li>
+              <li>✓ Dashboard de padres</li>
+            </ul>
+            <div className="mt-auto">
+              <Link href="/signup"><NeonButton variant="ghost-cyan" className="w-full">Probar 7 días gratis</NeonButton></Link>
+            </div>
           </GlassCard>
-          <GlassCard strong glowColor="cyan" className="p-6 text-center relative border border-neon-cyan/40">
+
+          <GlassCard strong glowColor="cyan" className="p-6 text-center relative border border-neon-cyan/40 flex flex-col">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest bg-neon-cyan text-surface px-2 py-0.5 rounded-full">
               Ahorras 34%
             </div>
-            <div className="text-xs uppercase tracking-widest text-ink-dim mb-2">Anual</div>
+            <div className="text-xs uppercase tracking-widest text-ink-dim mb-2">Familiar anual</div>
             <div className="text-4xl font-extrabold">$79</div>
             <div className="text-sm text-ink-dim mb-4">USD / año (~$6.58/mes)</div>
-            <Link href="/signup"><NeonButton variant="primary" className="w-full">Probar 7 días gratis</NeonButton></Link>
+            <ul className="text-xs text-ink-dim space-y-1 mb-5 text-left mx-auto">
+              <li>✓ Hasta 6 perfiles</li>
+              <li>✓ 2 meses de regalo</li>
+              <li>✓ Todas las features</li>
+            </ul>
+            <div className="mt-auto">
+              <Link href="/signup"><NeonButton variant="primary" className="w-full">Probar 7 días gratis</NeonButton></Link>
+            </div>
+          </GlassCard>
+
+          {/* TERCERA COLUMNA — Colegios e Instituciones */}
+          <GlassCard glowColor="purple" className="p-6 text-center border border-neon-purple/40 flex flex-col">
+            <div className="text-xs uppercase tracking-widest text-neon-purple mb-2">Colegios e Instituciones</div>
+            <div className="text-3xl mb-1">🏫</div>
+            <div className="text-2xl font-extrabold mb-1">Plan a tu medida</div>
+            <div className="text-sm text-ink-dim mb-4">Precio por alumno · escala por volumen</div>
+            <ul className="text-xs text-ink-dim space-y-1 mb-5 text-left mx-auto">
+              <li>✓ Cuentas para todo el colegio</li>
+              <li>✓ Panel de profesor por curso</li>
+              <li>✓ Estadísticas de avance por curso</li>
+              <li>✓ Lecciones alineadas a tu programa</li>
+            </ul>
+            <div className="mt-auto">
+              <Link href="/colegios"><NeonButton variant="ghost-cyan" className="w-full">Solicitar propuesta</NeonButton></Link>
+            </div>
           </GlassCard>
         </div>
         <p className="text-center text-xs text-ink-dim mt-6">
-          Hasta 6 perfiles · todas las features · sin contratos · cancela cuando quieras
+          Familias: hasta 6 perfiles · sin contratos · cancela cuando quieras · Colegios: contratación anual
         </p>
       </section>
 
