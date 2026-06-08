@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { DeleteAccountButton } from "@/components/account/DeleteAccountButton";
+import { AccountSecurity } from "@/components/account/AccountSecurity";
 
 export default async function SettingsPage() {
   const supabase = createClient();
@@ -15,6 +16,14 @@ export default async function SettingsPage() {
     .select("family_name, plan, trial_ends_at, payment_customer_id, parental_consent_at, privacy_accepted_at")
     .eq("owner_user_id", user.id)
     .single();
+
+  // ¿Ya configuró su propia clave del dashboard? (degrada si la columna no existe)
+  const { data: pinRow } = await supabase
+    .from("families")
+    .select("parent_pin_hash")
+    .eq("owner_user_id", user.id)
+    .single();
+  const hasPin = !!pinRow?.parent_pin_hash;
 
   return (
     <main className="min-h-dvh px-5 py-12 max-w-2xl mx-auto relative z-10">
@@ -34,6 +43,9 @@ export default async function SettingsPage() {
           <Row label="Trial termina" value={new Date(family.trial_ends_at).toLocaleDateString()} />
         )}
       </GlassCard>
+
+      <h2 className="text-lg font-extrabold mt-8 mb-3">Seguridad</h2>
+      <AccountSecurity hasPin={hasPin} />
 
       <GlassCard strong className="p-6 mb-4">
         <h2 className="font-bold mb-3">Suscripción</h2>

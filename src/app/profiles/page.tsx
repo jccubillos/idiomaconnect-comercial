@@ -24,9 +24,14 @@ export default async function ProfilesPage() {
     .eq("owner_user_id", user.id)
     .single();
 
+  if (!family) redirect("/onboarding");
+
+  // Filtro EXPLÍCITO por familia (defensa en profundidad sobre RLS): garantiza
+  // que cada cuenta solo vea SUS propios perfiles, sin depender solo de RLS.
   const { data: kids = [] } = await supabase
     .from("kid_profiles")
     .select("id, name, emoji, avatar_url, color_hex, total_xp, cefr_level, hobbies")
+    .eq("family_id", family.id)
     .is("archived_at", null)
     .order("created_at", { ascending: true });
 
@@ -41,6 +46,21 @@ export default async function ProfilesPage() {
   return (
     <>
       <main className="pt-12 pb-32 px-5 max-w-5xl mx-auto relative z-10">
+        {/* Engranaje de configuración (arriba a la derecha) */}
+        <div className="absolute top-4 right-5 z-20">
+          <Link
+            href="/account/settings"
+            aria-label="Configuración"
+            title="Configuración"
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-surface-mid border border-white/10 text-ink-dim hover:text-neon-cyan hover:border-neon-cyan/50 transition-colors"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            </svg>
+          </Link>
+        </div>
+
         <div className="text-center mb-8 mt-4">
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight mb-2">
             ¿Quién está listo para

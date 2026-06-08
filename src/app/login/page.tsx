@@ -6,6 +6,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 
 function LoginForm() {
   const router = useRouter();
@@ -77,13 +78,12 @@ function LoginForm() {
             <label className="text-xs font-bold uppercase tracking-wide text-ink-dim block mb-1.5">
               Contraseña
             </label>
-            <input
-              type="password"
+            <PasswordInput
               autoComplete="current-password"
               required
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2.5 rounded-xl bg-surface-mid border border-white/10 focus:border-neon-cyan focus:outline-none transition-colors"
+              onChange={setPassword}
+              aria-label="Contraseña"
             />
           </div>
           {error && (

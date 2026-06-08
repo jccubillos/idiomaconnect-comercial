@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
-import { verifyParentPassword } from "@/lib/parent-auth";
+import { verifyFamilyParentPin } from "@/lib/parent-pin";
 
 export const runtime = "nodejs";
 
@@ -20,13 +20,13 @@ export async function POST(req: Request) {
   try { body = BodySchema.parse(await req.json()); }
   catch { return NextResponse.json({ error: "Invalid body" }, { status: 400 }); }
 
-  if (!verifyParentPassword(body.password)) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
-
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  if (!(await verifyFamilyParentPin(supabase, user.id, body.password))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
 
   const since = new Date(Date.now() - 30 * 86_400_000).toISOString();
 

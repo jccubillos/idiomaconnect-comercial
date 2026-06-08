@@ -5,6 +5,7 @@ import Link from "next/link";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { ProgressBar } from "@/components/ui/ProgressBar";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 import { getCefrInfo } from "@/lib/content/cefr";
 
 interface KidSummary {
@@ -100,22 +101,25 @@ export default function ParentDashboardPage() {
         <GlassCard strong className="w-full max-w-md p-8">
           <div className="text-5xl text-center mb-3">👨‍👩‍👧</div>
           <h1 className="text-2xl font-extrabold text-center mb-1">Dashboard de padres</h1>
-          <p className="text-sm text-ink-dim text-center mb-6">Ingresa la clave familiar.</p>
+          <p className="text-sm text-ink-dim text-center mb-6">
+            Ingresa la <b>clave del dashboard</b> (distinta a la de acceso).
+          </p>
           <form onSubmit={tryUnlock} className="space-y-4">
-            <input
-              type="password"
-              placeholder="••••••••"
+            <PasswordInput
+              placeholder="Clave del dashboard"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2.5 rounded-xl bg-surface-mid border border-white/10 focus:border-neon-cyan focus:outline-none"
+              onChange={setPassword}
               required
+              aria-label="Clave del dashboard de padres"
             />
-            {error && <div className="text-sm text-neon-red">{error}</div>}
+            {error && (
+              <div className="text-sm text-neon-red bg-neon-red/10 border border-neon-red/30 rounded-lg p-2.5">{error}</div>
+            )}
             <NeonButton type="submit" className="w-full" size="lg">Entrar</NeonButton>
           </form>
           <div className="mt-4 text-center text-xs text-ink-dim">
-            Cambia esta clave en{" "}
-            <Link href="/account/settings" className="text-neon-cyan underline">Settings</Link>.
+            Configura o cambia esta clave en{" "}
+            <Link href="/account/settings" className="text-neon-cyan underline">Configuración</Link>.
           </div>
         </GlassCard>
       </main>

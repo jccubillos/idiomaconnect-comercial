@@ -35,6 +35,7 @@ export interface Database {
           parental_consent_at: string | null;
           privacy_accepted_at: string | null;
           tos_accepted_at: string | null;
+          parent_pin_hash: string | null;
           created_at: string;
           updated_at: string;
         };

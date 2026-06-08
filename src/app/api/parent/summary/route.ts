@@ -3,7 +3,7 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { computeStats, computeStreakDays, computeSkillBreakdown } from "@/lib/pedagogy/stats";
 import { getCefrInfo } from "@/lib/content/cefr";
-import { verifyParentPassword } from "@/lib/parent-auth";
+import { verifyFamilyParentPin } from "@/lib/parent-pin";
 
 export const runtime = "nodejs";
 
@@ -30,17 +30,27 @@ export async function POST(req: Request) {
   try { body = BodySchema.parse(await req.json()); }
   catch { return NextResponse.json({ error: "Invalid body" }, { status: 400 }); }
 
-  if (!verifyParentPassword(body.password)) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
-
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  // Clave del dashboard verificada POR FAMILIA (con respaldo al global).
+  if (!(await verifyFamilyParentPin(supabase, user.id, body.password))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  // Familia del usuario autenticado (para filtrar explícitamente sus perfiles).
+  const { data: family } = await supabase
+    .from("families")
+    .select("id")
+    .eq("owner_user_id", user.id)
+    .single();
+  if (!family) return NextResponse.json({ kids: [] });
+
   const { data: kids = [] } = await supabase
     .from("kid_profiles")
     .select("id, name, emoji, color_hex, total_xp, cefr_level, hobbies")
+    .eq("family_id", family.id)
     .is("archived_at", null)
     .order("created_at", { ascending: true });
 

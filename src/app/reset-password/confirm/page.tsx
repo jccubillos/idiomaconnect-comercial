@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { NeonButton } from "@/components/ui/NeonButton";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 
 export default function ConfirmResetPage() {
   const router = useRouter();
@@ -16,14 +17,22 @@ export default function ConfirmResetPage() {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    if (password.length < 8) return setError("Mínimo 8 caracteres");
-    if (password !== confirm) return setError("Las contraseñas no coinciden");
+    if (password.length < 8) return setError("La contraseña debe tener al menos 8 caracteres.");
+    if (password !== confirm) return setError("Las contraseñas no coinciden.");
     setLoading(true);
     const supabase = createClient();
     const { error } = await supabase.auth.updateUser({ password });
     setLoading(false);
-    if (error) { setError(error.message); return; }
-    router.push("/profiles");
+    if (error) {
+      const m = error.message.toLowerCase();
+      if (m.includes("session") || m.includes("expired") || m.includes("invalid")) {
+        setError("El enlace expiró o ya fue usado. Solicita uno nuevo desde '¿Olvidaste tu contraseña?'.");
+      } else {
+        setError(error.message);
+      }
+      return;
+    }
+    router.push("/start");
     router.refresh();
   }
 
@@ -33,21 +42,25 @@ export default function ConfirmResetPage() {
         <h1 className="text-2xl font-extrabold mb-1">Nueva contraseña</h1>
         <p className="text-sm text-ink-dim mb-6">Elige una contraseña fuerte.</p>
         <form onSubmit={submit} className="space-y-4">
-          <input
-            type="password"
+          <PasswordInput
             placeholder="Nueva contraseña"
+            autoComplete="new-password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2.5 rounded-xl bg-surface-mid border border-white/10 focus:border-neon-cyan focus:outline-none"
+            onChange={setPassword}
+            aria-label="Nueva contraseña"
           />
-          <input
-            type="password"
-            placeholder="Confirmar"
+          <PasswordInput
+            placeholder="Confirmar contraseña"
+            autoComplete="new-password"
             value={confirm}
-            onChange={(e) => setConfirm(e.target.value)}
-            className="w-full px-3 py-2.5 rounded-xl bg-surface-mid border border-white/10 focus:border-neon-cyan focus:outline-none"
+            onChange={setConfirm}
+            aria-label="Confirmar contraseña"
           />
-          {error && <div className="text-sm text-neon-red">{error}</div>}
+          {error && (
+            <div className="text-sm text-neon-red bg-neon-red/10 border border-neon-red/30 rounded-lg p-3">
+              {error}
+            </div>
+          )}
           <NeonButton type="submit" loading={loading} className="w-full" size="lg">Guardar</NeonButton>
         </form>
       </GlassCard>

@@ -21,7 +21,15 @@ export default function ResetPasswordPage() {
       redirectTo: `${window.location.origin}/reset-password/confirm`,
     });
     setLoading(false);
-    if (error) { setError(error.message); return; }
+    if (error) {
+      const m = error.message.toLowerCase();
+      if (m.includes("rate") || m.includes("too many")) {
+        setError("Demasiados intentos. Espera unos minutos e inténtalo de nuevo.");
+      } else {
+        setError(error.message);
+      }
+      return;
+    }
     setSent(true);
   }
 
