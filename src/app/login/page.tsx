@@ -11,6 +11,7 @@ function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
   const next = params.get("next") || "/start";
+  const justConfirmed = params.get("confirmed") === "1";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -51,6 +52,12 @@ function LoginForm() {
       <GlassCard strong className="w-full max-w-md p-8">
         <h1 className="text-2xl font-extrabold mb-1">Entrar</h1>
         <p className="text-sm text-ink-dim mb-6">Accede a la cuenta de tu familia.</p>
+
+        {justConfirmed && (
+          <div className="text-sm text-neon-green bg-neon-green/10 border border-neon-green/30 rounded-lg p-3 mb-4">
+            ✓ ¡Tu cuenta quedó confirmada! Ingresa con tu correo y contraseña.
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
