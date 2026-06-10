@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { Avatar } from "@/components/ui/Avatar";
-import { getCefrInfo } from "@/lib/content/cefr";
+import { cefrTier } from "@/lib/content/cefr";
 import { BottomNav } from "@/components/ui/BottomNav";
 import { CulturalCapsule } from "@/components/cultural/CulturalCapsule";
 import { resolveRole, homePathForRole } from "@/lib/auth/role";
@@ -81,7 +81,7 @@ export default async function ProfilesPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
           {(kids ?? []).map((kid) => {
-            const cefr = getCefrInfo(kid.total_xp);
+            const tier = cefrTier(kid.cefr_level);
             return (
               <GlassCard key={kid.id} className="p-5 text-center">
                 <div className="mb-4 mx-auto" style={{ width: "fit-content" }}>
@@ -98,7 +98,7 @@ export default async function ProfilesPage() {
                   className="font-bold text-sm mb-1"
                   style={{ color: kid.color_hex, textShadow: `0 0 12px ${kid.color_hex}88` }}
                 >
-                  {kid.total_xp} XP · {cefr.code} {cefr.name}
+                  {kid.total_xp} XP · {kid.cefr_level} {tier.name}
                 </div>
                 {kid.hobbies && (
                   <p className="text-xs text-ink-dim mb-4 line-clamp-1">{kid.hobbies}</p>

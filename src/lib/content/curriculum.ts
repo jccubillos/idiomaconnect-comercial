@@ -48,6 +48,8 @@ export const CURRICULUM: CurriculumUnit[] = [
   { id: "b1-5", level: "B1", title: "Predicciones", canDo: "Puede hacer predicciones y expresar probabilidad.", grammar: "will vs going to, may/might para posibilidad", vocab: "futuro, opiniones, ciencia, predicciones" },
   { id: "b1-6", level: "B1", title: "Cláusulas relativas", canDo: "Puede dar definiciones y descripciones precisas.", grammar: "relativas con who/which/that/where", vocab: "definiciones, personas, lugares, objetos" },
   { id: "b1-7", level: "B1", title: "Gerundios e infinitivos", canDo: "Puede expresar preferencias y planes con precisión.", grammar: "verbo + gerundio (-ing) vs verbo + infinitivo (to)", vocab: "preferencias, metas, trabajo, estudios" },
+  { id: "b1-8", level: "B1", title: "Antes lo hacía", canDo: "Puede contrastar hábitos del pasado con el presente.", grammar: "used to / would para hábitos y estados del pasado", vocab: "infancia, recuerdos, cambios de vida, antes y ahora" },
+  { id: "b1-9", level: "B1", title: "¿Verdad que sí?", canDo: "Puede confirmar información y sonar más natural al conversar.", grammar: "question tags y respuestas cortas (so/neither do I)", vocab: "conversación cotidiana, acuerdo y desacuerdo, vida social" },
 
   // ───────────────────────────── B2 ─────────────────────────────
   { id: "b2-1", level: "B2", title: "Hipótesis", canDo: "Puede hablar de situaciones imaginarias y arrepentimientos.", grammar: "segundo y tercer condicional", vocab: "dilemas, decisiones, arrepentimientos, hipótesis" },
@@ -56,6 +58,9 @@ export const CURRICULUM: CurriculumUnit[] = [
   { id: "b2-4", level: "B2", title: "Deducciones", canDo: "Puede especular sobre el presente y el pasado.", grammar: "modales de deducción: must/might/can't + have + participio", vocab: "misterios, suposiciones, evidencias" },
   { id: "b2-5", level: "B2", title: "Argumentar", canDo: "Puede contrastar ideas en un argumento.", grammar: "conectores although/however/despite/whereas/nevertheless", vocab: "debate, ensayos, opiniones razonadas" },
   { id: "b2-6", level: "B2", title: "Énfasis y deseos", canDo: "Puede expresar deseos, quejas y preferencias con matiz.", grammar: "wish/if only, would rather, it's (high) time + pasado", vocab: "emociones, preferencias, quejas educadas" },
+  { id: "b2-7", level: "B2", title: "Phrasal verbs clave", canDo: "Puede usar verbos compuestos frecuentes con naturalidad.", grammar: "phrasal verbs separables e inseparables de uso frecuente", vocab: "rutina, trabajo, relaciones, tecnología" },
+  { id: "b2-8", level: "B2", title: "Formal o informal", canDo: "Puede ajustar el tono según la situación y la persona.", grammar: "registro formal vs informal, cortesía y peticiones indirectas", vocab: "correos, solicitudes, situaciones sociales y laborales" },
+  { id: "b2-9", level: "B2", title: "Relatos con detalle", canDo: "Puede narrar historias complejas ubicando bien los hechos en el tiempo.", grammar: "tiempos narrativos combinados (past perfect / past perfect continuous + past simple) y conectores narrativos", vocab: "anécdotas, biografías, noticias, secuencia detallada" },
 
   // ───────────────────────────── C1 ─────────────────────────────
   { id: "c1-1", level: "C1", title: "Inversión", canDo: "Puede usar un estilo enfático y formal.", grammar: "inversión (hardly/never/not only/no sooner…)", vocab: "discurso formal, énfasis dramático, literatura" },
@@ -63,12 +68,55 @@ export const CURRICULUM: CurriculumUnit[] = [
   { id: "c1-3", level: "C1", title: "Matices modales", canDo: "Puede matizar afirmaciones y suavizar el discurso (hedging).", grammar: "modalidad matizada y hedging (tends to, is likely to, may well)", vocab: "registro académico, cautela, probabilidad" },
   { id: "c1-4", level: "C1", title: "Colocaciones e idioms", canDo: "Puede expresarse con naturalidad casi nativa.", grammar: "colocaciones frecuentes, phrasal verbs avanzados, idioms", vocab: "lenguaje idiomático, fluidez, expresiones naturales" },
   { id: "c1-5", level: "C1", title: "Cohesión y registro", canDo: "Puede adaptar el registro y cohesionar textos largos.", grammar: "marcadores del discurso, registro formal vs informal", vocab: "cohesión textual, tono, adecuación al contexto" },
+  { id: "c1-6", level: "C1", title: "Cohesión avanzada", canDo: "Puede enlazar ideas complejas en textos largos con fluidez.", grammar: "marcadores del discurso avanzados (moreover, consequently, notwithstanding, thereby)", vocab: "ensayo, argumentación formal, transiciones" },
+  { id: "c1-7", level: "C1", title: "Verbos de reporte con matiz", canDo: "Puede reportar ideas ajenas transmitiendo actitud y matiz.", grammar: "reporting verbs y su connotación (claim, concede, assert, imply, allege)", vocab: "prensa, debate, citas, opiniones matizadas" },
+  { id: "c1-8", level: "C1", title: "Estilo académico", canDo: "Puede escribir en un registro formal, preciso e impersonal.", grammar: "nominalización y estructuras impersonales del estilo académico", vocab: "informes, ciencia, abstracción, síntesis" },
+  { id: "c1-9", level: "C1", title: "Colocaciones formales", canDo: "Puede elegir combinaciones de palabras naturales y precisas.", grammar: "colocaciones formales y phrasal verbs avanzados", vocab: "negocios, academia, expresión precisa" },
+
+  // ───────────────────────────── C2 ─────────────────────────────
+  { id: "c2-1", level: "C2", title: "Modismos y lenguaje figurado", canDo: "Puede comprender y usar expresiones idiomáticas como un nativo.", grammar: "idioms, lenguaje figurado y expresiones culturales", vocab: "cultura, humor, conversación natural, dichos" },
+  { id: "c2-2", level: "C2", title: "Matices y connotación", canDo: "Puede elegir la palabra exacta según su connotación y tono.", grammar: "elección léxica fina: sinónimos, connotación y registro", vocab: "persuasión, tono, precisión léxica, estilo" },
+  { id: "c2-3", level: "C2", title: "Ironía y subtexto", canDo: "Puede captar y producir ironía, humor y dobles sentidos.", grammar: "ironía, sarcasmo, understatement y subtexto", vocab: "humor, crítica, medios, sutileza" },
+  { id: "c2-4", level: "C2", title: "Retórica y debate", canDo: "Puede argumentar, conceder y refutar con sofisticación.", grammar: "recursos retóricos: concesión, refutación, énfasis persuasivo", vocab: "debate formal, retórica, discurso público" },
+  { id: "c2-5", level: "C2", title: "Estilo y elegancia", canDo: "Puede escribir con ritmo, variación y elegancia.", grammar: "variación sintáctica, cohesión avanzada y ritmo de la prosa", vocab: "ensayo literario, estilo, escritura creativa" },
+  { id: "c2-6", level: "C2", title: "Inglés experto", canDo: "Puede desenvolverse en contextos profesionales y académicos exigentes.", grammar: "registro experto: presentaciones, papers y negociación de alto nivel", vocab: "profesional, académico, especializado, técnico" },
 ];
 
-/** Unidades de un nivel. C2 reutiliza las de C1 (dominio avanzado). */
+/** Unidades de un nivel (cada nivel A1→C2 tiene su propio plan). */
 export function unitsForLevel(level: CEFRLevel): CurriculumUnit[] {
-  const target = level === "C2" ? "C1" : level;
-  return CURRICULUM.filter((u) => u.level === target);
+  return CURRICULUM.filter((u) => u.level === level);
+}
+
+/** Orden de niveles del currículo (A1 → C2). */
+export const LEVEL_SEQUENCE: CEFRLevel[] = ["A1", "A2", "B1", "B2", "C1", "C2"];
+
+/**
+ * Nivel MÁXIMO permitido por el avance en el currículo. Para estar en un nivel,
+ * el alumno debe haber completado (al menos una vez) todas las unidades de los
+ * niveles anteriores. `grammarLessonsDone` = nº de lecciones de gramática hechas.
+ *
+ * Es la base de la "doble exigencia" para ascender: además del XP, hay que haber
+ * recorrido todas las unidades del nivel.
+ */
+export function curriculumCapLevel(grammarLessonsDone: number): CEFRLevel {
+  let cap: CEFRLevel = "A1";
+  let need = 0;
+  for (const lvl of LEVEL_SEQUENCE) {
+    if (grammarLessonsDone >= need) cap = lvl;
+    need += unitsForLevel(lvl).length;
+  }
+  return cap;
+}
+
+/** Unidades que faltan por completar dentro del nivel indicado (para mensajes). */
+export function unitsRemainingInLevel(level: CEFRLevel, grammarLessonsDone: number): number {
+  let unitsBelow = 0;
+  for (const lvl of LEVEL_SEQUENCE) {
+    if (lvl === level) break;
+    unitsBelow += unitsForLevel(lvl).length;
+  }
+  const doneInLevel = Math.max(0, grammarLessonsDone - unitsBelow);
+  return Math.max(0, unitsForLevel(level).length - doneInLevel);
 }
 
 /**

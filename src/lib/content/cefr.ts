@@ -1,4 +1,5 @@
 import type { CEFRLevel } from "@/lib/supabase/database.types";
+import { curriculumCapLevel } from "./curriculum";
 
 export interface CEFRTier {
   code: CEFRLevel;
@@ -9,12 +10,17 @@ export interface CEFRTier {
 
 export const CEFR_LEVELS: CEFRTier[] = [
   { code: "A1", name: "Explorer", tagline: "Primeros pasos en inglés", threshold: 0 },
-  { code: "A2", name: "Cadet", tagline: "Frases cotidianas y rutinas", threshold: 150 },
-  { code: "B1", name: "Pilot", tagline: "Conversaciones independientes", threshold: 400 },
+  { code: "A2", name: "Cadet", tagline: "Frases cotidianas y rutinas", threshold: 200 },
+  { code: "B1", name: "Pilot", tagline: "Conversaciones independientes", threshold: 450 },
   { code: "B2", name: "Captain", tagline: "Fluidez en temas complejos", threshold: 900 },
   { code: "C1", name: "Commander", tagline: "Dominio en contextos académicos", threshold: 1700 },
   { code: "C2", name: "Legend", tagline: "Maestría casi nativa", threshold: 3000 },
 ];
+
+/** Tier por código (para mostrar el nombre de un nivel guardado). */
+export function cefrTier(code: CEFRLevel): CEFRTier {
+  return CEFR_LEVELS.find((l) => l.code === code) ?? CEFR_LEVELS[0];
+}
 
 export interface CEFRInfo extends CEFRTier {
   progress: number; // 0..1 progreso hacia el siguiente nivel
@@ -58,5 +64,39 @@ export function getCefrInfo(totalXp: number): CEFRInfo {
     progress,
     xpToNext,
     nextLabel: `${xpToNext} XP para ${next.code} ${next.name}`,
+  };
+}
+
+export interface EffectiveCefrInfo extends CEFRInfo {
+  /** true = tiene el XP del siguiente nivel pero le faltan unidades por completar. */
+  blockedByCurriculum: boolean;
+}
+
+/**
+ * Nivel EFECTIVO con DOBLE EXIGENCIA para ascender: el XP (getCefrInfo) Y haber
+ * recorrido todas las unidades del nivel (curriculumCapLevel).
+ *
+ * Si el alumno tiene XP de sobra pero aún no termina las unidades de su nivel,
+ * se queda en el nivel actual (capado) y se le indica que complete las unidades.
+ */
+export function effectiveCefrInfo(totalXp: number, grammarLessonsDone: number): EffectiveCefrInfo {
+  const xpInfo = getCefrInfo(totalXp);
+  const cap = curriculumCapLevel(grammarLessonsDone);
+  const order = CEFR_LEVELS.map((l) => l.code);
+  const xpIdx = order.indexOf(xpInfo.code);
+  const capIdx = order.indexOf(cap);
+
+  if (capIdx >= xpIdx) {
+    return { ...xpInfo, blockedByCurriculum: false };
+  }
+
+  // Capado por currículo: mostramos el nivel permitido y pedimos completar unidades.
+  const tier = CEFR_LEVELS[capIdx];
+  return {
+    ...tier,
+    progress: 1,
+    xpToNext: 0,
+    nextLabel: "Completa las unidades del nivel para subir",
+    blockedByCurriculum: true,
   };
 }

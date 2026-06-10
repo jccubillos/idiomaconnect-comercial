@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
-import { getCefrInfo } from "@/lib/content/cefr";
+import { effectiveCefrInfo } from "@/lib/content/cefr";
 import { evaluateTrophies } from "@/lib/content/trophies";
 import { computeStats } from "@/lib/pedagogy/stats";
 
@@ -58,7 +58,16 @@ export async function POST(req: Request) {
   if (!kid) return NextResponse.json({ error: "Kid disappeared" }, { status: 404 });
 
   const newTotal = kid.total_xp + body.xpGained;
-  const cefr = getCefrInfo(newTotal);
+
+  // DOBLE EXIGENCIA para ascender: XP + haber recorrido las unidades del nivel.
+  // El nivel guardado se capa por el avance del currículo (lecciones de gramática).
+  const { count: grammarCount } = await supabase
+    .from("lesson_sessions")
+    .select("id", { count: "exact", head: true })
+    .eq("kid_id", body.kidId)
+    .eq("world_key", "grammar");
+  const cefr = effectiveCefrInfo(newTotal, grammarCount ?? 0);
+
   await supabase
     .from("kid_profiles")
     .update({ total_xp: newTotal, cefr_level: cefr.code })
@@ -84,6 +93,8 @@ export async function POST(req: Request) {
   return NextResponse.json({
     totalXp: newTotal,
     cefr: { code: cefr.code, name: cefr.name, progress: cefr.progress, nextLabel: cefr.nextLabel },
+    // true = tiene el XP para subir pero le faltan unidades del nivel por completar.
+    blockedByCurriculum: cefr.blockedByCurriculum,
     trophiesEarnedCount: earnedTrophies.length,
   });
 }

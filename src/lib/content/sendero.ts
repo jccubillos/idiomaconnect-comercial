@@ -23,10 +23,10 @@ export interface SenderoStation {
   state: StationState;
 }
 
-const LEVEL_ORDER: CEFRLevel[] = ["A1", "A2", "B1", "B2", "C1"];
+const LEVEL_ORDER: CEFRLevel[] = ["A1", "A2", "B1", "B2", "C1", "C2"];
 
 function normalizeLevel(level: CEFRLevel): CEFRLevel {
-  return level === "C2" ? "C1" : level;
+  return level;
 }
 
 export function buildSendero(

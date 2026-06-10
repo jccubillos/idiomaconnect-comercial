@@ -7,7 +7,7 @@ import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Avatar } from "@/components/ui/Avatar";
 import { BottomNav } from "@/components/ui/BottomNav";
 import { UNIVERSAL_WORLDS, buildPersonalWorld, SCHOOL_WORLD } from "@/lib/content/worlds";
-import { getCefrInfo } from "@/lib/content/cefr";
+import { effectiveCefrInfo } from "@/lib/content/cefr";
 import { getCoachPlan } from "@/lib/coach/coach";
 import { Lumi } from "@/components/coach/Lumi";
 import { DailyMission } from "@/components/coach/DailyMission";
@@ -53,7 +53,9 @@ export default async function WorldsPage({ searchParams }: PageProps) {
       : 0;
   }
 
-  const cefr = getCefrInfo(kid.total_xp);
+  // Nivel EFECTIVO con doble exigencia (XP + unidades de gramática completadas).
+  const grammarCount = (sessions ?? []).filter((s) => s.world_key === "grammar").length;
+  const cefr = effectiveCefrInfo(kid.total_xp, grammarCount);
 
   // Coach Lumi: tarjetas SRS pendientes (señal para la Misión del Día) + plan del día.
   const { count: srsDueCount } = await supabase
@@ -77,8 +79,7 @@ export default async function WorldsPage({ searchParams }: PageProps) {
     srsDueCount: srsDueCount ?? 0,
   });
 
-  // Progreso del Sendero (lecciones de gramática completadas).
-  const grammarCount = (sessions ?? []).filter((s) => s.world_key === "grammar").length;
+  // Progreso del Sendero (usa el conteo de gramática ya calculado arriba).
   const senderoSum = senderoSummary(buildSendero(cefr.code, grammarCount));
 
   // Estado del diagnóstico: ¿nunca lo hizo? ¿toca re-medir el nivel?

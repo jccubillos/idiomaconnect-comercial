@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Avatar } from "@/components/ui/Avatar";
 import { BottomNav } from "@/components/ui/BottomNav";
-import { getCefrInfo } from "@/lib/content/cefr";
+import { effectiveCefrInfo } from "@/lib/content/cefr";
 import { buildSendero, senderoSummary } from "@/lib/content/sendero";
 import { SenderoMap } from "@/components/sendero/SenderoMap";
 
@@ -26,14 +26,15 @@ export default async function SenderoPage({ searchParams }: PageProps) {
     .single();
   if (!kid) redirect("/profiles");
 
-  const cefr = getCefrInfo(kid.total_xp);
-
   // Progreso del sendero = lecciones de gramática (currículo) completadas.
   const { count: grammarCount } = await supabase
     .from("lesson_sessions")
     .select("id", { count: "exact", head: true })
     .eq("kid_id", kid.id)
     .eq("world_key", "grammar");
+
+  // Nivel EFECTIVO con doble exigencia (XP + unidades completadas).
+  const cefr = effectiveCefrInfo(kid.total_xp, grammarCount ?? 0);
 
   const stations = buildSendero(cefr.code, grammarCount ?? 0);
   const summary = senderoSummary(stations);
@@ -56,7 +57,7 @@ export default async function SenderoPage({ searchParams }: PageProps) {
           <div className="text-4xl mb-2">🌌</div>
           <h1 className="text-3xl font-extrabold mb-1">Tu Sendero</h1>
           <p className="text-sm text-ink-dim mb-4">
-            El camino ordenado del inglés, de A1 a C1.
+            El camino ordenado del inglés, de A1 a C2.
           </p>
           <div className="inline-flex flex-col items-center gap-2 w-full max-w-xs mx-auto">
             <div className="flex justify-between w-full text-xs font-bold">
