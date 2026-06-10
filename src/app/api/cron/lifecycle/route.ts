@@ -45,7 +45,7 @@ export async function GET(req: Request) {
 
   const svc = createServiceClient();
   const now = new Date();
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://idiomaconnect-comercial.vercel.app";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://idiomaconnect.com";
   const billingUrl = `${appUrl}/billing`;
 
   const stats = { postTrial: 0, offers: 0, dunningFamily: 0, dunningSchool: 0, purged: 0, errors: 0 };
@@ -191,7 +191,7 @@ export async function GET(req: Request) {
           ? dunningSchoolEmail({
               schoolName: f.family_name,
               retentionDate: retention,
-              contactEmail: process.env.RESEND_FROM_EMAIL ?? "hola@idiomaconnect.app",
+              contactEmail: "hola@idiomaconnect.com",
             })
           : dunningFamilyEmail({ familyName: f.family_name, retentionDate: retention, billingUrl });
 

@@ -256,7 +256,7 @@ export default async function HomePage() {
         <div className="flex flex-wrap justify-center gap-4 mb-3">
           <Link href="/privacy" className="hover:text-neon-cyan">Privacidad</Link>
           <Link href="/terms" className="hover:text-neon-cyan">Términos</Link>
-          <a href="mailto:hola@idiomaconnect.app" className="hover:text-neon-cyan">Contacto</a>
+          <a href="mailto:hola@idiomaconnect.com" className="hover:text-neon-cyan">Contacto</a>
         </div>
         <div>© 2026 IdiomaConnect · Hecho en 🇨🇱</div>
       </footer>

@@ -32,7 +32,7 @@ export async function GET(req: Request) {
   }
 
   const supabase = createServiceClient();
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://idiomaconnect.app";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://idiomaconnect.com";
 
   const { data: families = [] } = await supabase
     .from("families")

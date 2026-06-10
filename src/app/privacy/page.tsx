@@ -7,7 +7,7 @@ export default function PrivacyPage() {
       <h2>1. Quiénes somos</h2>
       <p>
         IdiomaConnect es un servicio operado por <strong>[Razón social a completar]</strong>,
-        domiciliado en Chile. Contacto: <a href="mailto:privacidad@idiomaconnect.app">privacidad@idiomaconnect.app</a>.
+        domiciliado en Chile. Contacto: <a href="mailto:privacidad@idiomaconnect.com">privacidad@idiomaconnect.com</a>.
       </p>
 
       <h2>2. Qué datos recolectamos</h2>

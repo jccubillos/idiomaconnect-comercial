@@ -10,4 +10,4 @@ export function getResend(): Resend {
   return cached;
 }
 
-export const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "hola@idiomaconnect.app";
+export const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "IdiomaConnect <hola@idiomaconnect.com>";
