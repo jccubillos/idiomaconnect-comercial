@@ -260,6 +260,52 @@ export interface Database {
         };
         Update: Partial<Database["public"]["Tables"]["email_log"]["Row"]>;
       };
+      app_admins: {
+        Row: {
+          user_id: string;
+          totp_secret: string | null;
+          totp_verified: boolean;
+          created_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["app_admins"]["Row"]> & {
+          user_id: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["app_admins"]["Row"]>;
+      };
+      admin_audit: {
+        Row: {
+          id: string;
+          user_id: string;
+          action: string;
+          detail: Record<string, unknown> | null;
+          created_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["admin_audit"]["Row"]> & {
+          user_id: string;
+          action: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["admin_audit"]["Row"]>;
+      };
+      discount_codes: {
+        Row: {
+          id: string;
+          code: string;
+          percent: number;
+          duration: "once" | "repeating" | "forever";
+          duration_months: number | null;
+          max_redemptions: number;
+          expires_at: string | null;
+          ls_discount_id: string | null;
+          active: boolean;
+          note: string | null;
+          created_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["discount_codes"]["Row"]> & {
+          code: string;
+          percent: number;
+        };
+        Update: Partial<Database["public"]["Tables"]["discount_codes"]["Row"]>;
+      };
     };
     Views: {
       leaderboard_weekly: {

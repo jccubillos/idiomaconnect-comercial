@@ -8,7 +8,7 @@
  * Docs: https://docs.lemonsqueezy.com/api
  */
 
-import { lemonSqueezySetup, createCheckout, createDiscount } from "@lemonsqueezy/lemonsqueezy.js";
+import { lemonSqueezySetup, createCheckout, createDiscount, deleteDiscount } from "@lemonsqueezy/lemonsqueezy.js";
 
 let initialized = false;
 
@@ -118,5 +118,52 @@ export async function createPersonalDiscount(args: {
     return { code };
   } catch (err) {
     return { error: err instanceof Error ? err.message : String(err) };
+  }
+}
+
+/**
+ * Crea un código de descuento PERSONALIZADO en Lemon Squeezy (dashboard admin):
+ * % y duración a medida (once = primer pago / repeating = N meses / forever),
+ * con límite de usos y vencimiento opcional.
+ */
+export async function createDiscountCode(args: {
+  code: string;
+  name: string;
+  percent: number;
+  duration: "once" | "repeating" | "forever";
+  durationMonths?: number;
+  maxRedemptions: number;
+  expiresAt?: string | null;
+}): Promise<{ lsId: string; code: string } | { error: string }> {
+  init();
+  try {
+    const result = await createDiscount({
+      storeId: LS_CONFIG.storeId,
+      name: args.name,
+      code: args.code,
+      amount: args.percent,
+      amountType: "percent",
+      duration: args.duration,
+      durationInMonths: args.duration === "repeating" ? (args.durationMonths ?? 1) : undefined,
+      isLimitedRedemptions: true,
+      maxRedemptions: args.maxRedemptions,
+      expiresAt: args.expiresAt ?? null,
+    });
+    const data = result.data?.data;
+    if (!data?.id) return { error: "Lemon Squeezy did not return a discount" };
+    return { lsId: String(data.id), code: data.attributes.code };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : String(err) };
+  }
+}
+
+/** Elimina un descuento en Lemon Squeezy (al desactivar un código desde el admin). */
+export async function removeDiscountCode(lsId: string): Promise<{ ok: boolean }> {
+  init();
+  try {
+    await deleteDiscount(lsId);
+    return { ok: true };
+  } catch {
+    return { ok: false };
   }
 }

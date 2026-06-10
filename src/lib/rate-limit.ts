@@ -51,6 +51,8 @@ export const LIMITS = {
   tts: { limit: 40, windowSec: 60 * 60 },
   // Per-user, per-minute cap on conversation turns
   conversation: { limit: 25, windowSec: 60 },
+  // Intentos de código TOTP del dashboard admin (anti fuerza bruta)
+  adminTotp: { limit: 8, windowSec: 15 * 60 },
 } as const;
 
 export type LimitKind = keyof typeof LIMITS;
