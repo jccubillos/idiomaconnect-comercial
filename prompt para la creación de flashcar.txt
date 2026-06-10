@@ -1,0 +1,6 @@
+prompt para la creación de flashcard
+
+A simple friendly flat icon of a [OBJETO], centered on a fully transparent 
+background. Glowing neon cyan outline, soft inner glow, rounded minimal shapes, 
+clean consistent line weight, vibrant kid-friendly style, no text, no shadow. 
+Square 512x512, PNG with transparency.
