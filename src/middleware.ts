@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PUBLIC_ROUTES = ["/", "/login", "/signup", "/auth/callback", "/privacy", "/terms", "/api/health", "/api/payments/webhook", "/api/stripe/webhook", "/offline", "/reset-password", "/reset-password/confirm", "/colegios", "/api/school-leads"];
+const PUBLIC_ROUTES = ["/", "/login", "/signup", "/auth/callback", "/privacy", "/terms", "/api/health", "/api/payments/webhook", "/offline", "/reset-password", "/reset-password/confirm", "/colegios", "/api/school-leads", "/api/unsubscribe"];
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -33,7 +33,8 @@ export async function middleware(request: NextRequest) {
   const isPublic =
     PUBLIC_ROUTES.includes(pathname) ||
     pathname.startsWith("/_next") ||
-    pathname.startsWith("/api/stripe/webhook");
+    // Crons de Vercel: no traen sesión; cada ruta cron exige CRON_SECRET (falla cerrado).
+    pathname.startsWith("/api/cron/");
 
   if (!user && !isPublic) {
     const url = request.nextUrl.clone();

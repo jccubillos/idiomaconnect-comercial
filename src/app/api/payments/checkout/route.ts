@@ -9,6 +9,8 @@ export const runtime = "nodejs";
 
 const Body = z.object({
   plan: z.enum(["monthly", "yearly"]),
+  // Código de descuento opcional (también se puede escribir en el checkout).
+  discountCode: z.string().trim().max(64).optional(),
 });
 
 export async function POST(req: Request) {
@@ -34,6 +36,7 @@ export async function POST(req: Request) {
     email: user.email,
     familyId: family.id,
     successUrl: `${appUrl}/profiles?subscribed=1`,
+    discountCode: body.discountCode || undefined,
   });
 
   if ("error" in result) {

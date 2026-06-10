@@ -120,6 +120,21 @@ export async function POST(req: Request) {
   };
   if (plan) update.plan = plan;
 
+  // Ancla de COBRANZA (dunning): al fallar un pago se fija payment_failed_at
+  // (si no estaba ya fijado, para no reiniciar la cadencia de correos);
+  // un pago exitoso o suscripción activa la limpia.
+  const status = String(attrs.status ?? "");
+  if (eventName === "subscription_payment_failed" || status === "past_due" || status === "unpaid") {
+    const { data: fam } = await supabase
+      .from("families")
+      .select("payment_failed_at")
+      .eq("id", familyId)
+      .single();
+    if (!fam?.payment_failed_at) update.payment_failed_at = new Date().toISOString();
+  } else if (eventName === "subscription_payment_success" || status === "active") {
+    update.payment_failed_at = null;
+  }
+
   // Strip undefineds before update.
   for (const k of Object.keys(update)) if (update[k] === undefined) delete update[k];
 

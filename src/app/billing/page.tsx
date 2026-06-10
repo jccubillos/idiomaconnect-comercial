@@ -9,6 +9,8 @@ function BillingInner() {
   const params = useSearchParams();
   const canceled = params.get("canceled") === "1";
   const expired = params.get("expired") === "1";
+  // Código de descuento que llega por link personalizado (ej. oferta 15% post-trial).
+  const promo = params.get("promo") ?? undefined;
   const [loading, setLoading] = useState<"monthly" | "yearly" | null>(null);
 
   async function startCheckout(plan: "monthly" | "yearly") {
@@ -16,7 +18,7 @@ function BillingInner() {
     const res = await fetch("/api/payments/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan }),
+      body: JSON.stringify({ plan, discountCode: promo }),
     });
     const data = await res.json();
     if (data.url) window.location.href = data.url;
@@ -43,6 +45,12 @@ function BillingInner() {
           )}
           {canceled && (
             <p className="mt-4 text-sm text-neon-red">El pago se canceló. Puedes intentar de nuevo cuando quieras.</p>
+          )}
+          {promo && (
+            <div className="mt-5 max-w-md mx-auto rounded-2xl border border-neon-green/50 bg-neon-green/10 px-4 py-3">
+              <p className="text-sm font-extrabold text-neon-green">🎉 Descuento {promo} listo para aplicarse</p>
+              <p className="text-xs text-ink-dim">Se aplicará automáticamente al elegir tu plan.</p>
+            </div>
           )}
         </div>
 

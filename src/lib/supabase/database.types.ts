@@ -36,6 +36,8 @@ export interface Database {
           privacy_accepted_at: string | null;
           tos_accepted_at: string | null;
           parent_pin_hash: string | null;
+          payment_failed_at: string | null;
+          marketing_opt_out: boolean;
           created_at: string;
           updated_at: string;
         };
@@ -230,6 +232,33 @@ export interface Database {
           email: string;
         };
         Update: Partial<Database["public"]["Tables"]["school_leads"]["Row"]>;
+      };
+      trial_registry: {
+        Row: {
+          email: string;
+          first_trial_at: string;
+          retrial_authorized: boolean;
+          retrial_authorized_at: string | null;
+        };
+        Insert: Partial<Database["public"]["Tables"]["trial_registry"]["Row"]> & {
+          email: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["trial_registry"]["Row"]>;
+      };
+      email_log: {
+        Row: {
+          id: string;
+          family_id: string | null;
+          email: string;
+          kind: string;
+          sent_at: string;
+          meta: Record<string, unknown> | null;
+        };
+        Insert: Partial<Database["public"]["Tables"]["email_log"]["Row"]> & {
+          email: string;
+          kind: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["email_log"]["Row"]>;
       };
     };
     Views: {
