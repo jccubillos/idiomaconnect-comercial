@@ -5,6 +5,7 @@ import { conversationChat } from "@/lib/groq/conversation";
 import { getScenario } from "@/lib/content/scenarios";
 import { getCefrInfo } from "@/lib/content/cefr";
 import { enforceLimit } from "@/lib/rate-limit";
+import { familyAccess } from "@/lib/billing/access";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -39,6 +40,19 @@ export async function POST(req: Request) {
   const { data: kid } = await supabase
     .from("kid_profiles").select("*").eq("id", body.kidId).single();
   if (!kid) return NextResponse.json({ error: "Kid not found" }, { status: 404 });
+
+  // Gate de plan (familia no visible = staff de colegio → plan school, permitido).
+  const { data: famRow } = await supabase
+    .from("families")
+    .select("plan, trial_ends_at")
+    .eq("id", kid.family_id)
+    .single();
+  if (famRow && !familyAccess(famRow).active) {
+    return NextResponse.json(
+      { error: "Tu período de prueba terminó. Suscríbete para seguir aprendiendo.", code: "paywall" },
+      { status: 402 },
+    );
+  }
 
   const scenario = getScenario(body.scenarioKey);
   if (!scenario) return NextResponse.json({ error: "Scenario not found" }, { status: 404 });

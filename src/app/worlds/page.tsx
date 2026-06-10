@@ -8,6 +8,8 @@ import { Avatar } from "@/components/ui/Avatar";
 import { BottomNav } from "@/components/ui/BottomNav";
 import { UNIVERSAL_WORLDS, buildPersonalWorld, SCHOOL_WORLD } from "@/lib/content/worlds";
 import { effectiveCefrInfo } from "@/lib/content/cefr";
+import { familyAccess } from "@/lib/billing/access";
+import { TrialBanner } from "@/components/billing/TrialBanner";
 import { getCoachPlan } from "@/lib/coach/coach";
 import { Lumi } from "@/components/coach/Lumi";
 import { DailyMission } from "@/components/coach/DailyMission";
@@ -33,6 +35,16 @@ export default async function WorldsPage({ searchParams }: PageProps) {
     .eq("id", kidId)
     .single();
   if (!kid) redirect("/profiles");
+
+  // GATE de acceso: trial vencido → paywall. (Si la fila de familia no es visible,
+  // es un profe/admin de colegio vía RLS de staff → plan school, acceso activo.)
+  const { data: famRow } = await supabase
+    .from("families")
+    .select("plan, trial_ends_at")
+    .eq("id", kid.family_id)
+    .single();
+  const access = famRow ? familyAccess(famRow) : { active: true, isTrial: false, expired: false, daysLeft: null };
+  if (!access.active) redirect("/billing?expired=1");
 
   // Per-world progress: count completed sessions per world_key
   const { data: sessions = [] } = await supabase
@@ -169,6 +181,7 @@ export default async function WorldsPage({ searchParams }: PageProps) {
       </header>
 
       <main className="pt-24 pb-32 px-5 max-w-3xl mx-auto relative z-10">
+        {access.isTrial && <TrialBanner daysLeft={access.daysLeft} expired={false} />}
         <div className="text-center mb-6">
           <h2 className="text-3xl font-extrabold mb-1">Active Worlds</h2>
           <p className="text-sm text-ink-dim">

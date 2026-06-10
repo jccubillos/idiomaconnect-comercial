@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { synthesizeSpeech } from "@/lib/tts/provider";
 import { enforceLimit } from "@/lib/rate-limit";
+import { requireKidAccess } from "@/lib/billing/access";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -33,12 +34,12 @@ export async function POST(req: Request) {
     );
   }
 
-  const { data: kid } = await supabase
-    .from("kid_profiles")
-    .select("id, family_id")
-    .eq("id", body.kidId)
-    .single();
-  if (!kid) return NextResponse.json({ error: "Kid not found" }, { status: 404 });
+  // Gate de plan: kid válido + familia con acceso activo (trial vigente o pago).
+  const access = await requireKidAccess(supabase, body.kidId);
+  if (!access.ok) {
+    return NextResponse.json({ error: access.error, code: access.code }, { status: access.status });
+  }
+  const kid = access.kid;
 
   try {
     const audio = await synthesizeSpeech({ text: body.text, voice: body.voice });

@@ -8,6 +8,7 @@ import { NeonButton } from "@/components/ui/NeonButton";
 function BillingInner() {
   const params = useSearchParams();
   const canceled = params.get("canceled") === "1";
+  const expired = params.get("expired") === "1";
   const [loading, setLoading] = useState<"monthly" | "yearly" | null>(null);
 
   async function startCheckout(plan: "monthly" | "yearly") {
@@ -29,10 +30,19 @@ function BillingInner() {
     <main className="min-h-dvh flex items-center justify-center px-5 py-12 relative z-10">
       <div className="max-w-2xl w-full">
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-extrabold mb-2">Family Plan</h1>
-          <p className="text-ink-dim">Hasta 6 perfiles · todas las features · cancela cuando quieras</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold mb-2">Plan Familiar</h1>
+          <p className="text-ink-dim">Hasta 6 perfiles · todas las funciones · cancela cuando quieras</p>
+          {expired && (
+            <div className="mt-5 max-w-md mx-auto rounded-2xl border border-neon-red/50 bg-neon-red/10 px-4 py-3">
+              <p className="text-sm font-extrabold text-neon-red mb-1">⏰ Tu prueba gratis de 7 días terminó</p>
+              <p className="text-xs text-ink-dim">
+                No te preocupes: <b>el progreso de tus niños queda guardado por 30 días</b>.
+                Suscríbete y retoman exactamente donde quedaron — XP, niveles, rachas y trofeos intactos.
+              </p>
+            </div>
+          )}
           {canceled && (
-            <p className="mt-4 text-sm text-neon-red">El checkout se canceló. Puedes intentar de nuevo.</p>
+            <p className="mt-4 text-sm text-neon-red">El pago se canceló. Puedes intentar de nuevo cuando quieras.</p>
           )}
         </div>
 

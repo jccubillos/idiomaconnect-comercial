@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { transcribeAudio } from "@/lib/groq/transcribe";
 import { enforceLimit } from "@/lib/rate-limit";
+import { requireKidAccess } from "@/lib/billing/access";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -31,13 +32,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Audio too large (>10MB)" }, { status: 413 });
   }
 
-  // Verify kid ownership via RLS-aware query
-  const { data: kid } = await supabase
-    .from("kid_profiles")
-    .select("id, family_id")
-    .eq("id", kidId)
-    .single();
-  if (!kid) return NextResponse.json({ error: "Kid not found" }, { status: 404 });
+  // Gate de plan: kid válido (RLS) + familia con acceso activo (trial vigente o pago).
+  const access = await requireKidAccess(supabase, kidId);
+  if (!access.ok) {
+    return NextResponse.json({ error: access.error, code: access.code }, { status: access.status });
+  }
+  const kid = access.kid;
 
   const result = await transcribeAudio(audio, { language });
   if (!result.ok) {

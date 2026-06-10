@@ -5,6 +5,8 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { Avatar } from "@/components/ui/Avatar";
 import { cefrTier } from "@/lib/content/cefr";
+import { familyAccess } from "@/lib/billing/access";
+import { TrialBanner } from "@/components/billing/TrialBanner";
 import { BottomNav } from "@/components/ui/BottomNav";
 import { CulturalCapsule } from "@/components/cultural/CulturalCapsule";
 import { resolveRole, homePathForRole } from "@/lib/auth/role";
@@ -38,10 +40,7 @@ export default async function ProfilesPage() {
   // If no kids yet, push to onboarding
   if (!kids?.length) redirect("/onboarding");
 
-  const trialActive = family?.plan === "trial" && family.trial_ends_at && new Date(family.trial_ends_at) > new Date();
-  const trialDaysLeft = trialActive
-    ? Math.max(0, Math.ceil((new Date(family!.trial_ends_at).getTime() - Date.now()) / 86_400_000))
-    : 0;
+  const access = familyAccess(family);
 
   return (
     <>
@@ -71,12 +70,8 @@ export default async function ProfilesPage() {
           <div className="w-24 h-1 mx-auto mt-4 rounded-full bg-gradient-to-r from-neon-red to-neon-cyan" />
         </div>
 
-        {trialActive && (
-          <div className="max-w-md mx-auto mb-6 text-center text-xs font-bold uppercase tracking-wide">
-            <span className="px-3 py-1 rounded-full bg-neon-cyan/15 text-neon-cyan border border-neon-cyan/40">
-              Free trial · {trialDaysLeft} día{trialDaysLeft === 1 ? "" : "s"} restantes
-            </span>
-          </div>
+        {(access.isTrial || access.expired) && (
+          <TrialBanner daysLeft={access.daysLeft} expired={access.expired} />
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
