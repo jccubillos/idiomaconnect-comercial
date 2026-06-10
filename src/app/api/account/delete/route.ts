@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
+import { verifyFamilyParentPin } from "@/lib/parent-pin";
 
 export const runtime = "nodejs";
 
@@ -7,6 +8,9 @@ export const runtime = "nodejs";
  * Account deletion — full data wipe.
  * Cascades from auth.users → families → kid_profiles → sessions/srs/trophies.
  * This is required by COPPA / GDPR-K right to be forgotten.
+ *
+ * Exige la clave de administrador (dashboard) para que un niño no pueda borrar
+ * la cuenta de la familia.
  */
 export async function POST(req: Request) {
   const supabase = createClient();
@@ -16,6 +20,12 @@ export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
   if (body.confirm !== "BORRAR") {
     return NextResponse.json({ error: "Confirmation required" }, { status: 400 });
+  }
+
+  // Verificar la clave de administrador antes de un borrado irreversible.
+  const okPin = await verifyFamilyParentPin(supabase, user.id, String(body.adminPin ?? ""));
+  if (!okPin) {
+    return NextResponse.json({ error: "Clave de administrador incorrecta." }, { status: 403 });
   }
 
   const admin = createServiceClient();
