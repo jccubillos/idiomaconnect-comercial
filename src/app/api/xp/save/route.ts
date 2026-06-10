@@ -52,7 +52,7 @@ export async function POST(req: Request) {
   // 2. Bump kid total_xp and possibly cefr_level
   const { data: kid } = await supabase
     .from("kid_profiles")
-    .select("id, total_xp")
+    .select("id, total_xp, cefr_level")
     .eq("id", body.kidId)
     .single();
   if (!kid) return NextResponse.json({ error: "Kid disappeared" }, { status: 404 });
@@ -60,13 +60,14 @@ export async function POST(req: Request) {
   const newTotal = kid.total_xp + body.xpGained;
 
   // DOBLE EXIGENCIA para ascender: XP + haber recorrido las unidades del nivel.
-  // El nivel guardado se capa por el avance del currículo (lecciones de gramática).
+  // El nivel guardado se capa por el avance del currículo (lecciones de gramática),
+  // pero NUNCA baja del nivel actual (piso) — respeta la ubicación por diagnóstico.
   const { count: grammarCount } = await supabase
     .from("lesson_sessions")
     .select("id", { count: "exact", head: true })
     .eq("kid_id", body.kidId)
     .eq("world_key", "grammar");
-  const cefr = effectiveCefrInfo(newTotal, grammarCount ?? 0);
+  const cefr = effectiveCefrInfo(newTotal, grammarCount ?? 0, kid.cefr_level);
 
   await supabase
     .from("kid_profiles")

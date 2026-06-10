@@ -21,7 +21,7 @@ export default async function SenderoPage({ searchParams }: PageProps) {
 
   const { data: kid } = await supabase
     .from("kid_profiles")
-    .select("id, name, emoji, avatar_url, color_hex, total_xp")
+    .select("id, name, emoji, avatar_url, color_hex, total_xp, cefr_level")
     .eq("id", kidId)
     .single();
   if (!kid) redirect("/profiles");
@@ -33,8 +33,9 @@ export default async function SenderoPage({ searchParams }: PageProps) {
     .eq("kid_id", kid.id)
     .eq("world_key", "grammar");
 
-  // Nivel EFECTIVO con doble exigencia (XP + unidades completadas).
-  const cefr = effectiveCefrInfo(kid.total_xp, grammarCount ?? 0);
+  // Nivel EFECTIVO con doble exigencia (XP + unidades completadas), con piso en el
+  // nivel ya alcanzado (no baja a quien fue ubicado por diagnóstico).
+  const cefr = effectiveCefrInfo(kid.total_xp, grammarCount ?? 0, kid.cefr_level);
 
   const stations = buildSendero(cefr.code, grammarCount ?? 0);
   const summary = senderoSummary(stations);

@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { getCefrInfo, CEFR_LEVELS, cefrThreshold, placementXp } from "./cefr";
+import { getCefrInfo, CEFR_LEVELS, cefrThreshold, placementXp, effectiveCefrInfo } from "./cefr";
+import { unitsForLevel } from "./curriculum";
 
 describe("getCefrInfo", () => {
   it("returns A1 for 0 XP", () => {
@@ -56,5 +57,31 @@ describe("placementXp (diagnóstico)", () => {
 
   it("colocar en A1 con 0 XP no cambia nada", () => {
     expect(placementXp(0, "A1")).toBe(0);
+  });
+});
+
+describe("effectiveCefrInfo (doble exigencia)", () => {
+  const a1Units = unitsForLevel("A1").length;
+
+  it("con XP de A2 pero sin unidades de A1 completadas, queda capado en A1", () => {
+    const a2 = cefrThreshold("A2");
+    const r = effectiveCefrInfo(a2, 0);
+    expect(r.code).toBe("A1");
+    expect(r.blockedByCurriculum).toBe(true);
+  });
+
+  it("con XP de A2 Y todas las unidades de A1 hechas, sube a A2", () => {
+    const a2 = cefrThreshold("A2");
+    const r = effectiveCefrInfo(a2, a1Units);
+    expect(r.code).toBe("A2");
+    expect(r.blockedByCurriculum).toBe(false);
+  });
+
+  it("el piso (diagnóstico) impide que la doble exigencia baje el nivel", () => {
+    const b1 = cefrThreshold("B1");
+    // Ubicado en B1 por diagnóstico, sin lecciones de gramática: NO baja a A1.
+    const r = effectiveCefrInfo(b1, 0, "B1");
+    expect(r.code).toBe("B1");
+    expect(r.blockedByCurriculum).toBe(false);
   });
 });

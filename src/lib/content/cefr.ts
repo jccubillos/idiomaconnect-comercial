@@ -78,20 +78,32 @@ export interface EffectiveCefrInfo extends CEFRInfo {
  *
  * Si el alumno tiene XP de sobra pero aún no termina las unidades de su nivel,
  * se queda en el nivel actual (capado) y se le indica que complete las unidades.
+ *
+ * `floorLevel` (opcional) = piso que la doble exigencia NUNCA baja. Sirve para el
+ * examen diagnóstico: un alumno ubicado en B1 (conocimiento probado) no vuelve a A1
+ * por no haber hecho las lecciones de gramática. Por encima del piso sí aplica la
+ * doble exigencia para seguir subiendo.
  */
-export function effectiveCefrInfo(totalXp: number, grammarLessonsDone: number): EffectiveCefrInfo {
+export function effectiveCefrInfo(
+  totalXp: number,
+  grammarLessonsDone: number,
+  floorLevel?: CEFRLevel,
+): EffectiveCefrInfo {
   const xpInfo = getCefrInfo(totalXp);
-  const cap = curriculumCapLevel(grammarLessonsDone);
   const order = CEFR_LEVELS.map((l) => l.code);
   const xpIdx = order.indexOf(xpInfo.code);
-  const capIdx = order.indexOf(cap);
 
-  if (capIdx >= xpIdx) {
+  let capIdx = order.indexOf(curriculumCapLevel(grammarLessonsDone));
+  if (floorLevel) capIdx = Math.max(capIdx, order.indexOf(floorLevel));
+
+  const effIdx = Math.min(xpIdx, capIdx);
+
+  if (effIdx >= xpIdx) {
     return { ...xpInfo, blockedByCurriculum: false };
   }
 
   // Capado por currículo: mostramos el nivel permitido y pedimos completar unidades.
-  const tier = CEFR_LEVELS[capIdx];
+  const tier = CEFR_LEVELS[effIdx];
   return {
     ...tier,
     progress: 1,

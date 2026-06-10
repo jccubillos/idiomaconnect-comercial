@@ -53,9 +53,10 @@ export default async function WorldsPage({ searchParams }: PageProps) {
       : 0;
   }
 
-  // Nivel EFECTIVO con doble exigencia (XP + unidades de gramática completadas).
+  // Nivel EFECTIVO con doble exigencia (XP + unidades de gramática completadas),
+  // con piso en el nivel ya alcanzado (respeta la ubicación por diagnóstico).
   const grammarCount = (sessions ?? []).filter((s) => s.world_key === "grammar").length;
-  const cefr = effectiveCefrInfo(kid.total_xp, grammarCount);
+  const cefr = effectiveCefrInfo(kid.total_xp, grammarCount, kid.cefr_level);
 
   // Coach Lumi: tarjetas SRS pendientes (señal para la Misión del Día) + plan del día.
   const { count: srsDueCount } = await supabase
