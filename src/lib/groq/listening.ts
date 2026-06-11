@@ -96,29 +96,35 @@ Responde SOLO JSON: { "pairs": [...] }`;
 }
 
 // ── Shared JSON helper ────────────────────────────────────
+// Hasta 2 intentos: si la IA devuelve un JSON malformado o incompleto la
+// primera vez (pasa a veces), se reintenta antes de mostrar error al niño.
 async function runJson<T extends z.ZodType>(
   system: string,
   user: string,
   schema: T,
 ): Promise<{ ok: true; data: z.infer<T> } | { ok: false; error: string }> {
-  try {
-    const groq = getGroqClient();
-    const r = await groq.chat.completions.create({
-      model: GROQ_MODELS.chat,
-      temperature: 0.5,
-      max_tokens: 1000,
-      response_format: { type: "json_object" },
-      messages: [
-        { role: "system", content: system },
-        { role: "user", content: user },
-      ],
-    });
-    const raw = r.choices[0]?.message?.content ?? "";
-    const parsed = JSON.parse(raw.trim().replace(/^```json/i, "").replace(/```$/, "").trim());
-    const result = schema.safeParse(parsed);
-    if (!result.success) return { ok: false, error: "JSON inválido" };
-    return { ok: true, data: result.data };
-  } catch (e) {
-    return { ok: false, error: e instanceof Error ? e.message : String(e) };
+  let lastError = "JSON inválido";
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const groq = getGroqClient();
+      const r = await groq.chat.completions.create({
+        model: GROQ_MODELS.chat,
+        temperature: attempt === 1 ? 0.5 : 0.3, // 2º intento más conservador
+        max_tokens: 1200,
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: system },
+          { role: "user", content: user },
+        ],
+      });
+      const raw = r.choices[0]?.message?.content ?? "";
+      const parsed = JSON.parse(raw.trim().replace(/^```json/i, "").replace(/```$/, "").trim());
+      const result = schema.safeParse(parsed);
+      if (result.success) return { ok: true, data: result.data };
+      lastError = "JSON inválido";
+    } catch (e) {
+      lastError = e instanceof Error ? e.message : String(e);
+    }
   }
+  return { ok: false, error: lastError };
 }

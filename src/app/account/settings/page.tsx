@@ -5,6 +5,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { DeleteAccountButton } from "@/components/account/DeleteAccountButton";
 import { AccountSecurity } from "@/components/account/AccountSecurity";
+import { ConsentBox } from "@/components/account/ConsentBox";
 
 export default async function SettingsPage() {
   const supabase = createClient();
@@ -63,7 +64,8 @@ export default async function SettingsPage() {
       <GlassCard strong className="p-6 mb-4">
         <h2 className="font-bold mb-3">Privacidad y consentimiento</h2>
         <Row label="Consentimiento parental" value={family?.parental_consent_at ? "✔ otorgado" : "Pendiente"} />
-        <Row label="Política aceptada" value={family?.privacy_accepted_at ? "✔" : "—"} />
+        <Row label="Política aceptada" value={family?.privacy_accepted_at ? "✔" : "Pendiente"} />
+        {(!family?.parental_consent_at || !family?.privacy_accepted_at) && <ConsentBox />}
         <div className="mt-3 flex flex-wrap gap-2 text-sm items-center">
           <Link href="/privacy" className="text-neon-cyan underline">Política de privacidad</Link>
           <Link href="/terms" className="text-neon-cyan underline">Términos</Link>

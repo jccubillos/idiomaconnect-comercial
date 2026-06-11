@@ -46,6 +46,28 @@ export async function generateLesson(args: {
   customContext?: string | null;
   objective?: WorldObjective | null;
 }): Promise<LessonResult> {
+  // Hasta 2 intentos: los fallos de validación (JSON incompleto, quiz con menos
+  // de 3 preguntas válidas) suelen ser transitorios — reintentar los resuelve
+  // sin que el niño vea un error.
+  let last: LessonResult = { ok: false, code: "unknown", error: "Sin respuesta del modelo." };
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    last = await generateLessonOnce(args, attempt);
+    if (last.ok) return last;
+    if (last.code === "rate_limit") return last; // reintentar no ayuda aquí
+  }
+  return last;
+}
+
+async function generateLessonOnce(
+  args: {
+    kid: KidPromptInput;
+    world: WorldPromptInput;
+    topic: string;
+    customContext?: string | null;
+    objective?: WorldObjective | null;
+  },
+  attempt: number,
+): Promise<LessonResult> {
   const { kid, world, topic, customContext, objective } = args;
   const groq = getGroqClient();
   const system = buildLessonSystemPrompt(kid, world, objective);
@@ -55,11 +77,15 @@ export async function generateLesson(args: {
 
   let user = `El tema de la lección de hoy es: ${safeTopic}.`;
   if (safeCustom) user += ` Contexto adicional: '${safeCustom}'. Adapta lección y quiz a este tema.`;
+  if (attempt > 1) {
+    user += ` IMPORTANTE: responde un único objeto JSON COMPLETO y válido, con mínimo 4 preguntas en "mc" y 4 en "fitb".`;
+  }
 
   try {
     const response = await groq.chat.completions.create({
       model: GROQ_MODELS.chat,
-      temperature: GROQ_DEFAULTS.temperature,
+      // 2º intento más conservador: menos creatividad, JSON más confiable.
+      temperature: attempt === 1 ? GROQ_DEFAULTS.temperature : 0.4,
       max_tokens: GROQ_DEFAULTS.maxTokens,
       response_format: { type: "json_object" },
       messages: [

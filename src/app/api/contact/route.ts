@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { getResend, FROM_EMAIL } from "@/lib/email/resend";
+import { emailConfigured } from "@/lib/email/send-lifecycle";
+
+/** Bandeja del equipo: aquí llegan los avisos de cada formulario recibido. */
+const NOTIFY_EMAIL = process.env.CONTACT_NOTIFY_EMAIL ?? "appidiomaconnect@gmail.com";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -97,6 +102,25 @@ export async function POST(req: Request) {
       ? "El sistema de contacto se está activando (falta aplicar la migración 0010)."
       : "No se pudo registrar el mensaje. Intenta de nuevo.";
     return NextResponse.json({ error: friendly }, { status: 500 });
+  }
+
+  // Aviso al equipo (mejor esfuerzo; el mensaje ya quedó guardado en la DB).
+  if (emailConfigured()) {
+    try {
+      await getResend().emails.send({
+        from: FROM_EMAIL,
+        to: NOTIFY_EMAIL,
+        subject: `📨 Nuevo contacto (${reason}): ${name}`,
+        html: `<h2>Nuevo mensaje desde idiomaconnect.com/contacto</h2>
+<p><b>Nombre:</b> ${name}<br/>
+<b>Correo:</b> ${email}<br/>
+<b>Teléfono:</b> ${phone || "—"}<br/>
+<b>Motivo:</b> ${reason}</p>
+<p><b>Mensaje:</b><br/>${(message || "—").replace(/\n/g, "<br/>")}</p>
+<p><b>Adjunto:</b> ${filePath ? `sí (Supabase → Storage → contact-files → ${filePath})` : "no"}</p>
+<p style="color:#888;font-size:12px">Responde directamente al correo del cliente: ${email}</p>`,
+      });
+    } catch { /* sin correo configurado aún */ }
   }
 
   return NextResponse.json({ ok: true });

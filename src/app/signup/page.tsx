@@ -57,6 +57,13 @@ function SignupForm() {
 
     // Trigger handle_new_user() crea la fila de familia automáticamente.
     if (data.session) {
+      // Registrar los consentimientos aceptados (las casillas son obligatorias).
+      const now = new Date().toISOString();
+      await supabase
+        .from("families")
+        .update({ tos_accepted_at: now, privacy_accepted_at: now, parental_consent_at: now })
+        .eq("owner_user_id", data.session.user.id);
+
       // Con intención de compra → directo al pago; si no, al onboarding normal.
       router.push(buyPlan ? `/billing?plan=${buyPlan}` : "/onboarding");
       router.refresh();

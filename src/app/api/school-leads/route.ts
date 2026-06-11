@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { getResend, FROM_EMAIL } from "@/lib/email/resend";
+import { emailConfigured } from "@/lib/email/send-lifecycle";
+
+const NOTIFY_EMAIL = process.env.CONTACT_NOTIFY_EMAIL ?? "appidiomaconnect@gmail.com";
 
 export const runtime = "nodejs";
 
@@ -53,5 +57,25 @@ export async function POST(req: Request) {
   });
 
   if (error) return NextResponse.json({ error: "No se pudo enviar. Intenta de nuevo." }, { status: 500 });
+
+  // Aviso al equipo: un colegio interesado es la venta más valiosa.
+  if (emailConfigured()) {
+    try {
+      await getResend().emails.send({
+        from: FROM_EMAIL,
+        to: NOTIFY_EMAIL,
+        subject: `🏫 Nuevo lead de colegio: ${body.institutionName.trim()}`,
+        html: `<h2>Nueva solicitud desde idiomaconnect.com/colegios</h2>
+<p><b>Institución:</b> ${body.institutionName.trim()}<br/>
+<b>Contacto:</b> ${body.contactName.trim()}${body.contactRole ? ` (${body.contactRole.trim()})` : ""}<br/>
+<b>Correo:</b> ${body.email.trim().toLowerCase()}<br/>
+<b>Teléfono:</b> ${body.phone?.trim() || "—"}<br/>
+<b>Alumnos:</b> ${body.numStudents ?? "—"} · <b>Niveles:</b> ${body.levels ?? "—"}</p>
+<p><b>Mensaje:</b><br/>${(body.message?.trim() || "—").replace(/\n/g, "<br/>")}</p>
+<p style="color:#888;font-size:12px">También queda registrado en el dashboard /admin → pestaña Leads.</p>`,
+      });
+    } catch { /* sin correo configurado aún */ }
+  }
+
   return NextResponse.json({ ok: true });
 }
