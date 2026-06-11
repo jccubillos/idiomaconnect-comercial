@@ -6,7 +6,8 @@ import { NeonButton } from "@/components/ui/NeonButton";
 import { Avatar } from "@/components/ui/Avatar";
 import { LumiCharacter } from "@/components/coach/LumiCharacter";
 import { SCHOOL_WORLD, SCHOOL_WORLD_KEY, enabledToolsFor } from "@/lib/content/school-world";
-import { computeSchoolStreak } from "@/lib/school/school-streak";
+import { computeSchoolStreak, weekStart } from "@/lib/school/school-streak";
+import { ProgressBar } from "@/components/ui/ProgressBar";
 
 export const dynamic = "force-dynamic";
 
@@ -38,7 +39,7 @@ export default async function SchoolWorldPage({ searchParams }: PageProps) {
 
   const { data: course } = await supabase
     .from("courses")
-    .select("id, name, current_theme, world_message, enabled_modes")
+    .select("id, name, current_theme, world_message, enabled_modes, weekly_goal_xp")
     .eq("id", kid.course_id)
     .single();
 
@@ -56,6 +57,35 @@ export default async function SchoolWorldPage({ searchParams }: PageProps) {
     .eq("kid_id", kid.id)
     .eq("world_key", SCHOOL_WORLD_KEY);
   const streak = computeSchoolStreak(sessions ?? []);
+
+  // LIGA DEL CURSO + MISIÓN GRUPAL: XP semanal de TODOS los compañeros en este mundo.
+  const { data: classmates = [] } = await supabase
+    .from("kid_profiles")
+    .select("id, name, emoji, color_hex")
+    .eq("course_id", kid.course_id)
+    .is("archived_at", null);
+  const mateIds = (classmates ?? []).map((c) => c.id);
+  const monday = weekStart();
+  const { data: weekRows = [] } = mateIds.length
+    ? await supabase
+        .from("lesson_sessions")
+        .select("kid_id, xp_gained")
+        .in("kid_id", mateIds)
+        .eq("world_key", SCHOOL_WORLD_KEY)
+        .gte("created_at", monday.toISOString())
+    : { data: [] };
+
+  const weekXpById = new Map<string, number>();
+  for (const r of weekRows ?? []) {
+    weekXpById.set(r.kid_id, (weekXpById.get(r.kid_id) ?? 0) + (r.xp_gained ?? 0));
+  }
+  const ranking = (classmates ?? [])
+    .map((c) => ({ ...c, weekXp: weekXpById.get(c.id) ?? 0 }))
+    .sort((a, b) => b.weekXp - a.weekXp);
+  const courseWeekXp = ranking.reduce((a, r) => a + r.weekXp, 0);
+  const goal = course?.weekly_goal_xp ?? null;
+  const goalMet = goal != null && courseWeekXp >= goal;
+  const medals = ["🥇", "🥈", "🥉"];
 
   const tools = enabledToolsFor(course?.enabled_modes as string[] | null);
   const lessonTool = tools.find((t) => t.key === "lesson");
@@ -92,11 +122,20 @@ export default async function SchoolWorldPage({ searchParams }: PageProps) {
           </p>
         </div>
 
-        {/* Lumi entrega el mensaje del profesor */}
-        <div className="flex flex-col items-center mb-8">
-          <LumiCharacter mood="greet" size={120} />
+        {/* Lumi entrega el mensaje del profesor (y celebra si la misión se logró) */}
+        <div className="flex flex-col items-center mb-6">
+          <LumiCharacter mood={goalMet ? "celebrate" : "greet"} size={120} />
           <GlassCard strong className="mt-3 px-5 py-4 max-w-md text-center border border-neon-purple/40">
-            {course?.world_message ? (
+            {goalMet ? (
+              <>
+                <div className="text-[11px] font-bold uppercase tracking-widest text-neon-green mb-1">
+                  🎉 ¡MISIÓN DEL CURSO CUMPLIDA!
+                </div>
+                <p className="text-sm">
+                  ¡Lo lograron! El curso juntó <b>{courseWeekXp} XP</b> esta semana. ¡Estoy orgullosa de ustedes!
+                </p>
+              </>
+            ) : course?.world_message ? (
               <>
                 <div className="text-[11px] font-bold uppercase tracking-widest text-neon-purple mb-1">
                   💬 Tu profesor dice…
@@ -108,6 +147,24 @@ export default async function SchoolWorldPage({ searchParams }: PageProps) {
             )}
           </GlassCard>
         </div>
+
+        {/* MISIÓN GRUPAL — meta semanal de XP del curso completo */}
+        {goal != null && (
+          <GlassCard className={`p-4 mb-6 border ${goalMet ? "border-neon-green/60" : "border-neon-green/30"}`}>
+            <div className="flex justify-between items-baseline mb-1.5">
+              <span className="text-sm font-extrabold">🚀 Misión del curso</span>
+              <span className={`text-xs font-bold ${goalMet ? "text-neon-green" : "text-ink-dim"}`}>
+                {courseWeekXp} / {goal} XP esta semana
+              </span>
+            </div>
+            <ProgressBar value={Math.min(100, (courseWeekXp / goal) * 100)} variant="neon-cyan" />
+            <p className="text-[11px] text-ink-dim mt-1.5">
+              {goalMet
+                ? "¡Meta cumplida! Todo XP extra sigue sumando para la liga. 💪"
+                : "Cada XP que gana CUALQUIER compañero en este mundo suma a la meta del curso."}
+            </p>
+          </GlassCard>
+        )}
 
         {/* Lección del curso — la herramienta central */}
         {lessonTool && (
@@ -146,6 +203,44 @@ export default async function SchoolWorldPage({ searchParams }: PageProps) {
                 </Link>
               ))}
             </div>
+          </section>
+        )}
+
+        {/* LIGA DEL CURSO — ranking semanal entre compañeros */}
+        {ranking.length > 1 && (
+          <section className="mb-8">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-ink-dim mb-3">
+              🏆 Liga del curso (esta semana)
+            </h2>
+            <GlassCard className="p-4">
+              <div className="space-y-2">
+                {ranking.slice(0, 10).map((r, i) => {
+                  const isMe = r.id === kid.id;
+                  return (
+                    <div
+                      key={r.id}
+                      className={`flex items-center gap-3 text-sm rounded-lg px-2 py-1.5 ${
+                        isMe ? "bg-neon-cyan/10 border border-neon-cyan/40" : ""
+                      }`}
+                    >
+                      <span className="w-7 text-center font-extrabold">
+                        {medals[i] ?? `${i + 1}º`}
+                      </span>
+                      <span className="text-lg">{r.emoji ?? "👤"}</span>
+                      <span className={`flex-1 font-bold ${isMe ? "text-neon-cyan" : ""}`}>
+                        {r.name}{isMe ? " (tú)" : ""}
+                      </span>
+                      <span className="font-extrabold" style={{ color: r.color_hex }}>
+                        {r.weekXp} XP
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+              <p className="text-[11px] text-ink-dim mt-3">
+                Cuenta el XP ganado en este mundo desde el lunes. ¡La liga parte de cero cada semana!
+              </p>
+            </GlassCard>
           </section>
         )}
 

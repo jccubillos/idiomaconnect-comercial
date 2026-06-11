@@ -78,7 +78,7 @@ export default async function HomePage() {
           </Link>
         </div>
         <p className="text-sm font-bold text-neon-green mb-2">
-          Plan anual: desde US$6,58/mes para hasta 6 niños
+          Plan anual: desde US$7,42/mes para hasta 6 niños
         </p>
         <p className="text-xs text-ink-dim">
           Cancela cuando quieras · datos cifrados ·{" "}
@@ -101,7 +101,7 @@ export default async function HomePage() {
         </div>
         <div className="grid md:grid-cols-2 gap-4">
           <GlassCard className="p-5 border border-neon-red/30">
-            <div className="text-xs uppercase tracking-widest text-neon-red mb-2">❌ Duolingo / Lingokids</div>
+            <div className="text-xs uppercase tracking-widest text-neon-red mb-2">❌ Otras aplicaciones</div>
             <p className="text-sm">
               "<i>The cat is on the table</i>" — una oración genérica
               que no le habla específicamente a tu hijo.
@@ -206,15 +206,15 @@ export default async function HomePage() {
 
           <GlassCard strong glowColor="cyan" className="p-6 text-center relative border-2 border-neon-cyan/60 flex flex-col scale-[1.02]">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest bg-neon-cyan text-surface px-2.5 py-0.5 rounded-full whitespace-nowrap">
-              ⭐ Recomendado · Ahorras 34%
+              ⭐ Recomendado · Ahorras 26%
             </div>
             <div className="text-xs uppercase tracking-widest text-neon-cyan mb-2">Familiar anual</div>
-            <div className="text-5xl font-extrabold">$79</div>
+            <div className="text-5xl font-extrabold">$89</div>
             <div className="text-sm text-ink-dim mb-1">USD / año</div>
-            <div className="text-sm font-bold text-neon-green mb-4">Sale a $6,58/mes</div>
+            <div className="text-sm font-bold text-neon-green mb-4">Sale a $7,42/mes</div>
             <ul className="text-xs text-ink-dim space-y-1 mb-5 text-left mx-auto">
               <li>✓ Hasta 6 perfiles</li>
-              <li>✓ 2 meses de regalo vs mensual</li>
+              <li>✓ Casi 3 meses de regalo vs mensual</li>
               <li>✓ Todas las herramientas</li>
               <li>✓ Dashboard de padres</li>
             </ul>
@@ -282,7 +282,7 @@ export default async function HomePage() {
           Dale a tus hijos un tutor de inglés que los conoce
         </h2>
         <p className="text-ink-dim mb-6">
-          Hasta 6 niños con una sola suscripción · desde US$6,58/mes con el plan anual.
+          Hasta 6 niños con una sola suscripción · desde US$7,42/mes con el plan anual.
         </p>
         <Link href="/signup?plan=yearly">
           <NeonButton size="lg" variant="primary">💎 Contratar plan anual</NeonButton>
@@ -373,7 +373,7 @@ const JSONLD_APP = {
     {
       "@type": "Offer",
       name: "Plan Familiar Anual",
-      price: "79",
+      price: "89",
       priceCurrency: "USD",
       category: "subscription",
     },

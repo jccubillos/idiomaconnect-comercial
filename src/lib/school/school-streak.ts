@@ -39,3 +39,11 @@ export function computeSchoolStreak(sessions: SchoolSessionLite[], now: Date = n
   for (let k = anchor; met(k); k--) streak++;
   return streak;
 }
+
+/** Inicio de la semana actual (lunes 00:00 UTC) — para liga y misión grupal. */
+export function weekStart(now: Date = new Date()): Date {
+  const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  const dow = (d.getUTCDay() + 6) % 7; // lunes=0 … domingo=6
+  d.setUTCDate(d.getUTCDate() - dow);
+  return d;
+}

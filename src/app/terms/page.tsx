@@ -37,7 +37,7 @@ export default function TermsPage() {
 
       <h2>4. Suscripciones y pagos</h2>
       <ul>
-        <li>Planes familiares: <strong>USD 9,99/mes</strong> o <strong>USD 79/año</strong> (hasta 6
+        <li>Planes familiares: <strong>USD 9,99/mes</strong> o <strong>USD 89/año</strong> (hasta 6
           perfiles). Los precios pueden incluir impuestos según tu país.</li>
         <li>Los pagos son procesados por <strong>Lemon Squeezy</strong> como comercializador oficial
           (Merchant of Record), quien emite la boleta o factura correspondiente.</li>

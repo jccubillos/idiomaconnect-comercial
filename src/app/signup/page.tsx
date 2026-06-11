@@ -88,7 +88,7 @@ function SignupForm() {
         <h1 className="text-2xl font-extrabold mb-1">Crear cuenta familiar</h1>
         {buyPlan ? (
           <p className="text-sm text-ink-dim mb-6">
-            Estás contratando el <b className="text-neon-cyan">plan {buyPlan === "yearly" ? "anual (US$79/año)" : "mensual (US$9.99/mes)"}</b>.
+            Estás contratando el <b className="text-neon-cyan">plan {buyPlan === "yearly" ? "anual (US$89/año)" : "mensual (US$9.99/mes)"}</b>.
             Primero crea tu cuenta (1 minuto) y luego pasas al pago seguro.
           </p>
         ) : (

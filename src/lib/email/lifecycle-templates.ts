@@ -66,7 +66,7 @@ export function postTrialEmail(args: {
         `⏳ <b>Importante:</b> los datos y avances se conservan hasta el <b>${fmtDate(retentionDate)}</b>. Después de esa fecha se eliminan definitivamente.`,
       ),
       button(billingUrl, "Reactivar el aprendizaje"),
-      p(`Planes desde <b>US$6,58/mes</b> (anual) · hasta 6 perfiles · cancela cuando quieras.`),
+      p(`Planes desde <b>US$7,42/mes</b> (anual) · hasta 6 perfiles · cancela cuando quieras.`),
     ].join(""),
     marketingFooter(unsubscribeUrl),
   );

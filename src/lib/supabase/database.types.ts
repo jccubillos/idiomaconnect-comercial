@@ -38,6 +38,7 @@ export interface Database {
           parent_pin_hash: string | null;
           payment_failed_at: string | null;
           marketing_opt_out: boolean;
+          discount_code: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -189,6 +190,7 @@ export interface Database {
           context_updated_at: string | null;
           world_message: string | null;
           enabled_modes: string[] | null;
+          weekly_goal_xp: number | null;
           created_at: string;
           archived_at: string | null;
         };

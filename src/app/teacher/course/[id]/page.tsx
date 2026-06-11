@@ -7,7 +7,7 @@ import { CourseContextForm } from "@/components/school/CourseContextForm";
 import { SchoolWorldManager } from "@/components/school/SchoolWorldManager";
 import { PanelTabs } from "@/components/school/PanelTabs";
 import { SCHOOL_WORLD_KEY } from "@/lib/content/school-world";
-import { computeSchoolStreak } from "@/lib/school/school-streak";
+import { computeSchoolStreak, weekStart } from "@/lib/school/school-streak";
 import {
   summarizeStudent,
   aggregateCourse,
@@ -29,7 +29,7 @@ export default async function CourseDetail({ params }: { params: { id: string } 
   // RLS limita esto a cursos que el usuario dicta o administra.
   const { data: course } = await supabase
     .from("courses")
-    .select("id, name, grade_label, current_theme, current_context, world_message, enabled_modes, org_id")
+    .select("id, name, grade_label, current_theme, current_context, world_message, enabled_modes, weekly_goal_xp, org_id")
     .eq("id", params.id)
     .single();
   if (!course) notFound();
@@ -95,6 +95,45 @@ export default async function CourseDetail({ params }: { params: { id: string } 
 
   const hasStudents = (students ?? []).length > 0;
 
+  // MISIÓN GRUPAL: progreso semanal del curso en el mundo del colegio.
+  const monday = weekStart(now);
+  const courseWeekXp = schoolRows
+    .filter((s) => new Date(s.created_at).getTime() >= monday.getTime())
+    .reduce((a, s) => a + (s.xp_gained ?? 0), 0);
+  const weeklyGoal = course.weekly_goal_xp;
+
+  // INFORME PRE-PRUEBA: entrenamiento por evaluación (rawPayload.evaluationId).
+  const { data: evalSessions = [] } = ids.length
+    ? await supabase
+        .from("lesson_sessions")
+        .select("kid_id, score_pct, raw_payload")
+        .in("kid_id", ids)
+        .eq("world_key", SCHOOL_WORLD_KEY)
+        .not("raw_payload", "is", null)
+    : { data: [] };
+
+  const studentName = new Map((students ?? []).map((s) => [s.id, s.name]));
+  const activeEvals = (evaluations ?? []).filter((e) => e.active);
+  const evalReports = activeEvals.map((ev) => {
+    const rows = (evalSessions ?? []).filter(
+      (r) => (r.raw_payload as { evaluationId?: string } | null)?.evaluationId === ev.id,
+    );
+    const perStudent = new Map<string, { count: number; sum: number }>();
+    for (const r of rows) {
+      const cur = perStudent.get(r.kid_id) ?? { count: 0, sum: 0 };
+      perStudent.set(r.kid_id, { count: cur.count + 1, sum: cur.sum + (r.score_pct ?? 0) });
+    }
+    const trained = Array.from(perStudent.entries()).map(([kidId, v]) => ({
+      name: studentName.get(kidId) ?? "Alumno",
+      count: v.count,
+      avg: Math.round(v.sum / v.count),
+    })).sort((a, b) => b.avg - a.avg);
+    const untrained = (students ?? [])
+      .filter((s) => !perStudent.has(s.id))
+      .map((s) => s.name);
+    return { id: ev.id, title: ev.title, trained, untrained };
+  });
+
   return (
     <main className="pt-10 pb-24 px-5 max-w-5xl mx-auto relative z-10">
       <Link href="/teacher" className="text-sm font-bold text-neon-cyan">← Mis cursos</Link>
@@ -126,8 +165,68 @@ export default async function CourseDetail({ params }: { params: { id: string } 
         courseId={course.id}
         initialMessage={course.world_message}
         initialModes={course.enabled_modes as string[] | null}
+        initialWeeklyGoal={course.weekly_goal_xp}
         evaluations={(evaluations ?? []).map((e) => ({ id: e.id, title: e.title, active: e.active }))}
       />
+
+      {/* Misión grupal — progreso de la semana */}
+      {weeklyGoal != null && (
+        <GlassCard className="p-4 mb-6 border border-neon-green/40">
+          <div className="flex justify-between items-baseline mb-1">
+            <span className="text-sm font-extrabold">🚀 Misión del curso (semana actual)</span>
+            <span className={`text-sm font-bold ${courseWeekXp >= weeklyGoal ? "text-neon-green" : "text-ink-dim"}`}>
+              {courseWeekXp} / {weeklyGoal} XP {courseWeekXp >= weeklyGoal ? "· ¡CUMPLIDA! 🎉" : ""}
+            </span>
+          </div>
+          <div className="progress-track">
+            <div
+              className="progress-fill"
+              style={{ width: `${Math.min(100, (courseWeekXp / weeklyGoal) * 100)}%`, background: "linear-gradient(90deg,#39ff14,#00eefc)" }}
+            />
+          </div>
+        </GlassCard>
+      )}
+
+      {/* Informe pre-prueba — quién entrenó cada evaluación */}
+      {evalReports.length > 0 && (
+        <GlassCard strong className="p-5 mb-6 border border-neon-green/30">
+          <h2 className="font-extrabold mb-1">📋 Informe de entrenamiento por evaluación</h2>
+          <p className="text-xs text-ink-dim mb-4">
+            Quién ha entrenado cada evaluación en el mundo del colegio y con qué % de aciertos.
+            Revísalo el día antes de la prueba real.
+          </p>
+          <div className="space-y-4">
+            {evalReports.map((r) => (
+              <div key={r.id} className="border-b border-white/5 pb-3 last:border-0">
+                <div className="font-bold text-sm mb-2">🎯 {r.title}</div>
+                {r.trained.length === 0 ? (
+                  <p className="text-xs text-neon-red">Nadie ha entrenado esta evaluación todavía.</p>
+                ) : (
+                  <div className="flex flex-wrap gap-1.5 mb-1.5">
+                    {r.trained.map((t) => (
+                      <span
+                        key={t.name}
+                        className={`text-[11px] font-bold px-2 py-0.5 rounded-full border ${
+                          t.avg >= 70
+                            ? "bg-neon-green/10 text-neon-green border-neon-green/30"
+                            : "bg-neon-red/10 text-neon-red border-neon-red/30"
+                        }`}
+                      >
+                        {t.name} · {t.count}× · {t.avg}%
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {r.untrained.length > 0 && (
+                  <p className="text-[11px] text-ink-dim">
+                    Sin entrenar: <span className="text-neon-red">{r.untrained.join(", ")}</span>
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </GlassCard>
+      )}
 
       {/* Avance por alumno — separado por origen */}
       <h2 className="text-lg font-extrabold mb-3">Avance por alumno</h2>
@@ -155,6 +254,7 @@ export default async function CourseDetail({ params }: { params: { id: string } 
                           <th className="px-3 py-3">Sesiones</th>
                           <th className="px-3 py-3">Aciertos</th>
                           <th className="px-3 py-3">Última act.</th>
+                          <th className="px-3 py-3">Premiar</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -171,6 +271,15 @@ export default async function CourseDetail({ params }: { params: { id: string } 
                               <td className="px-3 py-3">{sum.sessions}</td>
                               <td className="px-3 py-3">{sum.sessions ? `${sum.avgScore}%` : "—"}</td>
                               <td className="px-3 py-3 text-ink-dim">{lastActiveLabel(sum.lastActive, now)}</td>
+                              <td className="px-3 py-3">
+                                <Link
+                                  href={`/certificado?kid=${s.id}`}
+                                  className="text-neon-purple hover:underline text-xs font-bold"
+                                  title="Imprimir certificado de logro"
+                                >
+                                  🎖 Certificado
+                                </Link>
+                              </td>
                             </tr>
                           );
                         })}

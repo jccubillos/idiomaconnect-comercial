@@ -34,7 +34,7 @@ export default async function AdminPage() {
   const [{ data: families = [] }, { data: codes = [] }, { data: registry = [] }, { data: leads = [] }] =
     await Promise.all([
       svc.from("families")
-        .select("id, owner_user_id, family_name, plan, org_type, trial_ends_at, payment_failed_at, created_at")
+        .select("id, owner_user_id, family_name, plan, org_type, trial_ends_at, payment_failed_at, discount_code, created_at")
         .order("created_at", { ascending: false })
         .limit(500),
       svc.from("discount_codes").select("*").order("created_at", { ascending: false }).limit(100),
@@ -56,12 +56,21 @@ export default async function AdminPage() {
   const stats = {
     monthly: fams.filter((f) => f.plan === "family_monthly").length,
     yearly: fams.filter((f) => f.plan === "family_yearly").length,
-    schools: fams.filter((f) => f.org_type === "school").length,
-    trialsActive: fams.filter((f) => f.plan === "trial" && new Date(f.trial_ends_at).getTime() > now).length,
+    // Colegios: SOLO contratos reales (plan 'school'). Los pilotos van aparte.
+    schools: fams.filter((f) => f.org_type === "school" && f.plan === "school").length,
+    schoolPilots: fams.filter(
+      (f) => f.org_type === "school" && f.plan === "trial" && new Date(f.trial_ends_at).getTime() > now,
+    ).length,
+    trialsActive: fams.filter(
+      (f) => f.org_type === "family" && f.plan === "trial" && new Date(f.trial_ends_at).getTime() > now,
+    ).length,
     trialsTotal: (registry ?? []).length,
     expired: fams.filter((f) => f.org_type === "family" && (f.plan === "expired" || (f.plan === "trial" && new Date(f.trial_ends_at).getTime() <= now))).length,
     paymentIssues: fams.filter((f) => f.payment_failed_at).length,
   };
+
+  // % de cada código (para mostrar el descuento aplicado en la tabla de cuentas).
+  const percentByCode = new Map((codes ?? []).map((c) => [c.code, c.percent]));
 
   const accounts: AccountRow[] = fams.map((f) => ({
     id: f.id,
@@ -71,6 +80,8 @@ export default async function AdminPage() {
     orgType: f.org_type,
     trialEndsAt: f.trial_ends_at,
     paymentFailedAt: f.payment_failed_at,
+    discountCode: f.discount_code,
+    discountPercent: f.discount_code ? (percentByCode.get(f.discount_code) ?? null) : null,
     createdAt: f.created_at,
   }));
 
@@ -111,10 +122,11 @@ export default async function AdminPage() {
       </header>
 
       {/* Métricas */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
         <Stat label="Fam. mensual" value={stats.monthly} color="text-neon-cyan" />
         <Stat label="Fam. anual" value={stats.yearly} color="text-neon-cyan" />
-        <Stat label="Colegios" value={stats.schools} color="text-neon-purple" />
+        <Stat label="Colegios (contrato)" value={stats.schools} color="text-neon-purple" />
+        <Stat label="Pilotos colegio" value={stats.schoolPilots} color="text-neon-purple" />
         <Stat label="Trials activos" value={stats.trialsActive} color="text-neon-green" />
         <Stat label="Trials históricos" value={stats.trialsTotal} color="text-neon-green" />
         <Stat label="Expiradas" value={stats.expired} color="text-ink-dim" />

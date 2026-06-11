@@ -82,19 +82,21 @@ En la ficha de cada curso (`/teacher/course/…`), el profesor puede definir un 
 
 ---
 
-## Precios (referencia interna, a validar)
+## Precios (definidos por JC, 2026-06-11)
 
-Cobro **por alumno / año**, con descuento por volumen:
+Cobro **por alumno / año** en USD, con descuento por volumen:
 
-| Tramo de alumnos | Precio por alumno / año (referencial) |
+| Tramo de alumnos | Precio por alumno / año |
 |---|---|
-| 50 – 200 | ~ CLP $7.000 – $9.000 |
-| 201 – 500 | ~ CLP $5.000 – $6.500 |
-| 501 – 1.500 | ~ CLP $3.500 – $5.000 |
-| 1.500+ | A convenir |
+| 50 – 200 | **USD 9,99** (~CLP 9.500) |
+| 201 – 500 | **USD 9,25** (~CLP 8.800) |
+| 501 – 1.500 | **USD 8,75** (~CLP 8.300) |
+| 1.500+ | **USD 8,50** (~CLP 8.100) |
 
 - **Contratación mínima:** anual (idealmente alineada al año escolar, marzo–diciembre).
-- **Piloto:** ofrece 1 curso gratis por 1–2 meses como herramienta de venta.
+- **Piloto:** se habilita **desde el dashboard de administración** (no autoservicio):
+  convierte la cuenta del colegio en "piloto" con fecha de término definida.
+  Es herramienta de venta con urgencia incorporada.
 
 ---
 

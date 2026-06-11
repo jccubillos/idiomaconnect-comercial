@@ -142,7 +142,19 @@ export async function GET(req: Request) {
                 familyId: f.id, email, kind: "offer15",
                 subject: tpl.subject, html: tpl.html, meta: { code: created.code },
               });
-              if (r === "sent") { stats.offers++; continue; }
+              if (r === "sent") {
+                // Registrar el cupón en el catálogo (para ver el % en el admin).
+                await svc.from("discount_codes").insert({
+                  code: created.code,
+                  percent: 15,
+                  duration: "once",
+                  max_redemptions: 1,
+                  expires_at: new Date(Date.now() + 30 * 86_400_000).toISOString(),
+                  note: `Oferta post-trial automática · ${f.family_name}`,
+                });
+                stats.offers++;
+                continue;
+              }
             }
           }
         }

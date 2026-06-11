@@ -1,6 +1,7 @@
+import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { synthesizeSpeech } from "@/lib/tts/provider";
 import { enforceLimit } from "@/lib/rate-limit";
 import { requireKidAccess } from "@/lib/billing/access";
@@ -13,6 +14,13 @@ const BodySchema = z.object({
   kidId: z.string().uuid(),
   voice: z.enum(["alloy", "echo", "fable", "onyx", "nova", "shimmer"]).optional(),
 });
+
+const CACHE_BUCKET = "tts-cache";
+
+/** Clave de caché: misma voz + mismo texto ⇒ mismo audio. */
+function cacheKey(voice: string, text: string): string {
+  return createHash("sha1").update(`${voice}|${text}`).digest("hex") + ".mp3";
+}
 
 export async function POST(req: Request) {
   let body: z.infer<typeof BodySchema>;
@@ -41,8 +49,44 @@ export async function POST(req: Request) {
   }
   const kid = access.kid;
 
+  const audioHeaders = {
+    "Content-Type": "audio/mpeg",
+    "Cache-Control": "private, max-age=3600",
+  };
+
+  // ── CACHÉ: si esta frase ya fue sintetizada, se sirve gratis del storage. ──
+  const key = cacheKey(body.voice ?? "default", body.text);
+  let svc: ReturnType<typeof createServiceClient> | null = null;
+  try {
+    svc = createServiceClient();
+    const { data: cached } = await svc.storage.from(CACHE_BUCKET).download(key);
+    if (cached) {
+      const buf = await cached.arrayBuffer();
+      await supabase.from("usage_events").insert({
+        family_id: kid.family_id,
+        kid_id: kid.id,
+        event_type: "tts_cache_hit",
+        tokens_used: body.text.length,
+        cost_usd_cents: 0, // ya pagado la primera vez
+      });
+      return new NextResponse(buf, { headers: { ...audioHeaders, "X-TTS-Cache": "hit" } });
+    }
+  } catch {
+    /* sin service key o bucket aún no migrado → seguimos sin caché */
+  }
+
+  // ── MISS: sintetizar, guardar en caché (mejor esfuerzo) y responder. ──
   try {
     const audio = await synthesizeSpeech({ text: body.text, voice: body.voice });
+
+    if (svc) {
+      // Mejor esfuerzo: si falla el guardado, la respuesta sale igual.
+      try {
+        await svc.storage
+          .from(CACHE_BUCKET)
+          .upload(key, audio, { contentType: "audio/mpeg", upsert: true });
+      } catch { /* sin caché esta vez */ }
+    }
 
     await supabase.from("usage_events").insert({
       family_id: kid.family_id,
@@ -53,12 +97,7 @@ export async function POST(req: Request) {
       cost_usd_cents: Math.max(1, Math.ceil(body.text.length * 0.0015)),
     });
 
-    return new NextResponse(audio, {
-      headers: {
-        "Content-Type": "audio/mpeg",
-        "Cache-Control": "private, max-age=3600",
-      },
-    });
+    return new NextResponse(audio, { headers: { ...audioHeaders, "X-TTS-Cache": "miss" } });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error("[tts] error", err);

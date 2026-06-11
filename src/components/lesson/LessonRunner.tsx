@@ -146,6 +146,8 @@ export function LessonRunner({
           xpGained: evalData.xp,
           attempts: 1,
           durationSeconds: Math.round((Date.now() - startedAt) / 1000),
+          // Vincula la sesión a la evaluación del profesor (informe pre-prueba).
+          ...(evalId ? { rawPayload: { evaluationId: evalId } } : {}),
         }),
       });
 

@@ -22,14 +22,39 @@ export function SchoolWorldManager({
   courseId,
   initialMessage,
   initialModes,
+  initialWeeklyGoal,
   evaluations,
 }: {
   courseId: string;
   initialMessage: string | null;
   initialModes: string[] | null;
+  initialWeeklyGoal: number | null;
   evaluations: EvalRow[];
 }) {
   const router = useRouter();
+
+  /* ── Misión grupal (meta semanal de XP del curso) ── */
+  const [goal, setGoal] = useState<string>(initialWeeklyGoal ? String(initialWeeklyGoal) : "");
+  const [savingGoal, setSavingGoal] = useState(false);
+  const [goalOk, setGoalOk] = useState<string | null>(null);
+
+  async function saveGoal(e: React.FormEvent) {
+    e.preventDefault();
+    const n = goal.trim() === "" ? null : Number(goal);
+    if (n !== null && (!Number.isInteger(n) || n < 100 || n > 100000)) {
+      setGoalOk("Ingresa un número entre 100 y 100.000 (o deja vacío para desactivar).");
+      return;
+    }
+    setSavingGoal(true);
+    setGoalOk(null);
+    const res = await fetch("/api/courses/context", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ courseId, weeklyGoalXp: n }),
+    });
+    setSavingGoal(false);
+    setGoalOk(res.ok ? (n ? `✓ Misión activa: ${n} XP por semana.` : "✓ Misión desactivada.") : "No se pudo guardar.");
+  }
 
   /* ── Mensaje del profesor ── */
   const [message, setMessage] = useState(initialMessage ?? "");
@@ -142,6 +167,30 @@ export function SchoolWorldManager({
         <p className="text-[11px] text-ink-dim mt-1.5">
           Lumi se lo mostrará así: “Tu profesor dice: …”
         </p>
+      </form>
+
+      {/* 1.5 Misión grupal semanal */}
+      <form onSubmit={saveGoal} className="mb-6">
+        <label className="text-xs font-bold uppercase tracking-wide text-ink-dim block mb-1.5">
+          🚀 Misión grupal (meta semanal de XP del curso)
+        </label>
+        <p className="text-[11px] text-ink-dim mb-2">
+          El XP que ganen TODOS los alumnos en el mundo suma a una meta común.
+          Al lograrla, Lumi celebra con el curso. Sugerencia: ~150 XP por alumno por semana.
+        </p>
+        <div className="flex items-center gap-2">
+          <input
+            type="number"
+            min={100}
+            max={100000}
+            placeholder="Ej: 5000 (vacío = sin misión)"
+            value={goal}
+            onChange={(e) => { setGoal(e.target.value); setGoalOk(null); }}
+            className={`${field} max-w-[220px]`}
+          />
+          <NeonButton type="submit" size="sm" variant="ghost-cyan" loading={savingGoal}>Guardar misión</NeonButton>
+        </div>
+        {goalOk && <p className="text-xs text-neon-green mt-1.5">{goalOk}</p>}
       </form>
 
       {/* 2. Herramientas del mundo */}

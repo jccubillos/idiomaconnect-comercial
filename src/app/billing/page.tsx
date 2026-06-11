@@ -77,11 +77,11 @@ function BillingInner() {
 
           <GlassCard strong glowColor="cyan" className="p-6 text-center relative border border-neon-cyan/40">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest bg-neon-cyan text-surface px-2 py-0.5 rounded-full">
-              Mejor valor · ahorras 34%
+              Mejor valor · ahorras 26%
             </div>
             <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-2">Anual</div>
-            <div className="text-4xl font-extrabold mb-1">$79</div>
-            <div className="text-sm text-ink-dim mb-6">USD / año (~$6.58/mes)</div>
+            <div className="text-4xl font-extrabold mb-1">$89</div>
+            <div className="text-sm text-ink-dim mb-6">USD / año (~$7.42/mes)</div>
             <NeonButton variant="primary" loading={loading === "yearly"} onClick={() => startCheckout("yearly")} className="w-full">
               Empezar plan anual
             </NeonButton>

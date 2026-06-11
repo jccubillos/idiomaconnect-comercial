@@ -14,6 +14,8 @@ const Body = z.object({
   // Mundo "Lumi en tu Colegio": mensaje del profesor + herramientas activas.
   worldMessage: z.string().max(400).nullable().optional(),
   enabledModes: z.array(z.string().max(40)).max(20).nullable().optional(),
+  // Misión grupal: meta semanal de XP del curso (null = sin misión).
+  weeklyGoalXp: z.number().int().min(100).max(100000).nullable().optional(),
 });
 
 /**
@@ -44,6 +46,9 @@ export async function POST(req: Request) {
   if (body.enabledModes !== undefined) {
     const clean = (body.enabledModes ?? []).filter((m) => VALID_MODES.has(m));
     update.enabled_modes = clean.length ? clean : null; // null = set por defecto
+  }
+  if (body.weeklyGoalXp !== undefined) {
+    update.weekly_goal_xp = body.weeklyGoalXp;
   }
   if (Object.keys(update).length === 0) {
     return NextResponse.json({ error: "Nada que actualizar" }, { status: 400 });

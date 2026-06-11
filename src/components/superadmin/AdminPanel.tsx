@@ -13,6 +13,8 @@ export interface AccountRow {
   orgType: string;
   trialEndsAt: string;
   paymentFailedAt: string | null;
+  discountCode: string | null;
+  discountPercent: number | null;
   createdAt: string;
 }
 export interface CodeRow {
@@ -98,14 +100,47 @@ export function AdminPanel({
 }
 
 /* ── Cuentas ──────────────────────────────────────────────── */
+
+/** Monto que paga el cliente, derivado del plan. */
+function paymentLabel(a: AccountRow): string {
+  if (a.orgType === "school") {
+    if (a.plan === "school") return "Contrato anual";
+    if (a.plan === "trial") return "Piloto (sin pago)";
+    return "—";
+  }
+  if (a.plan === "family_monthly") return "US$9,99/mes";
+  if (a.plan === "family_yearly") return "US$89/año";
+  return "—";
+}
+
 function AccountsTab({ accounts }: { accounts: AccountRow[] }) {
+  const router = useRouter();
   const [q, setQ] = useState("");
+  const [busy, setBusy] = useState<string | null>(null);
   const list = accounts.filter(
     (a) =>
       !q ||
       a.email.toLowerCase().includes(q.toLowerCase()) ||
       a.name.toLowerCase().includes(q.toLowerCase()),
   );
+
+  async function schoolAction(familyId: string, action: "pilot" | "activate" | "expire", label: string) {
+    if (!confirm(`¿${label}?`)) return;
+    setBusy(familyId);
+    const res = await fetch("/api/superadmin/school-trial", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ familyId, action, ...(action === "pilot" ? { days: 60 } : {}) }),
+    });
+    setBusy(null);
+    if (!res.ok) {
+      const j = await res.json().catch(() => ({}));
+      alert(j.error ?? "No se pudo aplicar.");
+      return;
+    }
+    router.refresh();
+  }
+
   return (
     <GlassCard strong className="p-5">
       <input
@@ -122,30 +157,74 @@ function AccountsTab({ accounts }: { accounts: AccountRow[] }) {
               <th className="py-2 pr-3">Cuenta</th>
               <th className="py-2 pr-3">Correo</th>
               <th className="py-2 pr-3">Plan</th>
+              <th className="py-2 pr-3">Pago</th>
+              <th className="py-2 pr-3">Descuento</th>
               <th className="py-2 pr-3">Estado</th>
-              <th className="py-2">Creada</th>
+              <th className="py-2 pr-3">Creada</th>
+              <th className="py-2">Acciones</th>
             </tr>
           </thead>
           <tbody>
             {list.map((a) => {
               const trialLeft = Math.ceil((new Date(a.trialEndsAt).getTime() - Date.now()) / 86_400_000);
+              const isSchool = a.orgType === "school";
               const estado =
                 a.paymentFailedAt ? "💳 Pago fallido"
-                : a.plan === "trial" ? (trialLeft > 0 ? `⏳ ${trialLeft} día(s)` : "Vencida")
+                : a.plan === "trial"
+                  ? (trialLeft > 0
+                      ? (isSchool ? `🧪 Piloto · ${trialLeft} día(s)` : `⏳ ${trialLeft} día(s)`)
+                      : "Vencida")
                 : a.plan === "expired" ? "Sin acceso"
                 : "✓ Activa";
               return (
                 <tr key={a.id} className="border-b border-white/5">
-                  <td className="py-2 pr-3 font-bold">{a.name}{a.orgType === "school" ? " 🏫" : ""}</td>
+                  <td className="py-2 pr-3 font-bold">{a.name}{isSchool ? " 🏫" : ""}</td>
                   <td className="py-2 pr-3 text-ink-dim">{a.email}</td>
                   <td className="py-2 pr-3">{PLAN_LABEL[a.plan] ?? a.plan}</td>
+                  <td className="py-2 pr-3">{paymentLabel(a)}</td>
+                  <td className="py-2 pr-3">
+                    {a.discountCode ? (
+                      <span className="font-mono text-xs">
+                        {a.discountCode}
+                        {a.discountPercent != null && (
+                          <span className="text-neon-green font-bold"> (−{a.discountPercent}%)</span>
+                        )}
+                      </span>
+                    ) : (
+                      "—"
+                    )}
+                  </td>
                   <td className="py-2 pr-3">{estado}</td>
-                  <td className="py-2 text-ink-dim">{fmt(a.createdAt)}</td>
+                  <td className="py-2 pr-3 text-ink-dim">{fmt(a.createdAt)}</td>
+                  <td className="py-2">
+                    {isSchool && (
+                      <div className="flex gap-1.5 flex-wrap">
+                        {a.plan !== "trial" && (
+                          <button
+                            disabled={busy === a.id}
+                            onClick={() => schoolAction(a.id, "pilot", `Convertir ${a.name} en PILOTO de 60 días (no cuenta como venta)`)}
+                            className="text-[11px] px-2 py-0.5 rounded-full bg-surface-mid border border-white/10 hover:border-neon-purple/60"
+                          >
+                            🧪 Piloto 60d
+                          </button>
+                        )}
+                        {a.plan !== "school" && (
+                          <button
+                            disabled={busy === a.id}
+                            onClick={() => schoolAction(a.id, "activate", `Activar CONTRATO real para ${a.name} (cuenta como venta)`)}
+                            className="text-[11px] px-2 py-0.5 rounded-full bg-surface-mid border border-white/10 hover:border-neon-green/60"
+                          >
+                            ✓ Contrato
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </td>
                 </tr>
               );
             })}
             {list.length === 0 && (
-              <tr><td colSpan={5} className="py-6 text-center text-ink-dim">Sin resultados.</td></tr>
+              <tr><td colSpan={8} className="py-6 text-center text-ink-dim">Sin resultados.</td></tr>
             )}
           </tbody>
         </table>

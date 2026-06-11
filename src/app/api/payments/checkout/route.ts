@@ -44,5 +44,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: result.error }, { status: 502 });
   }
 
+  // Registrar el código usado (visible en el dashboard de administración).
+  // Se sobreescribe en cada checkout: refleja el último intento de compra.
+  await supabase
+    .from("families")
+    .update({ discount_code: body.discountCode?.trim().toUpperCase() || null })
+    .eq("id", family.id);
+
   return NextResponse.json({ url: result.url });
 }
