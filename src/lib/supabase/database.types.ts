@@ -260,6 +260,25 @@ export interface Database {
         };
         Update: Partial<Database["public"]["Tables"]["email_log"]["Row"]>;
       };
+      contact_messages: {
+        Row: {
+          id: string;
+          name: string;
+          email: string;
+          phone: string | null;
+          reason: string;
+          message: string | null;
+          file_path: string | null;
+          status: "new" | "answered" | "closed";
+          created_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["contact_messages"]["Row"]> & {
+          name: string;
+          email: string;
+          reason: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["contact_messages"]["Row"]>;
+      };
       app_admins: {
         Row: {
           user_id: string;
