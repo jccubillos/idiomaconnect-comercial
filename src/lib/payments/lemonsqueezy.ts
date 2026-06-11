@@ -8,7 +8,7 @@
  * Docs: https://docs.lemonsqueezy.com/api
  */
 
-import { lemonSqueezySetup, createCheckout, createDiscount, deleteDiscount } from "@lemonsqueezy/lemonsqueezy.js";
+import { lemonSqueezySetup, createCheckout, createDiscount, deleteDiscount, getSubscription } from "@lemonsqueezy/lemonsqueezy.js";
 
 let initialized = false;
 
@@ -165,5 +165,25 @@ export async function removeDiscountCode(lsId: string): Promise<{ ok: boolean }>
     return { ok: true };
   } catch {
     return { ok: false };
+  }
+}
+
+/**
+ * URL del PORTAL DEL CLIENTE de Lemon Squeezy para una suscripción: ahí el
+ * cliente actualiza su tarjeta, descarga boletas o cancela (manteniendo el
+ * acceso hasta el fin del período pagado). La URL es firmada y de corta vida,
+ * por eso se pide fresca en cada visita.
+ */
+export async function getCustomerPortalUrl(
+  subscriptionId: string,
+): Promise<{ url: string } | { error: string }> {
+  init();
+  try {
+    const res = await getSubscription(subscriptionId);
+    const url = res.data?.data?.attributes?.urls?.customer_portal;
+    if (!url) return { error: "Lemon Squeezy did not return a portal URL" };
+    return { url };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : String(err) };
   }
 }

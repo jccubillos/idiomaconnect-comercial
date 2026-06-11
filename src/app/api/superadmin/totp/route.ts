@@ -54,7 +54,7 @@ export async function POST(req: Request) {
   }
 
   // action === "verify"
-  const rl = enforceLimit(user.id, "adminTotp");
+  const rl = await enforceLimit(user.id, "adminTotp");
   if (!rl.ok) {
     return NextResponse.json(
       { error: `Demasiados intentos. Espera ${Math.ceil(rl.resetIn / 60)} min.` },

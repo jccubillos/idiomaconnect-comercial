@@ -1,9 +1,13 @@
 /**
- * Simple in-memory rate limiter. Suitable for single-region MVP.
+ * Limitador de uso anti-abuso, en DOS capas:
  *
- * For multi-region / serverless cold starts: replace `bucket` with Upstash Redis
- * (one env var swap). The interface stays identical.
+ *  1. DB (tabla rate_limits + RPC rate_limit_hit): cuenta GLOBAL y atómica
+ *     entre todos los servidores serverless. Es la capa autoritativa.
+ *  2. Memoria (este Map): fallback si la RPC aún no está migrada o falla,
+ *     y para límites blandos por IP (formularios públicos).
  */
+
+import { createServiceClient } from "@/lib/supabase/server";
 
 type Bucket = { count: number; resetAt: number };
 const bucket = new Map<string, Bucket>();
@@ -57,6 +61,27 @@ export const LIMITS = {
 
 export type LimitKind = keyof typeof LIMITS;
 
-export function enforceLimit(userId: string, kind: LimitKind): RateLimitResult {
-  return checkRateLimit(`${userId}:${kind}`, LIMITS[kind]);
+/**
+ * Límite por usuario/acción. Cuenta primero en la DB (global entre servidores);
+ * si la RPC no existe o falla, cae al contador en memoria de esta instancia.
+ */
+export async function enforceLimit(userId: string, kind: LimitKind): Promise<RateLimitResult> {
+  const opts = LIMITS[kind];
+  try {
+    const svc = createServiceClient();
+    const { data, error } = await svc.rpc("rate_limit_hit", {
+      p_key: `${userId}:${kind}`,
+      p_limit: opts.limit,
+      p_window_sec: opts.windowSec,
+    });
+    if (!error && data && typeof data === "object") {
+      const d = data as { allowed: boolean; remaining: number; reset_in: number };
+      if (typeof d.allowed === "boolean") {
+        return { ok: d.allowed, remaining: d.remaining ?? 0, resetIn: d.reset_in ?? opts.windowSec };
+      }
+    }
+  } catch {
+    /* sin service key o migración 0013 no aplicada → fallback en memoria */
+  }
+  return checkRateLimit(`${userId}:${kind}`, opts);
 }

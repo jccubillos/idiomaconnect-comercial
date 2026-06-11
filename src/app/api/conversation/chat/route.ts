@@ -29,7 +29,7 @@ export async function POST(req: Request) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const rl = enforceLimit(user.id, "conversation");
+  const rl = await enforceLimit(user.id, "conversation");
   if (!rl.ok) {
     return NextResponse.json(
       { error: `Demasiados turnos. Espera ${rl.resetIn}s.`, code: "rate_limit" },

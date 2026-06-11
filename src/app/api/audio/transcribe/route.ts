@@ -12,7 +12,7 @@ export async function POST(req: Request) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const rl = enforceLimit(user.id, "whisper");
+  const rl = await enforceLimit(user.id, "whisper");
   if (!rl.ok) {
     return NextResponse.json(
       { error: `Demasiadas transcripciones. Espera ${Math.ceil(rl.resetIn / 60)} min.`, code: "rate_limit" },

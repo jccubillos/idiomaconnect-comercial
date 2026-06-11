@@ -27,7 +27,7 @@ export async function POST(req: Request) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const rl = enforceLimit(user.id, "llmGenerate");
+  const rl = await enforceLimit(user.id, "llmGenerate");
   if (!rl.ok) {
     return NextResponse.json(
       { error: `Cuota alcanzada. Vuelve en ${Math.ceil(rl.resetIn / 60)} min.`, code: "rate_limit" },

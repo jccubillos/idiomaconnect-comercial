@@ -38,7 +38,7 @@ export async function POST(req: Request) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   // Rate limit per user/day
-  const rl = enforceLimit(user.id, "llmGenerate");
+  const rl = await enforceLimit(user.id, "llmGenerate");
   if (!rl.ok) {
     return NextResponse.json(
       { error: `Cuota diaria alcanzada. Vuelve en ${Math.ceil(rl.resetIn / 60)} min.`, code: "rate_limit" },

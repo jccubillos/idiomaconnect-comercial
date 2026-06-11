@@ -60,7 +60,7 @@ export function withApi<Schema extends z.ZodTypeAny>(opts: WithApiOpts<Schema>) 
 
       // ── Rate limit ─────────────────────────────────
       if (opts.rateLimit && user) {
-        const rl = enforceLimit(user.id, opts.rateLimit);
+        const rl = await enforceLimit(user.id, opts.rateLimit);
         if (!rl.ok) {
           return NextResponse.json(
             { error: `Cuota alcanzada. Vuelve en ${Math.ceil(rl.resetIn / 60)} min.`, code: "rate_limit" },

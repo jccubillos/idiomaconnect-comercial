@@ -299,6 +299,19 @@ export interface Database {
         };
         Update: Partial<Database["public"]["Tables"]["contact_messages"]["Row"]>;
       };
+      rate_limits: {
+        Row: {
+          key: string;
+          count: number;
+          window_ends_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["rate_limits"]["Row"]> & {
+          key: string;
+          count: number;
+          window_ends_at: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["rate_limits"]["Row"]>;
+      };
       app_admins: {
         Row: {
           user_id: string;
@@ -364,6 +377,10 @@ export interface Database {
       current_family_id: {
         Args: Record<string, never>;
         Returns: string;
+      };
+      rate_limit_hit: {
+        Args: { p_key: string; p_limit: number; p_window_sec: number };
+        Returns: { allowed: boolean; remaining: number; reset_in: number };
       };
       user_staff_org_ids: {
         Args: Record<string, never>;

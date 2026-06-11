@@ -221,6 +221,14 @@ export async function GET(req: Request) {
     }
   }
 
+  // Mantenimiento: borrar contadores de límites ya vencidos (ventanas viejas).
+  try {
+    await svc
+      .from("rate_limits")
+      .delete()
+      .lt("window_ends_at", new Date(now.getTime() - 86_400_000).toISOString());
+  } catch { /* tabla aún no migrada */ }
+
   log.info("lifecycle.done", stats);
   return NextResponse.json({ ok: true, emailMode: emailConfigured() ? "live" : "dormant", ...stats });
 }

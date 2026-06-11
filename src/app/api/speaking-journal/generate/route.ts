@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const rl = enforceLimit(user.id, "llmGenerate");
+  const rl = await enforceLimit(user.id, "llmGenerate");
   if (!rl.ok) return NextResponse.json({ error: "Cuota alcanzada", code: "rate_limit" }, { status: 429 });
 
   const { data: kid } = await supabase.from("kid_profiles").select("*").eq("id", body.kidId).single();
