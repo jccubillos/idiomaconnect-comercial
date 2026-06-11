@@ -3,10 +3,46 @@ import "./globals.css";
 import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
 
 export const metadata: Metadata = {
-  title: "IdiomaConnect — Inglés gamificado para tu familia",
+  metadataBase: new URL("https://idiomaconnect.com"),
+  title: {
+    default: "IdiomaConnect — App para aprender inglés para niños y adolescentes",
+    template: "%s | IdiomaConnect",
+  },
   description:
-    "El tutor de inglés que conoce a tu familia. Lecciones, conversación, pronunciación y battle mode para niños de 8-14 años.",
+    "La app de inglés con tutor de IA que conoce a tu familia: lecciones personalizadas, conversación, pronunciación y juegos para niños y adolescentes de 8 a 18 años. Niveles A1 a C2 (CEFR). Planes familiares y para colegios.",
+  keywords: [
+    "app de inglés",
+    "app para aprender inglés",
+    "aprender inglés niños",
+    "inglés para niños",
+    "inglés para adolescentes",
+    "tutor de inglés",
+    "tutor de inglés online",
+    "profesor de inglés online",
+    "clases de inglés para niños",
+    "curso de inglés online",
+    "inglés CEFR",
+    "inglés para colegios",
+    "IdiomaConnect",
+  ],
   applicationName: "IdiomaConnect",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "https://idiomaconnect.com",
+    siteName: "IdiomaConnect",
+    title: "IdiomaConnect — App para aprender inglés para niños y adolescentes",
+    description:
+      "El tutor de inglés con IA que conoce a tu familia. Lecciones personalizadas para niños de 8 a 18 años, niveles A1-C2. Planes familiares y para colegios.",
+    locale: "es_CL",
+  },
+  twitter: {
+    card: "summary",
+    title: "IdiomaConnect — App para aprender inglés para niños y adolescentes",
+    description:
+      "El tutor de inglés con IA que conoce a tu familia. Niños de 8 a 18 años, niveles A1-C2.",
+  },
+  robots: { index: true, follow: true },
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,

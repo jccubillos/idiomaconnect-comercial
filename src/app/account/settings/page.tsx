@@ -64,9 +64,17 @@ export default async function SettingsPage() {
         <h2 className="font-bold mb-3">Privacidad y consentimiento</h2>
         <Row label="Consentimiento parental" value={family?.parental_consent_at ? "✔ otorgado" : "Pendiente"} />
         <Row label="Política aceptada" value={family?.privacy_accepted_at ? "✔" : "—"} />
-        <div className="mt-3 flex gap-2 text-sm">
+        <div className="mt-3 flex flex-wrap gap-2 text-sm items-center">
           <Link href="/privacy" className="text-neon-cyan underline">Política de privacidad</Link>
           <Link href="/terms" className="text-neon-cyan underline">Términos</Link>
+        </div>
+        <div className="mt-4">
+          <a href="/api/account/export" download>
+            <NeonButton variant="ghost-cyan" size="sm">⬇️ Descargar mis datos (JSON)</NeonButton>
+          </a>
+          <p className="text-[11px] text-ink-dim mt-2">
+            Exporta todos los datos de tu familia: perfiles, progreso, sesiones y trofeos.
+          </p>
         </div>
       </GlassCard>
 

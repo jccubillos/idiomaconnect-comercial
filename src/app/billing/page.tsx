@@ -12,20 +12,26 @@ function BillingInner() {
   // Código de descuento que llega por link personalizado (ej. oferta 15% post-trial).
   const promo = params.get("promo") ?? undefined;
   const [loading, setLoading] = useState<"monthly" | "yearly" | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   async function startCheckout(plan: "monthly" | "yearly") {
+    setError(null);
     setLoading(plan);
     const res = await fetch("/api/payments/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ plan, discountCode: promo }),
     });
-    const data = await res.json();
-    if (data.url) window.location.href = data.url;
-    else {
-      alert(data.error ?? "Algo falló");
-      setLoading(null);
+    const data = await res.json().catch(() => ({}));
+    if (data.url) {
+      window.location.href = data.url;
+      return;
     }
+    setError(
+      "El sistema de pagos está en su configuración final y se activará muy pronto. " +
+      "Mientras tanto puedes usar la prueba gratis, o escribirnos a hola@idiomaconnect.com para contratar.",
+    );
+    setLoading(null);
   }
 
   return (
@@ -45,6 +51,11 @@ function BillingInner() {
           )}
           {canceled && (
             <p className="mt-4 text-sm text-neon-red">El pago se canceló. Puedes intentar de nuevo cuando quieras.</p>
+          )}
+          {error && (
+            <div className="mt-5 max-w-md mx-auto rounded-2xl border border-neon-cyan/40 bg-neon-cyan/10 px-4 py-3 text-left">
+              <p className="text-xs text-ink-dim">{error}</p>
+            </div>
           )}
           {promo && (
             <div className="mt-5 max-w-md mx-auto rounded-2xl border border-neon-green/50 bg-neon-green/10 px-4 py-3">

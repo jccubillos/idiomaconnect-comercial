@@ -12,6 +12,16 @@ export default async function HomePage() {
 
   return (
     <main className="relative z-10">
+      {/* SEO: datos estructurados para Google (app + precios + FAQ) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSONLD_APP) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSONLD_FAQ) }}
+      />
+
       {/* HERO */}
       <section className="px-5 pt-8 pb-20 max-w-4xl mx-auto text-center">
         {/* LOGO IdiomaConnect — branding principal, parte superior */}
@@ -54,20 +64,27 @@ export default async function HomePage() {
           <span className="text-glow-cyan text-neon-cyan">conoce a tu familia</span>
         </h1>
         <p className="text-lg md:text-xl text-ink-dim max-w-2xl mx-auto mb-8 text-balance">
-          La única app que menciona a tus hijos por nombre, usa a sus mascotas en los ejemplos
-          y se adapta a sus hobbies reales. Para chicos y adolescentes de 8 a 16 años.
+          La única app para aprender inglés que menciona a tus hijos por nombre, usa a sus
+          mascotas en los ejemplos y se adapta a sus hobbies reales. Un tutor de inglés con IA
+          para niños y adolescentes de 8 a 18 años.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
-          <Link href="/signup">
-            <NeonButton size="lg" variant="primary">Empezar gratis · 7 días</NeonButton>
-          </Link>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
+          <a href="#planes">
+            <NeonButton size="lg" variant="primary">💎 Contratar ahora</NeonButton>
+          </a>
           <Link href="/login">
             <NeonButton size="lg" variant="ghost-cyan">Ya tengo cuenta</NeonButton>
           </Link>
         </div>
+        <p className="text-sm font-bold text-neon-green mb-2">
+          Plan anual: desde US$6,58/mes para hasta 6 niños
+        </p>
         <p className="text-xs text-ink-dim">
-          Sin tarjeta · cancela cuando quieras · datos cifrados
+          Cancela cuando quieras · datos cifrados ·{" "}
+          <Link href="/signup" className="underline hover:text-neon-cyan">
+            ¿prefieres probar primero? 7 días gratis
+          </Link>
         </p>
       </section>
 
@@ -167,7 +184,7 @@ export default async function HomePage() {
       </section>
 
       {/* PRICING */}
-      <section className="px-5 py-16 max-w-5xl mx-auto">
+      <section id="planes" className="px-5 py-16 max-w-5xl mx-auto scroll-mt-8">
         <div className="text-center mb-8">
           <div className="text-xs font-bold uppercase tracking-widest text-neon-cyan mb-2">Planes</div>
           <h2 className="text-3xl md:text-4xl font-extrabold text-balance">Para tu familia o tu colegio</h2>
@@ -183,24 +200,26 @@ export default async function HomePage() {
               <li>✓ Dashboard de padres</li>
             </ul>
             <div className="mt-auto">
-              <Link href="/signup"><NeonButton variant="ghost-cyan" className="w-full">Probar 7 días gratis</NeonButton></Link>
+              <Link href="/signup?plan=monthly"><NeonButton variant="ghost-cyan" className="w-full">Contratar mensual</NeonButton></Link>
             </div>
           </GlassCard>
 
-          <GlassCard strong glowColor="cyan" className="p-6 text-center relative border border-neon-cyan/40 flex flex-col">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest bg-neon-cyan text-surface px-2 py-0.5 rounded-full">
-              Ahorras 34%
+          <GlassCard strong glowColor="cyan" className="p-6 text-center relative border-2 border-neon-cyan/60 flex flex-col scale-[1.02]">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest bg-neon-cyan text-surface px-2.5 py-0.5 rounded-full whitespace-nowrap">
+              ⭐ Recomendado · Ahorras 34%
             </div>
-            <div className="text-xs uppercase tracking-widest text-ink-dim mb-2">Familiar anual</div>
-            <div className="text-4xl font-extrabold">$79</div>
-            <div className="text-sm text-ink-dim mb-4">USD / año (~$6.58/mes)</div>
+            <div className="text-xs uppercase tracking-widest text-neon-cyan mb-2">Familiar anual</div>
+            <div className="text-5xl font-extrabold">$79</div>
+            <div className="text-sm text-ink-dim mb-1">USD / año</div>
+            <div className="text-sm font-bold text-neon-green mb-4">Sale a $6,58/mes</div>
             <ul className="text-xs text-ink-dim space-y-1 mb-5 text-left mx-auto">
               <li>✓ Hasta 6 perfiles</li>
-              <li>✓ 2 meses de regalo</li>
-              <li>✓ Todas las features</li>
+              <li>✓ 2 meses de regalo vs mensual</li>
+              <li>✓ Todas las herramientas</li>
+              <li>✓ Dashboard de padres</li>
             </ul>
             <div className="mt-auto">
-              <Link href="/signup"><NeonButton variant="primary" className="w-full">Probar 7 días gratis</NeonButton></Link>
+              <Link href="/signup?plan=yearly"><NeonButton variant="primary" size="lg" className="w-full">Contratar anual</NeonButton></Link>
             </div>
           </GlassCard>
 
@@ -222,7 +241,13 @@ export default async function HomePage() {
           </GlassCard>
         </div>
         <p className="text-center text-xs text-ink-dim mt-6">
-          Familias: hasta 6 perfiles · sin contratos · cancela cuando quieras · Colegios: contratación anual
+          Familias: hasta 6 perfiles · cancela cuando quieras · Colegios: contratación anual
+        </p>
+        <p className="text-center text-xs text-ink-dim mt-2">
+          ¿Quieres probar antes de contratar?{" "}
+          <Link href="/signup" className="underline hover:text-neon-cyan">
+            Prueba gratis de 7 días, sin tarjeta
+          </Link>
         </p>
       </section>
 
@@ -230,11 +255,21 @@ export default async function HomePage() {
       <section className="px-5 py-16 max-w-3xl mx-auto">
         <h2 className="text-2xl font-extrabold text-center mb-8">Preguntas frecuentes</h2>
         <div className="space-y-3">
-          <Faq q="¿Para qué edades es?" a="Diseñada para chicos y adolescentes de 8 a 16 años. El contenido se adapta automáticamente al nivel CEFR (A1 a C2)." />
-          <Faq q="¿Mis datos están seguros?" a="Sí. El audio nunca se almacena (solo se transcribe en tiempo real). Los nombres de la familia están cifrados. Tienes derecho de exportación y borrado en un click." />
-          <Faq q="¿Funciona en celular?" a="Sí. Es una PWA: la instalas en el celular como una app nativa y funciona en iOS y Android sin pasar por la tienda." />
+          <Faq q="¿Para qué edades es?" a="Diseñada para niños y adolescentes de 8 a 18 años. El contenido se adapta automáticamente al nivel CEFR (A1 a C2)." />
+          <Faq q="¿Cómo instalo la app en mi celular o computador?" a={
+            <span>
+              IdiomaConnect se instala directo desde el navegador, sin pasar por las tiendas de aplicaciones:
+              <br /><br />
+              📱 <b>Android (Chrome):</b> abre idiomaconnect.com → toca el menú <b>⋮</b> (arriba a la derecha) → <b>“Agregar a pantalla principal”</b> o <b>“Instalar app”</b> → Instalar. Listo: tendrás el ícono como cualquier app.
+              <br /><br />
+              🍎 <b>iPhone / iPad (Safari):</b> abre idiomaconnect.com → toca el botón <b>Compartir</b> (el cuadrado con flecha ↑) → desliza y elige <b>“Agregar a pantalla de inicio”</b> → Agregar.
+              <br /><br />
+              💻 <b>Computador (Chrome o Edge):</b> abre idiomaconnect.com → haz clic en el <b>ícono de instalar</b> (un monitor con flecha, al final de la barra de direcciones) → <b>Instalar</b>. Se abrirá en su propia ventana, como un programa.
+            </span>
+          } />
+          <Faq q="¿Mis datos están seguros?" a="Sí. El audio nunca se almacena (solo se transcribe en tiempo real) y tus datos están protegidos. En Configuración puedes descargar todos tus datos (exportación) y borrar tu cuenta definitivamente cuando quieras." />
           <Faq q="¿Qué pasa si cancelo?" a="Pierdes el acceso pero tus datos quedan 30 días por si decides volver. Después se borran automáticamente." />
-          <Faq q="¿Reemplaza al colegio?" a="No. Es complemento. Un tutor personalizado para reforzar lo que el colegio cubre genéricamente." />
+          <Faq q="¿Reemplaza al colegio o al profesor de inglés?" a="No, lo complementa: es un tutor de inglés personalizado para practicar todos los días lo que el colegio cubre de forma genérica. Para colegios tenemos un plan institucional con panel para profesores." />
         </div>
       </section>
 
@@ -244,12 +279,20 @@ export default async function HomePage() {
           <LumiCharacter mood="celebrate" size={132} />
         </div>
         <h2 className="text-3xl md:text-4xl font-extrabold mb-3 text-balance">
-          Empieza hoy. Sin tarjeta.
+          Dale a tus hijos un tutor de inglés que los conoce
         </h2>
-        <p className="text-ink-dim mb-6">7 días para que tus hijos lo prueben con tu familia real.</p>
-        <Link href="/signup">
-          <NeonButton size="lg" variant="primary">Crear cuenta familiar</NeonButton>
+        <p className="text-ink-dim mb-6">
+          Hasta 6 niños con una sola suscripción · desde US$6,58/mes con el plan anual.
+        </p>
+        <Link href="/signup?plan=yearly">
+          <NeonButton size="lg" variant="primary">💎 Contratar plan anual</NeonButton>
         </Link>
+        <p className="text-xs text-ink-dim mt-4">
+          ¿Aún con dudas?{" "}
+          <Link href="/signup" className="underline hover:text-neon-cyan">
+            Empieza con la prueba gratis de 7 días (sin tarjeta)
+          </Link>
+        </p>
       </section>
 
       <footer className="px-5 py-10 max-w-3xl mx-auto text-center text-xs text-ink-dim">
@@ -277,7 +320,7 @@ function Step({ n, emoji, title, body }: { n: number; emoji: string; title: stri
   );
 }
 
-function Faq({ q, a }: { q: string; a: string }) {
+function Faq({ q, a }: { q: string; a: React.ReactNode }) {
   return (
     <details className="glass rounded-xl px-4 py-3 group">
       <summary className="cursor-pointer list-none flex justify-between items-center font-bold text-sm">
@@ -297,7 +340,7 @@ const MODES_LANDING = [
   { emoji: "🃏", title: "Flashcards", body: "Vocabulario rápido" },
   { emoji: "🧠", title: "SRS", body: "Repaso espaciado" },
   { emoji: "🧩", title: "Armar oraciones", body: "Drag-tiles" },
-  { emoji: "📜", title: "Historia con huecos", body: "Cloze adaptado" },
+  { emoji: "📜", title: "Historias para completar", body: "Cloze adaptado" },
   { emoji: "📔", title: "Diario hablado", body: "30s libre" },
   { emoji: "🔁", title: "Traducción ES→EN", body: "Escritura productiva" },
   { emoji: "🖼", title: "Describe escena", body: "Descripción libre" },
@@ -307,3 +350,84 @@ const MODES_LANDING = [
   { emoji: "🎴", title: "Memory match", body: "Concentración vocab" },
   { emoji: "🎓", title: "Examen CEFR", body: "Placement test" },
 ];
+
+/* ── SEO: datos estructurados (schema.org) ─────────────────────────── */
+const JSONLD_APP = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "IdiomaConnect",
+  applicationCategory: "EducationalApplication",
+  operatingSystem: "Web, Android, iOS",
+  url: "https://idiomaconnect.com",
+  description:
+    "App para aprender inglés para niños y adolescentes de 8 a 18 años. Tutor de inglés con IA que personaliza cada lección con la familia, mascotas y hobbies reales del alumno. Niveles CEFR A1 a C2. Planes familiares y para colegios.",
+  inLanguage: "es",
+  offers: [
+    {
+      "@type": "Offer",
+      name: "Plan Familiar Mensual",
+      price: "9.99",
+      priceCurrency: "USD",
+      category: "subscription",
+    },
+    {
+      "@type": "Offer",
+      name: "Plan Familiar Anual",
+      price: "79",
+      priceCurrency: "USD",
+      category: "subscription",
+    },
+  ],
+  audience: {
+    "@type": "EducationalAudience",
+    educationalRole: "student",
+    audienceType: "niños y adolescentes de 8 a 18 años",
+  },
+};
+
+const JSONLD_FAQ = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "¿Para qué edades es IdiomaConnect?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Diseñada para niños y adolescentes de 8 a 18 años. El contenido se adapta automáticamente al nivel CEFR (A1 a C2).",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "¿Cómo instalo la app de inglés en mi celular o computador?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Se instala directo desde el navegador, sin tiendas de aplicaciones. Android (Chrome): menú ⋮ → Agregar a pantalla principal. iPhone (Safari): botón Compartir → Agregar a pantalla de inicio. Computador (Chrome/Edge): ícono de instalar en la barra de direcciones.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "¿Mis datos están seguros?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Sí. El audio nunca se almacena (solo se transcribe en tiempo real). Desde Configuración puedes descargar todos tus datos y borrar la cuenta definitivamente.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "¿Qué pasa si cancelo la suscripción?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Pierdes el acceso pero tus datos quedan guardados 30 días por si decides volver. Después se borran automáticamente.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "¿Reemplaza al colegio o al profesor de inglés?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No, lo complementa: es un tutor de inglés personalizado para practicar a diario. Para colegios existe un plan institucional con panel para profesores.",
+      },
+    },
+  ],
+};

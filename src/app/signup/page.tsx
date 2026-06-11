@@ -1,15 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { PasswordInput } from "@/components/ui/PasswordInput";
 
-export default function SignupPage() {
+function SignupForm() {
   const router = useRouter();
+  const params = useSearchParams();
+  // Intención de compra desde la landing: tras crear la cuenta va directo al pago.
+  const buyPlan = params.get("plan") === "monthly" || params.get("plan") === "yearly"
+    ? (params.get("plan") as "monthly" | "yearly")
+    : null;
   const [familyName, setFamilyName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -52,8 +57,8 @@ export default function SignupPage() {
 
     // Trigger handle_new_user() crea la fila de familia automáticamente.
     if (data.session) {
-      // Confirmación de email DESACTIVADA → ya hay sesión, entramos directo.
-      router.push("/onboarding");
+      // Con intención de compra → directo al pago; si no, al onboarding normal.
+      router.push(buyPlan ? `/billing?plan=${buyPlan}` : "/onboarding");
       router.refresh();
     } else {
       // Confirmación de email ACTIVADA → no hay sesión hasta confirmar el correo.
@@ -81,7 +86,14 @@ export default function SignupPage() {
     <main className="min-h-dvh flex items-center justify-center px-5 py-12 relative z-10">
       <GlassCard strong className="w-full max-w-md p-8">
         <h1 className="text-2xl font-extrabold mb-1">Crear cuenta familiar</h1>
-        <p className="text-sm text-ink-dim mb-6">7 días gratis · sin tarjeta requerida.</p>
+        {buyPlan ? (
+          <p className="text-sm text-ink-dim mb-6">
+            Estás contratando el <b className="text-neon-cyan">plan {buyPlan === "yearly" ? "anual (US$79/año)" : "mensual (US$9.99/mes)"}</b>.
+            Primero crea tu cuenta (1 minuto) y luego pasas al pago seguro.
+          </p>
+        ) : (
+          <p className="text-sm text-ink-dim mb-6">7 días gratis · sin tarjeta requerida.</p>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -176,5 +188,13 @@ export default function SignupPage() {
         </div>
       </GlassCard>
     </main>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={null}>
+      <SignupForm />
+    </Suspense>
   );
 }
