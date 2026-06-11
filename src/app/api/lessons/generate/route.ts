@@ -21,6 +21,8 @@ const BodySchema = z.object({
   schoolMode: z.boolean().optional(),
   // Sendero: lección de una unidad específica del currículo (p. ej. "a1-3").
   unitId: z.string().optional(),
+  // "Lumi en tu Colegio": evaluación de entrenamiento cargada por el profesor.
+  evaluationId: z.string().uuid().optional(),
 });
 
 export async function POST(req: Request) {
@@ -93,7 +95,49 @@ export async function POST(req: Request) {
   let lessonTopic: string;
   let lessonCustomContext: string | null;
 
-  if (senderoUnit) {
+  if (body.worldKey === "school_world") {
+    // "LUMI EN TU COLEGIO": el contenido lo manda el PROFESOR del curso
+    // (tema + contexto + evaluación opcional). Exclusivo de alumnos con curso.
+    if (!kid.course_id) {
+      return NextResponse.json({ error: "Este mundo es solo para alumnos de colegio." }, { status: 403 });
+    }
+    const { data: course } = await supabase
+      .from("courses")
+      .select("id, name, current_theme, current_context")
+      .eq("id", kid.course_id)
+      .single();
+
+    const parts: string[] = [];
+    let evalTitle: string | null = null;
+    if (body.evaluationId) {
+      const { data: ev } = await supabase
+        .from("course_evaluations")
+        .select("course_id, title, content, active")
+        .eq("id", body.evaluationId)
+        .single();
+      if (ev && ev.course_id === kid.course_id && ev.active) {
+        evalTitle = ev.title;
+        parts.push(
+          `EVALUACIÓN DE ENTRENAMIENTO "${ev.title}". El profesor cargó esta materia/preguntas; ` +
+          `la lección y el quiz deben entrenar EXACTAMENTE estos contenidos:\n${ev.content.slice(0, 2500)}`,
+        );
+      }
+    }
+    if (!evalTitle) {
+      if (course?.current_theme) parts.push(`Tema actual del curso: ${course.current_theme}.`);
+      if (course?.current_context) parts.push(course.current_context);
+    }
+
+    world = {
+      key: "school_world",
+      name: "Lumi en tu Colegio",
+      tagline: "Lo que tu curso está aprendiendo",
+      topic: evalTitle ?? course?.current_theme ?? "los contenidos que el curso está viendo en clases",
+    };
+    objective = null; // el contenido del profesor MANDA (igual que schoolMode)
+    lessonTopic = world.topic;
+    lessonCustomContext = parts.length ? `[Contenido definido por el profesor] ${parts.join(" ")}` : null;
+  } else if (senderoUnit) {
     // Sendero: lección de una unidad CONCRETA del currículo (mundo gramática).
     const gw = getUniversalWorld("grammar")!;
     world = { key: gw.key, name: gw.name, tagline: gw.tagline, topic: gw.topic };
@@ -146,7 +190,7 @@ export async function POST(req: Request) {
   // colegio con "tema de la semana" definido por su profesor, se inyecta ese
   // contexto. Aislado por curso: solo afecta a alumnos de ESE curso; familias y
   // otros colegios no se ven alterados (cada lección se genera por separado).
-  if (kid.course_id) {
+  if (kid.course_id && body.worldKey !== "school_world") {
     const { data: course } = await supabase
       .from("courses")
       .select("current_theme, current_context")

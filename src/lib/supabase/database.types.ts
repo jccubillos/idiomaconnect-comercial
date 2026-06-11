@@ -187,6 +187,8 @@ export interface Database {
           current_theme: string | null;
           current_context: string | null;
           context_updated_at: string | null;
+          world_message: string | null;
+          enabled_modes: string[] | null;
           created_at: string;
           archived_at: string | null;
         };
@@ -195,6 +197,22 @@ export interface Database {
           name: string;
         };
         Update: Partial<Database["public"]["Tables"]["courses"]["Row"]>;
+      };
+      course_evaluations: {
+        Row: {
+          id: string;
+          course_id: string;
+          title: string;
+          content: string;
+          active: boolean;
+          created_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["course_evaluations"]["Row"]> & {
+          course_id: string;
+          title: string;
+          content: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["course_evaluations"]["Row"]>;
       };
       course_teachers: {
         Row: {

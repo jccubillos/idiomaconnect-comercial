@@ -199,6 +199,24 @@ export default async function WorldsPage({ searchParams }: PageProps) {
           total={coachPlan.mission.total}
         />
 
+        {/* 🏫 LUMI EN TU COLEGIO — mundo exclusivo de alumnos con curso */}
+        {kid.course_id && (
+          <Link href={`/school-world?kid=${kid.id}`}>
+            <GlassCard strong glowColor="purple" className="p-4 mb-6 border-2 border-neon-purple/60 hover:border-neon-purple transition-colors">
+              <div className="flex items-center gap-3">
+                <span className="text-3xl">🏫</span>
+                <div className="flex-1">
+                  <h3 className="font-extrabold">Lumi en tu Colegio</h3>
+                  <p className="text-xs text-ink-dim">
+                    Lo que tu curso está aprendiendo · mensaje de tu profesor · evaluaciones
+                  </p>
+                </div>
+                <span className="text-xs font-extrabold text-neon-purple">Entrar →</span>
+              </div>
+            </GlassCard>
+          </Link>
+        )}
+
         {/* Sendero — el camino guiado ordenado (A1 → C1) */}
         <Link href={`/sendero?kid=${kid.id}`}>
           <GlassCard className="p-4 mb-6 border border-neon-purple/40 hover:border-neon-purple/70 transition-colors">

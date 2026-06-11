@@ -27,11 +27,14 @@ export function LessonRunner({
   worldKey,
   schoolTopic,
   unitId,
+  evalId,
 }: {
   kid: KidMini;
   worldKey: string;
   schoolTopic?: string;
   unitId?: string;
+  /** Evaluación de entrenamiento del mundo del colegio. */
+  evalId?: string;
 }) {
   const router = useRouter();
   const isSchool = worldKey === "school" && !!schoolTopic;
@@ -63,6 +66,8 @@ export function LessonRunner({
             ...(isSchool ? { topicOverride: schoolTopic, schoolMode: true } : {}),
             // Sendero: lección de la unidad específica del currículo.
             ...(unitId ? { unitId } : {}),
+            // Mundo del colegio: evaluación cargada por el profesor.
+            ...(evalId ? { evaluationId: evalId } : {}),
           }),
         });
         if (cancelled) return;
@@ -88,7 +93,7 @@ export function LessonRunner({
       }
     })();
     return () => { cancelled = true; };
-  }, [kid.id, worldKey, schoolTopic, isSchool, unitId]);
+  }, [kid.id, worldKey, schoolTopic, isSchool, unitId, evalId]);
 
   async function handleGenerateAudio() {
     if (!lesson) return;

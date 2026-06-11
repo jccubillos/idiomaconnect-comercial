@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { LessonRunner } from "@/components/lesson/LessonRunner";
 
 interface PageProps {
-  searchParams: { kid?: string; world?: string; topic?: string; unit?: string };
+  searchParams: { kid?: string; world?: string; topic?: string; unit?: string; eval?: string };
 }
 
 export default async function LessonPage({ searchParams }: PageProps) {
@@ -33,6 +33,7 @@ export default async function LessonPage({ searchParams }: PageProps) {
       worldKey={worldKey}
       schoolTopic={schoolTopic}
       unitId={searchParams.unit?.trim() || undefined}
+      evalId={searchParams.eval?.trim() || undefined}
     />
   );
 }
