@@ -9,7 +9,7 @@ import { NeonButton } from "@/components/ui/NeonButton";
 import { playTTS } from "@/lib/client/tts";
 import type { MinimalPair } from "@/lib/groq/listening";
 
-export function MinimalPairsRunner({ kid }: { kid: { id: string; name: string; color_hex: string } }) {
+export function MinimalPairsRunner({ kid, worldKey }: { kid: { id: string; name: string; color_hex: string }; worldKey?: string }) {
   const [phase, setPhase] = useState<"loading" | "play" | "done" | "error">("loading");
   const [pairs, setPairs] = useState<MinimalPair[]>([]);
   const [idx, setIdx] = useState(0);
@@ -65,7 +65,7 @@ export function MinimalPairsRunner({ kid }: { kid: { id: string; name: string; c
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          kidId: kid.id, lessonType: "minimal_pairs", worldKey: "sound",
+          kidId: kid.id, lessonType: "minimal_pairs", worldKey: worldKey ?? "sound",
           topic: "Minimal pairs", skill: "listening", scorePct: pct, xpGained: xp,
           attempts: 1, durationSeconds: Math.round((Date.now() - startedAt) / 1000),
         }),

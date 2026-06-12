@@ -10,7 +10,7 @@ import { ProgressBar } from "@/components/ui/ProgressBar";
 import { playTTS } from "@/lib/client/tts";
 import type { ShadowPhrase } from "@/lib/groq/listening";
 
-export function ShadowRunner({ kid }: { kid: { id: string; name: string; color_hex: string } }) {
+export function ShadowRunner({ kid, worldKey }: { kid: { id: string; name: string; color_hex: string }; worldKey?: string }) {
   const [phase, setPhase] = useState<"loading" | "ready" | "recording" | "scoring" | "done" | "error">("loading");
   const [phrases, setPhrases] = useState<ShadowPhrase[]>([]);
   const [idx, setIdx] = useState(0);
@@ -80,7 +80,7 @@ export function ShadowRunner({ kid }: { kid: { id: string; name: string; color_h
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          kidId: kid.id, lessonType: "shadow_speaking", worldKey: "sound",
+          kidId: kid.id, lessonType: "shadow_speaking", worldKey: worldKey ?? "sound",
           topic: "Shadow Speaking", skill: "speaking", scorePct: avg, xpGained: xp,
           attempts: 1, durationSeconds: Math.round((Date.now() - startedAt) / 1000),
         }),

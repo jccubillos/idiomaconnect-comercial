@@ -69,7 +69,7 @@ export default async function SchoolWorldPage({ searchParams }: PageProps) {
   const { data: weekRows = [] } = mateIds.length
     ? await supabase
         .from("lesson_sessions")
-        .select("kid_id, xp_gained")
+        .select("kid_id, xp_gained, lesson_type, score_pct")
         .in("kid_id", mateIds)
         .eq("world_key", SCHOOL_WORLD_KEY)
         .gte("created_at", monday.toISOString())
@@ -87,13 +87,33 @@ export default async function SchoolWorldPage({ searchParams }: PageProps) {
   const goalMet = goal != null && courseWeekXp >= goal;
   const medals = ["🥇", "🥈", "🥉"];
 
+  // RÉCORDS DE BATTLE de la semana: mejor puntaje de cada compañero → top 3 a superar.
+  const bestBattleById = new Map<string, number>();
+  for (const r of weekRows ?? []) {
+    if (r.lesson_type !== "battle" || r.score_pct == null) continue;
+    const cur = bestBattleById.get(r.kid_id) ?? -1;
+    if (r.score_pct > cur) bestBattleById.set(r.kid_id, r.score_pct);
+  }
+  const nameById = new Map((classmates ?? []).map((c) => [c.id, { name: c.name, emoji: c.emoji }]));
+  const battleRecords = Array.from(bestBattleById.entries())
+    .map(([id, score]) => ({ id, score: Math.round(score), ...(nameById.get(id) ?? { name: "Alumno", emoji: "👤" }) }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3);
+  const myBattleBest = bestBattleById.has(kid.id) ? Math.round(bestBattleById.get(kid.id)!) : null;
+
   const tools = enabledToolsFor(course?.enabled_modes as string[] | null);
   const lessonTool = tools.find((t) => t.key === "lesson");
   const otherTools = tools.filter((t) => t.key !== "lesson");
 
+  // Actividades que etiquetan su XP con el mundo del colegio (cuentan para la
+  // racha, la liga y la misión). Las demás guardan en su mundo propio.
+  const TAGS_SCHOOL_WORLD = new Set([
+    "/lesson", "/battle", "/flashcards", "/sentence-builder", "/story-fill",
+    "/pronunciation", "/listen-id", "/memory-match", "/minimal-pairs", "/shadow-speaking",
+  ]);
   const withKid = (route: string) =>
-    route === "/lesson"
-      ? `/lesson?kid=${kid.id}&world=${SCHOOL_WORLD_KEY}`
+    TAGS_SCHOOL_WORLD.has(route)
+      ? `${route}?kid=${kid.id}&world=${SCHOOL_WORLD_KEY}`
       : `${route}?kid=${kid.id}`;
 
   return (
@@ -214,7 +234,7 @@ export default async function SchoolWorldPage({ searchParams }: PageProps) {
             </h2>
             <GlassCard className="p-4">
               <div className="space-y-2">
-                {ranking.slice(0, 10).map((r, i) => {
+                {ranking.slice(0, 30).map((r, i) => {
                   const isMe = r.id === kid.id;
                   return (
                     <div
@@ -240,6 +260,53 @@ export default async function SchoolWorldPage({ searchParams }: PageProps) {
               <p className="text-[11px] text-ink-dim mt-3">
                 Cuenta el XP ganado en este mundo desde el lunes. ¡La liga parte de cero cada semana!
               </p>
+            </GlassCard>
+          </section>
+        )}
+
+        {/* RÉCORDS DE BATTLE — el desafío directo entre compañeros */}
+        {tools.some((t) => t.key === "battle") && ranking.length > 1 && (
+          <section className="mb-8">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-ink-dim mb-3">
+              ⚔️ Récords de Battle (esta semana)
+            </h2>
+            <GlassCard className="p-4 border border-neon-red/30">
+              {battleRecords.length === 0 && (
+                <p className="text-sm text-ink-dim mb-1">
+                  Nadie ha puesto un récord esta semana. <b className="text-neon-red">¡Sé el primero!</b>
+                </p>
+              )}
+              <div className="space-y-2">
+                {battleRecords.map((r, i) => {
+                  const isMe = r.id === kid.id;
+                  return (
+                    <div
+                      key={r.id}
+                      className={`flex items-center gap-3 text-sm rounded-lg px-2 py-1.5 ${
+                        isMe ? "bg-neon-cyan/10 border border-neon-cyan/40" : ""
+                      }`}
+                    >
+                      <span className="w-7 text-center font-extrabold">{medals[i] ?? `${i + 1}º`}</span>
+                      <span className="text-lg">{r.emoji ?? "👤"}</span>
+                      <span className={`flex-1 font-bold ${isMe ? "text-neon-cyan" : ""}`}>
+                        {r.name}{isMe ? " (tú)" : ""}
+                      </span>
+                      <span className="font-extrabold text-neon-red">{r.score}%</span>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="flex items-center justify-between mt-3">
+                <p className="text-[11px] text-ink-dim">
+                  {myBattleBest != null
+                    ? `Tu mejor puntaje: ${myBattleBest}%.`
+                    : "Aún no juegas Battle esta semana."}{" "}
+                  ¿Puedes superar el récord? 💪
+                </p>
+                <Link href={`/battle?kid=${kid.id}&world=${SCHOOL_WORLD_KEY}`}>
+                  <NeonButton size="sm" variant="primary">⚔️ ¡A batallar!</NeonButton>
+                </Link>
+              </div>
             </GlassCard>
           </section>
         )}

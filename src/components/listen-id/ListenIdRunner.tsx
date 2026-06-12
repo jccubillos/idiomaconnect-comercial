@@ -11,7 +11,7 @@ import type { ListenIdItem } from "@/lib/groq/listening";
 
 function shuffle<T>(a: T[]) { const c = [...a]; for (let i = c.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [c[i], c[j]] = [c[j], c[i]]; } return c; }
 
-export function ListenIdRunner({ kid }: { kid: { id: string; name: string; color_hex: string } }) {
+export function ListenIdRunner({ kid, worldKey }: { kid: { id: string; name: string; color_hex: string }; worldKey?: string }) {
   const [phase, setPhase] = useState<"loading" | "play" | "done" | "error">("loading");
   const [items, setItems] = useState<ListenIdItem[]>([]);
   const [idx, setIdx] = useState(0);
@@ -58,7 +58,7 @@ export function ListenIdRunner({ kid }: { kid: { id: string; name: string; color
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          kidId: kid.id, lessonType: "listen_id", worldKey: "sound",
+          kidId: kid.id, lessonType: "listen_id", worldKey: worldKey ?? "sound",
           topic: "Listen & ID", skill: "listening", scorePct: pct, xpGained: xp,
           attempts: 1, durationSeconds: Math.round((Date.now() - startedAt) / 1000),
         }),

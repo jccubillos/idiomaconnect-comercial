@@ -25,7 +25,7 @@ function shuffle<T>(a: T[]) {
   return c;
 }
 
-export function MemoryRunner({ kid }: { kid: { id: string; name: string; color_hex: string } }) {
+export function MemoryRunner({ kid, worldKey }: { kid: { id: string; name: string; color_hex: string }; worldKey?: string }) {
   const [phase, setPhase] = useState<"loading" | "play" | "done" | "error">("loading");
   const [cards, setCards] = useState<Card[]>([]);
   const [flipped, setFlipped] = useState<number[]>([]);
@@ -95,7 +95,7 @@ export function MemoryRunner({ kid }: { kid: { id: string; name: string; color_h
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          kidId: kid.id, lessonType: "memory_match", worldKey: "vocab",
+          kidId: kid.id, lessonType: "memory_match", worldKey: worldKey ?? "vocab",
           topic: "Memory Match", skill: "vocabulary", scorePct: pct, xpGained: xp,
           attempts: 1, durationSeconds: Math.round((Date.now() - startedAt) / 1000),
         }),
