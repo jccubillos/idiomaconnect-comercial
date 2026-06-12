@@ -5,9 +5,10 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const tabs = [
+  { href: "/profiles", label: "Inicio", icon: "🏠" },
   { href: "/worlds", label: "Worlds", icon: "🌍" },
   { href: "/arena", label: "Arena", icon: "⚔️" },
-  { href: "/profile", label: "Profile", icon: "👤" },
+  { href: "/profile", label: "Perfil", icon: "👤" },
 ];
 
 export function BottomNav() {
@@ -15,15 +16,25 @@ export function BottomNav() {
   const params = useSearchParams();
   const kidId = params.get("kid");
 
-  // Visible en pantallas de sesión activa
-  const showOn = ["/worlds", "/arena", "/profile", "/lesson", "/battle", "/play", "/flashcards", "/srs", "/pronunciation"];
+  // Visible en TODAS las pantallas de práctica y navegación del niño.
+  const showOn = [
+    "/worlds", "/arena", "/profile", "/lesson", "/battle", "/play", "/flashcards",
+    "/srs", "/pronunciation", "/sentence-builder", "/story-fill", "/listen-id",
+    "/memory-match", "/minimal-pairs", "/shadow-speaking", "/conversation",
+    "/speaking-journal", "/translate-inverse", "/describe-scene", "/exam",
+    "/sendero", "/school-world", "/school", "/personal-talk",
+  ];
   if (!showOn.some((p) => pathname?.startsWith(p))) return null;
 
   return (
     <nav className="bottom-nav">
       <div className="flex justify-around items-center max-w-md mx-auto">
         {tabs.map((tab) => {
-          const active = pathname?.startsWith(tab.href);
+          // "/profile" no debe activarse en "/profiles" (Inicio) y viceversa.
+          const active =
+            tab.href === "/profile"
+              ? pathname === "/profile" || pathname?.startsWith("/profile/")
+              : pathname?.startsWith(tab.href);
           const href =
             kidId && (tab.href === "/worlds" || tab.href === "/profile")
               ? `${tab.href}${tab.href === "/profile" ? `/${kidId}` : `?kid=${kidId}`}`

@@ -79,8 +79,28 @@ export async function POST(req: Request) {
   const supabase = createServiceClient();
 
   // Map event → plan state.
-  let plan: "family_monthly" | "family_yearly" | "expired" | null = null;
+  let plan: "family_monthly" | "family_yearly" | "family_plus" | "family_lifetime" | "expired" | null = null;
   const variantId = String(attrs.variant_id ?? "");
+
+  // VITALICIO: es un pago único (sin suscripción) → llega como order_created.
+  if (eventName === "order_created" && event.meta?.custom_data?.plan === "lifetime") {
+    const { error: lifeErr } = await supabase
+      .from("families")
+      .update({
+        plan: "family_lifetime",
+        payment_provider: "lemonsqueezy",
+        payment_customer_id: attrs.customer_id ? String(attrs.customer_id) : undefined,
+        subscription_status: "lifetime",
+        payment_failed_at: null,
+      })
+      .eq("id", familyId);
+    if (lifeErr) {
+      log.error("payments.webhook.lifetime_failed", { familyId, error: lifeErr.message });
+      return NextResponse.json({ error: lifeErr.message }, { status: 500 });
+    }
+    log.info("payments.webhook.lifetime_activated", { familyId });
+    return NextResponse.json({ received: true });
+  }
 
   switch (eventName) {
     case "subscription_created":

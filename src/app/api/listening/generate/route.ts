@@ -8,6 +8,7 @@ import {
   generateMemoryPairs,
 } from "@/lib/groq/listening";
 import { getCefrInfo } from "@/lib/content/cefr";
+import { wordsForLevel } from "@/lib/content/vocabulary";
 import { parseBody } from "@/lib/api/parse-body";
 import { enforceLimit } from "@/lib/rate-limit";
 
@@ -27,6 +28,18 @@ export async function POST(req: Request) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const { data: kid } = await supabase.from("kid_profiles").select("*").eq("id", body.kidId).single();
+  if (!kid) return NextResponse.json({ error: "Kid not found" }, { status: 404 });
+  const cefr = getCefrInfo(kid.total_xp);
+
+  // MEMORIA = 100% CURADO: pares del banco de vocabulario por nivel.
+  // Instantáneo, sin costo de IA, nunca falla y no consume la cuota diaria.
+  if (body.mode === "memory_match") {
+    const pool = [...wordsForLevel(cefr.code)].sort(() => Math.random() - 0.5);
+    const pairs = pool.slice(0, 6).map((w) => ({ word_en: w.en, word_es: w.es }));
+    return NextResponse.json({ data: { pairs } });
+  }
+
   const rl = await enforceLimit(user.id, "llmGenerate");
   if (!rl.ok) {
     return NextResponse.json(
@@ -34,10 +47,6 @@ export async function POST(req: Request) {
       { status: 429, headers: { "Retry-After": String(rl.resetIn) } },
     );
   }
-
-  const { data: kid } = await supabase.from("kid_profiles").select("*").eq("id", body.kidId).single();
-  if (!kid) return NextResponse.json({ error: "Kid not found" }, { status: 404 });
-  const cefr = getCefrInfo(kid.total_xp);
   const kidInput = {
     name: kid.name, gender: null, ageDesc: "adolescente",
     grade: kid.grade, hobbies: kid.hobbies, tone: kid.tone,

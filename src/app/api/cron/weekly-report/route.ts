@@ -37,7 +37,7 @@ export async function GET(req: Request) {
   const { data: families = [] } = await supabase
     .from("families")
     .select("id, owner_user_id, family_name")
-    .in("plan", ["trial", "family_monthly", "family_yearly"]);
+    .in("plan", ["trial", "family_monthly", "family_yearly", "family_plus", "family_lifetime"]);
 
   const summaries: Array<{ familyId: string; email: string; subject: string; sent: boolean }> = [];
 

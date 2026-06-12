@@ -4,7 +4,14 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type CEFRLevel = "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
-export type Plan = "trial" | "family_monthly" | "family_yearly" | "school" | "expired";
+export type Plan =
+  | "trial"
+  | "family_monthly"
+  | "family_yearly"
+  | "family_plus"
+  | "family_lifetime"
+  | "school"
+  | "expired";
 export type OrgType = "family" | "school";
 export type StaffRole = "admin" | "teacher";
 export type LeadStatus = "new" | "contacted" | "won" | "lost";

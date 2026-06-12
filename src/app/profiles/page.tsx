@@ -7,6 +7,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { cefrTier } from "@/lib/content/cefr";
 import { familyAccess } from "@/lib/billing/access";
 import { TrialBanner } from "@/components/billing/TrialBanner";
+import { SignOutButton } from "@/components/auth/SignOutButton";
 import { BottomNav } from "@/components/ui/BottomNav";
 import { CulturalCapsule } from "@/components/cultural/CulturalCapsule";
 import { resolveRole, homePathForRole } from "@/lib/auth/role";
@@ -45,8 +46,9 @@ export default async function ProfilesPage() {
   return (
     <>
       <main className="pt-12 pb-32 px-5 max-w-5xl mx-auto relative z-10">
-        {/* Engranaje de configuración (arriba a la derecha) */}
-        <div className="absolute top-4 right-5 z-20">
+        {/* Configuración + cerrar sesión (arriba a la derecha) */}
+        <div className="absolute top-4 right-5 z-20 flex items-center gap-2">
+          <SignOutButton />
           <Link
             href="/account/settings"
             aria-label="Configuración"

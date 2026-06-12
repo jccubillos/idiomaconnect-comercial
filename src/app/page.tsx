@@ -189,57 +189,92 @@ export default async function HomePage() {
           <div className="text-xs font-bold uppercase tracking-widest text-neon-cyan mb-2">Planes</div>
           <h2 className="text-3xl md:text-4xl font-extrabold text-balance">Para tu familia o tu colegio</h2>
         </div>
-        <div className="grid md:grid-cols-3 gap-4 items-stretch">
-          <GlassCard className="p-6 text-center flex flex-col">
-            <div className="text-xs uppercase tracking-widest text-ink-dim mb-2">Familiar mensual</div>
-            <div className="text-4xl font-extrabold">$9.99</div>
-            <div className="text-sm text-ink-dim mb-4">USD / mes</div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
+          <GlassCard className="p-5 text-center flex flex-col">
+            <div className="text-xs uppercase tracking-widest text-ink-dim mb-2">Mensual</div>
+            <div className="text-3xl font-extrabold">$9.99</div>
+            <div className="text-xs text-ink-dim mb-4">USD / mes</div>
             <ul className="text-xs text-ink-dim space-y-1 mb-5 text-left mx-auto">
               <li>✓ Hasta 6 perfiles</li>
-              <li>✓ Todas las herramientas</li>
+              <li>✓ 17 herramientas de práctica</li>
               <li>✓ Dashboard de padres</li>
             </ul>
             <div className="mt-auto">
-              <Link href="/signup?plan=monthly"><NeonButton variant="ghost-cyan" className="w-full">Contratar mensual</NeonButton></Link>
+              <Link href="/signup?plan=monthly"><NeonButton variant="ghost-cyan" size="sm" className="w-full">Contratar</NeonButton></Link>
             </div>
           </GlassCard>
 
-          <GlassCard strong glowColor="cyan" className="p-6 text-center relative border-2 border-neon-cyan/60 flex flex-col scale-[1.02]">
+          <GlassCard className="p-5 text-center relative flex flex-col">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest bg-white/15 text-on-surface px-2.5 py-0.5 rounded-full whitespace-nowrap">
+              Ahorras 26%
+            </div>
+            <div className="text-xs uppercase tracking-widest text-ink-dim mb-2">Anual</div>
+            <div className="text-3xl font-extrabold">$89</div>
+            <div className="text-xs text-ink-dim mb-1">USD / año</div>
+            <div className="text-xs font-bold text-neon-green mb-3">Sale a $7,42/mes</div>
+            <ul className="text-xs text-ink-dim space-y-1 mb-5 text-left mx-auto">
+              <li>✓ Todo lo del mensual</li>
+              <li>✓ Casi 3 meses de regalo</li>
+            </ul>
+            <div className="mt-auto">
+              <Link href="/signup?plan=yearly"><NeonButton variant="ghost-cyan" size="sm" className="w-full">Contratar</NeonButton></Link>
+            </div>
+          </GlassCard>
+
+          <GlassCard strong glowColor="cyan" className="p-5 text-center relative border-2 border-neon-cyan/60 flex flex-col scale-[1.02]">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest bg-neon-cyan text-surface px-2.5 py-0.5 rounded-full whitespace-nowrap">
-              ⭐ Recomendado · Ahorras 26%
+              ⭐ Recomendado
             </div>
-            <div className="text-xs uppercase tracking-widest text-neon-cyan mb-2">Familiar anual</div>
-            <div className="text-5xl font-extrabold">$89</div>
-            <div className="text-sm text-ink-dim mb-1">USD / año</div>
-            <div className="text-sm font-bold text-neon-green mb-4">Sale a $7,42/mes</div>
+            <div className="text-xs uppercase tracking-widest text-neon-cyan mb-2">Plus anual</div>
+            <div className="text-4xl font-extrabold">$129</div>
+            <div className="text-xs text-ink-dim mb-1">USD / año</div>
+            <div className="text-xs font-bold text-neon-green mb-3">Sale a $10,75/mes</div>
             <ul className="text-xs text-ink-dim space-y-1 mb-5 text-left mx-auto">
-              <li>✓ Hasta 6 perfiles</li>
-              <li>✓ Casi 3 meses de regalo vs mensual</li>
-              <li>✓ Todas las herramientas</li>
-              <li>✓ Dashboard de padres</li>
+              <li>✓ Todo lo del anual</li>
+              <li>🏆 <b>Arena Global</b>: compite con niños de todo Chile</li>
+              <li>⚔️ <b>Reto a un amigo</b> por WhatsApp</li>
+              <li>🥊 <b>Duelo Familiar</b>: padres vs hijos</li>
             </ul>
             <div className="mt-auto">
-              <Link href="/signup?plan=yearly"><NeonButton variant="primary" size="lg" className="w-full">Contratar anual</NeonButton></Link>
+              <Link href="/signup?plan=plus"><NeonButton variant="primary" className="w-full">Contratar Plus</NeonButton></Link>
             </div>
           </GlassCard>
 
-          {/* TERCERA COLUMNA — Colegios e Instituciones */}
-          <GlassCard glowColor="purple" className="p-6 text-center border border-neon-purple/40 flex flex-col">
-            <div className="text-xs uppercase tracking-widest text-neon-purple mb-2">Colegios e Instituciones</div>
-            <div className="text-3xl mb-1">🏫</div>
-            <div className="text-2xl font-extrabold mb-1">Plan a tu medida</div>
-            <div className="text-sm text-ink-dim mb-4">Precio por alumno · escala por volumen</div>
+          <GlassCard glowColor="purple" className="p-5 text-center relative border border-neon-purple/50 flex flex-col">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest bg-neon-purple text-surface px-2.5 py-0.5 rounded-full whitespace-nowrap">
+              👑 Mejor inversión
+            </div>
+            <div className="text-xs uppercase tracking-widest text-neon-purple mb-2">Vitalicia</div>
+            <div className="text-4xl font-extrabold">$299</div>
+            <div className="text-xs text-ink-dim mb-3">USD · pago único</div>
             <ul className="text-xs text-ink-dim space-y-1 mb-5 text-left mx-auto">
-              <li>✓ Cuentas para todo el colegio</li>
-              <li>✓ Panel de profesor por curso</li>
-              <li>✓ Estadísticas de avance por curso</li>
-              <li>✓ Lecciones alineadas a tu programa</li>
+              <li>✓ Plus <b>para siempre</b></li>
+              <li>✓ Todas las actualizaciones y herramientas futuras</li>
+              <li>✓ Sin renovaciones ni cobros nuevos</li>
             </ul>
             <div className="mt-auto">
-              <Link href="/colegios"><NeonButton variant="ghost-cyan" className="w-full">Solicitar propuesta</NeonButton></Link>
+              <Link href="/signup?plan=lifetime"><NeonButton variant="ghost-cyan" size="sm" className="w-full">Contratar de por vida</NeonButton></Link>
             </div>
           </GlassCard>
         </div>
+
+        {/* Colegios e Instituciones — banner */}
+        <Link href="/colegios">
+          <GlassCard glowColor="purple" className="mt-4 p-5 border border-neon-purple/40 hover:border-neon-purple transition-colors">
+            <div className="flex flex-wrap items-center gap-3 justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-3xl">🏫</span>
+                <div>
+                  <div className="font-extrabold">Colegios e Instituciones</div>
+                  <div className="text-xs text-ink-dim">
+                    Precio por alumno según volumen · panel de profesores · lecciones alineadas a tu programa · mundo exclusivo &quot;Lumi en tu Colegio&quot;
+                  </div>
+                </div>
+              </div>
+              <NeonButton variant="ghost-cyan" size="sm">Solicitar propuesta</NeonButton>
+            </div>
+          </GlassCard>
+        </Link>
         <p className="text-center text-xs text-ink-dim mt-6">
           Familias: hasta 6 perfiles · cancela cuando quieras · Colegios: contratación anual
         </p>
@@ -376,6 +411,19 @@ const JSONLD_APP = {
       price: "89",
       priceCurrency: "USD",
       category: "subscription",
+    },
+    {
+      "@type": "Offer",
+      name: "Plan Familiar Plus Anual",
+      price: "129",
+      priceCurrency: "USD",
+      category: "subscription",
+    },
+    {
+      "@type": "Offer",
+      name: "Plan Familiar Vitalicio (pago único)",
+      price: "299",
+      priceCurrency: "USD",
     },
   ],
   audience: {

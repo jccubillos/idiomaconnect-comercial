@@ -6,6 +6,7 @@ import { getCefrInfo } from "@/lib/content/cefr";
 import { getUniversalWorld, buildPersonalWorld } from "@/lib/content/worlds";
 import { pickWorldObjective, fromUnit, type WorldObjective } from "@/lib/content/world-tracks";
 import { CURRICULUM } from "@/lib/content/curriculum";
+import { familyAccess } from "@/lib/billing/access";
 import { enforceLimit } from "@/lib/rate-limit";
 import { log } from "@/lib/logging/logger";
 
@@ -61,13 +62,8 @@ export async function POST(req: Request) {
     .eq("id", kid.family_id)
     .single();
   if (!family) return NextResponse.json({ error: "Family missing" }, { status: 500 });
-  const trialActive = family.plan === "trial" && new Date(family.trial_ends_at) > new Date();
-  // 'school' = colegio con contrato institucional activo (cubre a todos sus alumnos).
-  const subscribed =
-    family.plan === "family_monthly" ||
-    family.plan === "family_yearly" ||
-    family.plan === "school";
-  if (!trialActive && !subscribed) {
+  // Gate central de acceso (cubre todos los planes pagados + trial vigente).
+  if (!familyAccess(family).active) {
     return NextResponse.json({ error: "Subscription required", code: "paywall" }, { status: 402 });
   }
 

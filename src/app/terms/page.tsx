@@ -37,8 +37,10 @@ export default function TermsPage() {
 
       <h2>4. Suscripciones y pagos</h2>
       <ul>
-        <li>Planes familiares: <strong>USD 9,99/mes</strong> o <strong>USD 89/año</strong> (hasta 6
-          perfiles). Los precios pueden incluir impuestos según tu país.</li>
+        <li>Planes familiares: <strong>USD 9,99/mes</strong>, <strong>USD 89/año</strong>,
+          <strong> Plus USD 129/año</strong> (incluye herramientas exclusivas) o
+          <strong> Vitalicio USD 299</strong> en pago único (hasta 6 perfiles en todos los casos).
+          Los precios pueden incluir impuestos según tu país.</li>
         <li>Los pagos son procesados por <strong>Lemon Squeezy</strong> como comercializador oficial
           (Merchant of Record), quien emite la boleta o factura correspondiente.</li>
         <li>Las suscripciones se <strong>renuevan automáticamente</strong> al final de cada período
@@ -60,6 +62,23 @@ export default function TermsPage() {
           la fecha de cancelación y el término del período pagado.</li>
         <li>Terminado el período, los datos se conservan <strong>30 días</strong> por si decides volver,
           y luego se eliminan definitivamente.</li>
+      </ul>
+
+      <h2>5 bis. Plan Vitalicio (&quot;de por vida&quot;)</h2>
+      <ul>
+        <li>El Plan Vitalicio se adquiere mediante un <strong>pago único</strong> y otorga acceso al
+          plan familiar Plus, incluidas las actualizaciones y nuevas funcionalidades que se
+          incorporen al plan familiar, <strong>durante toda la vida comercial del servicio</strong>.</li>
+        <li>&quot;De por vida&quot; se refiere a la <strong>vida del servicio IdiomaConnect</strong>, no a la del
+          usuario. Si el servicio cesara definitivamente sus operaciones transcurridos al menos
+          24 meses desde la compra, no se generará derecho a reembolso ni indemnización.</li>
+        <li>La licencia es <strong>personal e intransferible</strong>, para una (1) cuenta familiar y hasta
+          6 perfiles del mismo núcleo familiar. No puede revenderse ni compartirse fuera de él.</li>
+        <li>Está sujeto a la política de <strong>uso justo</strong>: aplican los mismos límites diarios de
+          uso razonable que al resto de los planes, para proteger la calidad del servicio.</li>
+        <li>No comprende servicios de terceros que sean descontinuados por sus proveedores ni
+          productos futuros que IdiomaConnect comercialice como servicios separados del plan
+          familiar (por ejemplo, planes institucionales).</li>
       </ul>
 
       <h2>6. Pagos fallidos</h2>

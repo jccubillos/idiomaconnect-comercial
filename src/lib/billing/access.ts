@@ -21,12 +21,11 @@ export interface FamilyAccess {
   daysLeft: number | null;
 }
 
+/** Planes pagados con acceso completo a la app. */
+const PAID_PLANS = new Set(["family_monthly", "family_yearly", "family_plus", "family_lifetime", "school"]);
+
 export function familyAccess(family: { plan: string; trial_ends_at: string | null }): FamilyAccess {
-  if (
-    family.plan === "family_monthly" ||
-    family.plan === "family_yearly" ||
-    family.plan === "school"
-  ) {
+  if (PAID_PLANS.has(family.plan)) {
     return { active: true, isTrial: false, expired: false, daysLeft: null };
   }
   if (family.plan === "trial" && family.trial_ends_at) {
@@ -36,6 +35,23 @@ export function familyAccess(family: { plan: string; trial_ends_at: string | nul
     }
   }
   return { active: false, isTrial: family.plan === "trial", expired: true, daysLeft: 0 };
+}
+
+/**
+ * ¿Tiene acceso a las herramientas PLUS? (Arena Global, Reto a un amigo, Duelo Familiar)
+ *  · family_plus y family_lifetime → sí.
+ *  · school → sí (los colegios ya tienen su propio set competitivo).
+ *  · trial VIGENTE → sí (el gancho: prueban lo mejor y luego eligen plan).
+ *  · family_monthly / family_yearly → no (incentivo de upgrade).
+ */
+export function hasPlusAccess(family: { plan: string; trial_ends_at: string | null }): boolean {
+  if (family.plan === "family_plus" || family.plan === "family_lifetime" || family.plan === "school") {
+    return true;
+  }
+  if (family.plan === "trial" && family.trial_ends_at) {
+    return new Date(family.trial_ends_at).getTime() > Date.now();
+  }
+  return false;
 }
 
 type Deny = { ok: false; status: number; error: string; code: string };

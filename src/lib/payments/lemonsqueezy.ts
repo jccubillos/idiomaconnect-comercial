@@ -27,11 +27,24 @@ export const LS_CONFIG = {
   storeId: process.env.LEMONSQUEEZY_STORE_ID!,
   variantMonthly: process.env.NEXT_PUBLIC_LS_VARIANT_MONTHLY!,
   variantYearly: process.env.NEXT_PUBLIC_LS_VARIANT_YEARLY!,
+  variantPlus: process.env.NEXT_PUBLIC_LS_VARIANT_PLUS ?? "0",
+  variantLifetime: process.env.NEXT_PUBLIC_LS_VARIANT_LIFETIME ?? "0",
 } as const;
 
-export const VARIANT_TO_PLAN: Record<string, "family_monthly" | "family_yearly"> = {
+export type CheckoutPlan = "monthly" | "yearly" | "plus" | "lifetime";
+
+export const VARIANT_TO_PLAN: Record<string, "family_monthly" | "family_yearly" | "family_plus" | "family_lifetime"> = {
   [LS_CONFIG.variantMonthly]: "family_monthly",
   [LS_CONFIG.variantYearly]: "family_yearly",
+  [LS_CONFIG.variantPlus]: "family_plus",
+  [LS_CONFIG.variantLifetime]: "family_lifetime",
+};
+
+const PLAN_TO_VARIANT: Record<CheckoutPlan, string> = {
+  monthly: LS_CONFIG.variantMonthly,
+  yearly: LS_CONFIG.variantYearly,
+  plus: LS_CONFIG.variantPlus,
+  lifetime: LS_CONFIG.variantLifetime,
 };
 
 /**
@@ -45,7 +58,7 @@ export const VARIANT_TO_PLAN: Record<string, "family_monthly" | "family_yearly">
  * @param successUrl Where to send the user after successful checkout.
  */
 export async function createSubscriptionCheckout(args: {
-  plan: "monthly" | "yearly";
+  plan: CheckoutPlan;
   email: string;
   familyId: string;
   successUrl: string;
@@ -54,7 +67,10 @@ export async function createSubscriptionCheckout(args: {
 }): Promise<{ url: string } | { error: string }> {
   init();
 
-  const variantId = args.plan === "monthly" ? LS_CONFIG.variantMonthly : LS_CONFIG.variantYearly;
+  const variantId = PLAN_TO_VARIANT[args.plan];
+  if (!variantId || variantId === "0") {
+    return { error: `Variant for plan "${args.plan}" not configured` };
+  }
 
   try {
     const result = await createCheckout(LS_CONFIG.storeId, variantId, {

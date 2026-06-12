@@ -6,10 +6,17 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { NeonButton } from "@/components/ui/NeonButton";
 
 export interface SubInfo {
-  plan: "family_monthly" | "family_yearly";
+  plan: "family_monthly" | "family_yearly" | "family_plus" | "family_lifetime";
   status: string | null;
   hasPortal: boolean;
 }
+
+const SUB_PLAN_LABEL: Record<SubInfo["plan"], string> = {
+  family_monthly: "Familiar Mensual (US$9,99/mes)",
+  family_yearly: "Familiar Anual (US$89/año)",
+  family_plus: "Familiar Plus (US$129/año)",
+  family_lifetime: "Vitalicio 👑 (pago único)",
+};
 
 const STATUS_LABEL: Record<string, { text: string; tone: "ok" | "warn" }> = {
   active: { text: "✓ Activa · renovación automática", tone: "ok" },
@@ -18,6 +25,7 @@ const STATUS_LABEL: Record<string, { text: string; tone: "ok" | "warn" }> = {
   unpaid: { text: "⚠️ Pago pendiente — actualiza tu tarjeta", tone: "warn" },
   cancelled: { text: "Cancelada · mantienes acceso hasta el fin del período pagado", tone: "warn" },
   expired: { text: "Expirada", tone: "warn" },
+  lifetime: { text: "👑 Acceso de por vida — sin cobros futuros", tone: "ok" },
 };
 
 function BillingInner({ sub }: { sub: SubInfo | null }) {
@@ -27,10 +35,10 @@ function BillingInner({ sub }: { sub: SubInfo | null }) {
   const portalIssue = params.get("portal"); // "none" | "unavailable"
   // Código de descuento que llega por link personalizado (ej. oferta 15% post-trial).
   const promo = params.get("promo") ?? undefined;
-  const [loading, setLoading] = useState<"monthly" | "yearly" | null>(null);
+  const [loading, setLoading] = useState<"monthly" | "yearly" | "plus" | "lifetime" | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  async function startCheckout(plan: "monthly" | "yearly") {
+  async function startCheckout(plan: "monthly" | "yearly" | "plus" | "lifetime") {
     setError(null);
     setLoading(plan);
     const res = await fetch("/api/payments/checkout", {
@@ -57,11 +65,9 @@ function BillingInner({ sub }: { sub: SubInfo | null }) {
       <main className="min-h-dvh flex items-center justify-center px-5 py-12 relative z-10">
         <div className="max-w-md w-full">
           <GlassCard strong glowColor="cyan" className="p-8 text-center border border-neon-cyan/40">
-            <div className="text-4xl mb-3">💎</div>
+            <div className="text-4xl mb-3">{sub.plan === "family_lifetime" ? "👑" : "💎"}</div>
             <h1 className="text-2xl font-extrabold mb-1">Tu suscripción</h1>
-            <p className="text-sm text-ink-dim mb-5">
-              Plan {sub.plan === "family_yearly" ? "Familiar Anual (US$89/año)" : "Familiar Mensual (US$9,99/mes)"}
-            </p>
+            <p className="text-sm text-ink-dim mb-5">Plan {SUB_PLAN_LABEL[sub.plan]}</p>
             <div
               className={`text-sm font-bold rounded-xl px-4 py-3 mb-6 ${
                 st.tone === "ok"
@@ -144,15 +150,45 @@ function BillingInner({ sub }: { sub: SubInfo | null }) {
             </NeonButton>
           </GlassCard>
 
-          <GlassCard strong glowColor="cyan" className="p-6 text-center relative border border-neon-cyan/40">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest bg-neon-cyan text-surface px-2 py-0.5 rounded-full">
-              Mejor valor · ahorras 26%
+          <GlassCard className="p-6 text-center relative">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest bg-white/15 text-on-surface px-2 py-0.5 rounded-full">
+              Ahorras 26%
             </div>
             <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-2">Anual</div>
             <div className="text-4xl font-extrabold mb-1">$89</div>
             <div className="text-sm text-ink-dim mb-6">USD / año (~$7.42/mes)</div>
-            <NeonButton variant="primary" loading={loading === "yearly"} onClick={() => startCheckout("yearly")} className="w-full">
+            <NeonButton variant="ghost-cyan" loading={loading === "yearly"} onClick={() => startCheckout("yearly")} className="w-full">
               Contratar anual
+            </NeonButton>
+          </GlassCard>
+
+          <GlassCard strong glowColor="cyan" className="p-6 text-center relative border-2 border-neon-cyan/60">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest bg-neon-cyan text-surface px-2 py-0.5 rounded-full">
+              ⭐ Recomendado
+            </div>
+            <div className="text-xs font-bold uppercase tracking-widest text-neon-cyan mb-2">Plus anual</div>
+            <div className="text-4xl font-extrabold mb-1">$129</div>
+            <div className="text-sm text-ink-dim mb-2">USD / año (~$10.75/mes)</div>
+            <p className="text-[11px] text-ink-dim mb-4">
+              🏆 Arena Global · ⚔️ Reto a un amigo · 🥊 Duelo Familiar
+            </p>
+            <NeonButton variant="primary" loading={loading === "plus"} onClick={() => startCheckout("plus")} className="w-full">
+              Contratar Plus
+            </NeonButton>
+          </GlassCard>
+
+          <GlassCard glowColor="purple" className="p-6 text-center relative border border-neon-purple/50">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest bg-neon-purple text-surface px-2 py-0.5 rounded-full">
+              👑 Mejor inversión
+            </div>
+            <div className="text-xs font-bold uppercase tracking-widest text-neon-purple mb-2">Vitalicia</div>
+            <div className="text-4xl font-extrabold mb-1">$299</div>
+            <div className="text-sm text-ink-dim mb-2">USD · pago único</div>
+            <p className="text-[11px] text-ink-dim mb-4">
+              Plus para siempre + todas las actualizaciones futuras
+            </p>
+            <NeonButton variant="ghost-cyan" loading={loading === "lifetime"} onClick={() => startCheckout("lifetime")} className="w-full">
+              Contratar de por vida
             </NeonButton>
           </GlassCard>
         </div>

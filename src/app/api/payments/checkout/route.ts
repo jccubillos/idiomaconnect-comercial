@@ -8,7 +8,7 @@ import { log } from "@/lib/logging/logger";
 export const runtime = "nodejs";
 
 const Body = z.object({
-  plan: z.enum(["monthly", "yearly"]),
+  plan: z.enum(["monthly", "yearly", "plus", "lifetime"]),
   // Código de descuento opcional (también se puede escribir en el checkout).
   discountCode: z.string().trim().max(64).optional(),
 });

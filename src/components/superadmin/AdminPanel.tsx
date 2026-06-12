@@ -48,6 +48,8 @@ const PLAN_LABEL: Record<string, string> = {
   trial: "Prueba",
   family_monthly: "Familiar mensual",
   family_yearly: "Familiar anual",
+  family_plus: "Familiar Plus",
+  family_lifetime: "Vitalicia 👑",
   school: "Colegio",
   expired: "Expirada",
 };
@@ -110,6 +112,8 @@ function paymentLabel(a: AccountRow): string {
   }
   if (a.plan === "family_monthly") return "US$9,99/mes";
   if (a.plan === "family_yearly") return "US$89/año";
+  if (a.plan === "family_plus") return "US$129/año";
+  if (a.plan === "family_lifetime") return "US$299 (pago único)";
   return "—";
 }
 

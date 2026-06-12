@@ -20,12 +20,13 @@ export default async function BillingPage() {
     .eq("owner_user_id", user.id)
     .single();
 
+  const FAMILY_PAID = ["family_monthly", "family_yearly", "family_plus", "family_lifetime"] as const;
   const sub: SubInfo | null =
-    family && (family.plan === "family_monthly" || family.plan === "family_yearly")
+    family && (FAMILY_PAID as readonly string[]).includes(family.plan)
       ? {
-          plan: family.plan,
-          status: family.subscription_status,
-          hasPortal: !!family.payment_subscription_id,
+          plan: family.plan as SubInfo["plan"],
+          status: family.plan === "family_lifetime" ? "lifetime" : family.subscription_status,
+          hasPortal: !!family.payment_subscription_id && family.plan !== "family_lifetime",
         }
       : null;
 

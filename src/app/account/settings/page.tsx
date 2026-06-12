@@ -6,6 +6,7 @@ import { NeonButton } from "@/components/ui/NeonButton";
 import { DeleteAccountButton } from "@/components/account/DeleteAccountButton";
 import { AccountSecurity } from "@/components/account/AccountSecurity";
 import { ConsentBox } from "@/components/account/ConsentBox";
+import { SignOutButton } from "@/components/auth/SignOutButton";
 
 export default async function SettingsPage() {
   const supabase = createClient();
@@ -78,6 +79,14 @@ export default async function SettingsPage() {
             Exporta todos los datos de tu familia: perfiles, progreso, sesiones y trofeos.
           </p>
         </div>
+      </GlassCard>
+
+      <GlassCard strong className="p-6 mb-4">
+        <h2 className="font-bold mb-3">Sesión</h2>
+        <p className="text-sm text-ink-dim mb-3">
+          Cierra la sesión en este dispositivo (tus datos quedan guardados).
+        </p>
+        <SignOutButton />
       </GlassCard>
 
       <GlassCard strong className="p-6 border border-neon-red/40">

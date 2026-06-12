@@ -12,8 +12,10 @@ function SignupForm() {
   const router = useRouter();
   const params = useSearchParams();
   // Intención de compra desde la landing: tras crear la cuenta va directo al pago.
-  const buyPlan = params.get("plan") === "monthly" || params.get("plan") === "yearly"
-    ? (params.get("plan") as "monthly" | "yearly")
+  const PLANS = ["monthly", "yearly", "plus", "lifetime"] as const;
+  const rawPlan = params.get("plan");
+  const buyPlan = (PLANS as readonly string[]).includes(rawPlan ?? "")
+    ? (rawPlan as (typeof PLANS)[number])
     : null;
   const [familyName, setFamilyName] = useState("");
   const [email, setEmail] = useState("");
@@ -95,8 +97,14 @@ function SignupForm() {
         <h1 className="text-2xl font-extrabold mb-1">Crear cuenta familiar</h1>
         {buyPlan ? (
           <p className="text-sm text-ink-dim mb-6">
-            Estás contratando el <b className="text-neon-cyan">plan {buyPlan === "yearly" ? "anual (US$89/año)" : "mensual (US$9.99/mes)"}</b>.
-            Primero crea tu cuenta (1 minuto) y luego pasas al pago seguro.
+            Estás contratando el{" "}
+            <b className="text-neon-cyan">
+              {buyPlan === "monthly" && "plan mensual (US$9,99/mes)"}
+              {buyPlan === "yearly" && "plan anual (US$89/año)"}
+              {buyPlan === "plus" && "plan Plus anual (US$129/año)"}
+              {buyPlan === "lifetime" && "plan Vitalicio (US$299, pago único)"}
+            </b>
+            . Primero crea tu cuenta (1 minuto) y luego pasas al pago seguro.
           </p>
         ) : (
           <p className="text-sm text-ink-dim mb-6">7 días gratis · sin tarjeta requerida.</p>
