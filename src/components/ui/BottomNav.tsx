@@ -22,7 +22,7 @@ export function BottomNav() {
     "/srs", "/pronunciation", "/sentence-builder", "/story-fill", "/listen-id",
     "/memory-match", "/minimal-pairs", "/shadow-speaking", "/conversation",
     "/speaking-journal", "/translate-inverse", "/describe-scene", "/exam",
-    "/sendero", "/school-world", "/school", "/personal-talk",
+    "/sendero", "/school-world", "/school", "/personal-talk", "/duelo", "/reto",
   ];
   if (!showOn.some((p) => pathname?.startsWith(p))) return null;
 

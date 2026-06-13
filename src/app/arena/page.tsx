@@ -94,6 +94,23 @@ export default async function ArenaPage() {
           </GlassCard>
         </div>
 
+        {/* 🥊 Duelo Familiar — herramienta Plus destacada */}
+        <Link href={plus ? "/duelo" : "/billing"}>
+          <GlassCard strong glowColor="red" className="p-4 mb-6 border border-neon-red/40 hover:border-neon-red transition-colors">
+            <div className="flex items-center gap-3">
+              <span className="text-3xl">🥊</span>
+              <div className="flex-1">
+                <h4 className="font-extrabold flex items-center gap-2">
+                  Duelo Familiar
+                  {!plus && <span className="text-[10px] font-bold uppercase tracking-widest text-neon-purple bg-neon-purple/15 px-2 py-0.5 rounded-full">Plus</span>}
+                </h4>
+                <p className="text-xs text-ink-dim">Padres vs hijos en un mismo teléfono · ¿quién sabe más inglés?</p>
+              </div>
+              <span className="text-xs font-extrabold text-neon-red">{plus ? "Jugar →" : "🔒"}</span>
+            </div>
+          </GlassCard>
+        </Link>
+
         {/* Battle quick access */}
         <div className="grid grid-cols-2 gap-3 mb-6">
           <GlassCard className="p-4">
