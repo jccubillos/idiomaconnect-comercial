@@ -38,10 +38,16 @@ export function BattleRunner({
   kid,
   worldKey,
   words,
+  canChallenge,
+  challenge,
 }: {
   kid: KidMini;
   worldKey: string;
   words: BattleWord[];
+  /** Plus: al terminar puede crear un ⚔️ reto y compartirlo por WhatsApp. */
+  canChallenge?: boolean;
+  /** Si está JUGANDO un reto: datos del retador para comparar puntajes. */
+  challenge?: { id: string; name: string; score: number };
 }) {
   const [phase, setPhase] = useState<Phase>("learn");
   // Fase aprender
@@ -59,6 +65,11 @@ export function BattleRunner({
   const [wrongCount, setWrongCount] = useState(0);
   const [startedAt] = useState(Date.now());
   const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // ⚔️ Reto a un amigo (Plus)
+  const [retoUrl, setRetoUrl] = useState<string | null>(null);
+  const [retoLoading, setRetoLoading] = useState(false);
+  const [retoError, setRetoError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const total = words.length;
   const currentIdx = queue[0];
@@ -248,21 +259,125 @@ export function BattleRunner({
   // ───────────────────────── FASE: RESULTADO ─────────────────────────
   if (phase === "result") {
     const won = queue.length === 0;
+    const scorePct = total ? Math.round((mastered / total) * 100) : 0;
+
+    // Veredicto del reto (si estoy jugando uno).
+    const beat = challenge ? scorePct > challenge.score : false;
+    const tie = challenge ? scorePct === challenge.score : false;
+
+    async function crearReto() {
+      setRetoError(null);
+      setRetoLoading(true);
+      const res = await fetch("/api/reto", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ kidId: kid.id, scorePct, words }),
+      });
+      const j = await res.json().catch(() => ({}));
+      setRetoLoading(false);
+      if (!res.ok) {
+        setRetoError(j.error ?? "No se pudo crear el reto.");
+        return;
+      }
+      setRetoUrl(j.url);
+    }
+
+    const shareText = `⚔️ ¡Te reto! Saqué ${scorePct}% en una Battle de inglés en IdiomaConnect. ¿Me ganas con las mismas palabras? 👉 ${retoUrl}`;
+
     return (
       <main className="min-h-dvh flex items-center justify-center px-5 py-12 relative z-10">
         <GlassCard strong glowColor={won ? "green" : "red"} className="p-8 max-w-md w-full text-center">
           <LumiCelebration mood={won ? "celebrate" : "encourage"} size={150} className="mb-3" />
           <h2 className="text-2xl font-extrabold mb-1">{won ? "¡Victoria!" : "El virus te ganó"}</h2>
-          <p className="text-sm text-ink-dim mb-6">
-            Palabras dominadas: {mastered}/{total} · HP final {playerHp}/{MAX_HP}
+          <p className="text-sm text-ink-dim mb-4">
+            Palabras dominadas: {mastered}/{total} · Puntaje {scorePct}% · HP {playerHp}/{MAX_HP}
           </p>
+
+          {/* Veredicto del reto */}
+          {challenge && (
+            <div
+              className={`rounded-2xl px-4 py-3 mb-5 border ${
+                beat
+                  ? "bg-neon-green/10 border-neon-green/50"
+                  : tie
+                    ? "bg-neon-cyan/10 border-neon-cyan/40"
+                    : "bg-neon-red/10 border-neon-red/40"
+              }`}
+            >
+              <div className="text-sm font-extrabold mb-0.5">
+                {beat
+                  ? `🏆 ¡Superaste a ${challenge.name}!`
+                  : tie
+                    ? `😮 ¡Empate con ${challenge.name}!`
+                    : `😅 ${challenge.name} sigue arriba`}
+              </div>
+              <div className="text-xs text-ink-dim">
+                Tú: <b>{scorePct}%</b> · {challenge.name}: <b>{challenge.score}%</b>
+                {!beat && !tie && " — ¡pide la revancha!"}
+              </div>
+            </div>
+          )}
+
+          {/* ⚔️ Retar a un amigo (Plus) */}
+          {canChallenge && !challenge && (
+            <div className="mb-5">
+              {!retoUrl ? (
+                <>
+                  <NeonButton variant="ghost-purple" loading={retoLoading} onClick={crearReto} className="w-full">
+                    ⚔️ Retar a un amigo con estas palabras
+                  </NeonButton>
+                  {retoError && <p className="text-xs text-neon-red mt-2">{retoError}</p>}
+                </>
+              ) : (
+                <div className="rounded-2xl border border-neon-purple/40 bg-neon-purple/10 p-3">
+                  <p className="text-xs font-bold mb-2">🔥 ¡Reto creado! Compártelo:</p>
+                  <div className="flex gap-2">
+                    <a
+                      href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1"
+                    >
+                      <NeonButton variant="primary" size="sm" className="w-full">📱 WhatsApp</NeonButton>
+                    </a>
+                    <NeonButton
+                      variant="ghost-cyan"
+                      size="sm"
+                      className="flex-1"
+                      onClick={async () => {
+                        await navigator.clipboard.writeText(retoUrl);
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2000);
+                      }}
+                    >
+                      {copied ? "✓ Copiado" : "📋 Copiar link"}
+                    </NeonButton>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="flex gap-3">
-            <Link href={`/worlds?kid=${kid.id}`} className="flex-1">
-              <NeonButton variant="ghost-cyan" className="w-full">Worlds</NeonButton>
-            </Link>
-            <Link href={`/battle?kid=${kid.id}&world=${worldKey}`} className="flex-1">
-              <NeonButton variant="primary" className="w-full">Otra batalla</NeonButton>
-            </Link>
+            {challenge ? (
+              <>
+                <Link href={`/worlds?kid=${kid.id}`} className="flex-1">
+                  <NeonButton variant="ghost-cyan" className="w-full">Worlds</NeonButton>
+                </Link>
+                <Link href={`/reto/${challenge.id}/jugar?kid=${kid.id}`} className="flex-1">
+                  <NeonButton variant="primary" className="w-full">🔄 Revancha</NeonButton>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href={`/worlds?kid=${kid.id}`} className="flex-1">
+                  <NeonButton variant="ghost-cyan" className="w-full">Worlds</NeonButton>
+                </Link>
+                <Link href={`/battle?kid=${kid.id}&world=${worldKey}`} className="flex-1">
+                  <NeonButton variant="primary" className="w-full">Otra batalla</NeonButton>
+                </Link>
+              </>
+            )}
           </div>
         </GlassCard>
       </main>

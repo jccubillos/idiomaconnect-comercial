@@ -34,7 +34,10 @@ export async function middleware(request: NextRequest) {
     PUBLIC_ROUTES.includes(pathname) ||
     pathname.startsWith("/_next") ||
     // Crons de Vercel: no traen sesión; cada ruta cron exige CRON_SECRET (falla cerrado).
-    pathname.startsWith("/api/cron/");
+    pathname.startsWith("/api/cron/") ||
+    // ⚔️ Retos: el teaser viaja por WhatsApp y debe verse SIN cuenta (motor viral).
+    // La página de jugar valida sesión por su cuenta.
+    pathname.startsWith("/reto/");
 
   if (!user && !isPublic) {
     const url = request.nextUrl.clone();

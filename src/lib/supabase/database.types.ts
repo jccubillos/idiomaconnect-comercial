@@ -306,6 +306,26 @@ export interface Database {
         };
         Update: Partial<Database["public"]["Tables"]["contact_messages"]["Row"]>;
       };
+      battle_challenges: {
+        Row: {
+          id: string;
+          creator_kid_id: string | null;
+          creator_name: string;
+          creator_emoji: string | null;
+          creator_level: string;
+          score_pct: number;
+          words: unknown;
+          plays: number;
+          created_at: string;
+          expires_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["battle_challenges"]["Row"]> & {
+          creator_name: string;
+          score_pct: number;
+          words: unknown;
+        };
+        Update: Partial<Database["public"]["Tables"]["battle_challenges"]["Row"]>;
+      };
       rate_limits: {
         Row: {
           key: string;
