@@ -53,12 +53,12 @@ export async function GET(req: Request) {
   // 1. Familias + log de correos (agregado por familia/tipo).
   const { data: families = [] } = await svc
     .from("families")
-    .select("id, owner_user_id, family_name, plan, trial_ends_at, org_type, payment_failed_at, marketing_opt_out, contact_email");
+    .select("id, owner_user_id, family_name, plan, trial_ends_at, org_type, payment_failed_at, marketing_opt_out, contact_email, plan_expires_at");
 
   const { data: logRows = [] } = await svc
     .from("email_log")
     .select("family_id, kind, sent_at")
-    .in("kind", ["post_trial", "offer15", "dunning_family", "dunning_school"]);
+    .in("kind", ["post_trial", "offer15", "dunning_family", "dunning_school", "hotmart_expiry"]);
 
   const agg = new Map<string, Map<string, { count: number; last: Date }>>();
   for (const r of logRows ?? []) {
@@ -218,6 +218,30 @@ export async function GET(req: Request) {
     } catch (err) {
       stats.errors++;
       log.error("lifecycle.family_failed", { familyId: f.id, error: String(err) });
+    }
+  }
+
+  // ── Recordatorio de vencimiento de paquetes Hotmart (pago único temporal) ──
+  // Avisa 7 días antes de que venza el acceso, invitando a renovar/subir directo.
+  if (emailConfigured()) {
+    for (const f of families ?? []) {
+      if (!f.plan_expires_at) continue;
+      const exp = new Date(f.plan_expires_at).getTime();
+      const daysLeft = Math.ceil((exp - now.getTime()) / 86_400_000);
+      if (daysLeft !== 7 && daysLeft !== 1) continue; // dos avisos: a 7 y a 1 día
+      const lg = logFor(f.id, "hotmart_expiry");
+      if (lg.count >= 2) continue;
+      try {
+        const email = await ownerEmail(f.owner_user_id);
+        if (!email) continue;
+        await sendLifecycleEmail(svc, {
+          familyId: f.id, email, kind: "hotmart_expiry",
+          subject: `Tu acceso a IdiomaConnect vence en ${daysLeft} día(s)`,
+          html: `<p>Hola <b>${f.family_name}</b>, tu acceso vence en <b>${daysLeft} día(s)</b>. ` +
+                `Renueva o pásate al plan anual o vitalicio para que tus niños no pierdan su progreso: ` +
+                `<a href="${appUrl}/billing">${appUrl}/billing</a></p>`,
+        });
+      } catch { /* best effort */ }
     }
   }
 

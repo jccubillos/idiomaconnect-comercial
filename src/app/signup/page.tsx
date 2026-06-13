@@ -59,11 +59,17 @@ function SignupForm() {
 
     // Trigger handle_new_user() crea la fila de familia automáticamente.
     if (data.session) {
-      // Registrar los consentimientos aceptados (las casillas son obligatorias).
+      // Registrar consentimientos + quién lo refirió (programa de referidos).
       const now = new Date().toISOString();
+      const ref = params.get("ref")?.trim().toUpperCase() || null;
       await supabase
         .from("families")
-        .update({ tos_accepted_at: now, privacy_accepted_at: now, parental_consent_at: now })
+        .update({
+          tos_accepted_at: now,
+          privacy_accepted_at: now,
+          parental_consent_at: now,
+          ...(ref ? { referred_by: ref } : {}),
+        })
         .eq("owner_user_id", data.session.user.id);
 
       // Con intención de compra → directo al pago; si no, al onboarding normal.

@@ -24,8 +24,19 @@ export interface FamilyAccess {
 /** Planes pagados con acceso completo a la app. */
 const PAID_PLANS = new Set(["family_monthly", "family_yearly", "family_plus", "family_lifetime", "school"]);
 
-export function familyAccess(family: { plan: string; trial_ends_at: string | null }): FamilyAccess {
+interface FamilyLike {
+  plan: string;
+  trial_ends_at: string | null;
+  /** Vencimiento de planes pagados temporales (paquetes Hotmart). null = sin vencimiento. */
+  plan_expires_at?: string | null;
+}
+
+export function familyAccess(family: FamilyLike): FamilyAccess {
   if (PAID_PLANS.has(family.plan)) {
+    // Planes pagados TEMPORALES (paquetes Hotmart): vencen en plan_expires_at.
+    if (family.plan_expires_at && new Date(family.plan_expires_at).getTime() < Date.now()) {
+      return { active: false, isTrial: false, expired: true, daysLeft: 0 };
+    }
     return { active: true, isTrial: false, expired: false, daysLeft: null };
   }
   if (family.plan === "trial" && family.trial_ends_at) {
@@ -44,7 +55,11 @@ export function familyAccess(family: { plan: string; trial_ends_at: string | nul
  *  · trial VIGENTE → sí (el gancho: prueban lo mejor y luego eligen plan).
  *  · family_monthly / family_yearly → no (incentivo de upgrade).
  */
-export function hasPlusAccess(family: { plan: string; trial_ends_at: string | null }): boolean {
+export function hasPlusAccess(family: FamilyLike): boolean {
+  // Si el plan venció (paquete Hotmart temporal), no hay acceso Plus.
+  if (family.plan_expires_at && new Date(family.plan_expires_at).getTime() < Date.now()) {
+    return false;
+  }
   if (family.plan === "family_plus" || family.plan === "family_lifetime" || family.plan === "school") {
     return true;
   }

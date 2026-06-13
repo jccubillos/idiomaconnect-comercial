@@ -8,6 +8,7 @@ import { cefrTier } from "@/lib/content/cefr";
 import { familyAccess } from "@/lib/billing/access";
 import { TrialBanner } from "@/components/billing/TrialBanner";
 import { SignOutButton } from "@/components/auth/SignOutButton";
+import { ReferralCard } from "@/components/billing/ReferralCard";
 import { BottomNav } from "@/components/ui/BottomNav";
 import { CulturalCapsule } from "@/components/cultural/CulturalCapsule";
 import { resolveRole, homePathForRole } from "@/lib/auth/role";
@@ -23,11 +24,13 @@ export default async function ProfilesPage() {
 
   const { data: family } = await supabase
     .from("families")
-    .select("id, family_name, plan, trial_ends_at")
+    .select("id, family_name, plan, trial_ends_at, plan_expires_at, referral_code")
     .eq("owner_user_id", user.id)
     .single();
 
   if (!family) redirect("/onboarding");
+
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://idiomaconnect.com";
 
   // Filtro EXPLÍCITO por familia (defensa en profundidad sobre RLS): garantiza
   // que cada cuenta solo vea SUS propios perfiles, sin depender solo de RLS.
@@ -125,6 +128,10 @@ export default async function ProfilesPage() {
 
         <div className="max-w-md mx-auto mb-6">
           <CulturalCapsule />
+        </div>
+
+        <div className="max-w-md mx-auto mb-6">
+          <ReferralCard initialCode={family.referral_code} appUrl={appUrl} />
         </div>
 
         <div className="text-center">

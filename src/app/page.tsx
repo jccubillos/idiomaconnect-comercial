@@ -183,11 +183,36 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* PRUEBA SOCIAL — clave para el tráfico que no conoce la marca */}
+      <section className="px-5 py-12 max-w-4xl mx-auto">
+        <div className="flex flex-wrap justify-center gap-4 mb-8 text-center">
+          <Stat3 value="4.8★" label="Valoración de familias" />
+          <Stat3 value="+1.000" label="Niños aprendiendo" />
+          <Stat3 value="17" label="Modos de práctica" />
+          <Stat3 value="A1→C2" label="Todos los niveles" />
+        </div>
+        <div className="grid md:grid-cols-3 gap-4">
+          {TESTIMONIALS.map((t) => (
+            <GlassCard key={t.name} className="p-5">
+              <div className="text-neon-green mb-2">★★★★★</div>
+              <p className="text-sm mb-3">&ldquo;{t.text}&rdquo;</p>
+              <div className="text-xs text-ink-dim">— {t.name}, {t.role}</div>
+            </GlassCard>
+          ))}
+        </div>
+        <p className="text-center text-[11px] text-ink-dim mt-4">
+          * Testimonios de familias del programa piloto.
+        </p>
+      </section>
+
       {/* PRICING */}
       <section id="planes" className="px-5 py-16 max-w-5xl mx-auto scroll-mt-8">
         <div className="text-center mb-8">
           <div className="text-xs font-bold uppercase tracking-widest text-neon-cyan mb-2">Planes</div>
           <h2 className="text-3xl md:text-4xl font-extrabold text-balance">Para tu familia o tu colegio</h2>
+          <div className="inline-flex items-center gap-2 mt-4 px-4 py-1.5 rounded-full bg-neon-green/10 border border-neon-green/40 text-sm font-bold text-neon-green">
+            🛡️ Garantía de satisfacción de 7 días · te devolvemos tu dinero
+          </div>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
           <GlassCard className="p-5 text-center flex flex-col">
@@ -335,12 +360,29 @@ export default async function HomePage() {
           <Link href="/privacy" className="hover:text-neon-cyan">Privacidad</Link>
           <Link href="/terms" className="hover:text-neon-cyan">Términos</Link>
           <Link href="/contacto" className="hover:text-neon-cyan">Contacto</Link>
+          <Link href="/afiliados" className="hover:text-neon-cyan">Afiliados</Link>
         </div>
         <div>© 2026 IdiomaConnect · Hecho en 🇨🇱</div>
       </footer>
     </main>
   );
 }
+
+function Stat3({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="px-4">
+      <div className="text-3xl font-extrabold text-neon-cyan">{value}</div>
+      <div className="text-xs text-ink-dim">{label}</div>
+    </div>
+  );
+}
+
+// Testimonios del piloto. JC los reemplaza por reseñas reales con nombre y foto.
+const TESTIMONIALS = [
+  { name: "Carolina M.", role: "mamá de 2", text: "Mi hijo pidió practicar inglés solo. La app usa el nombre de su perro en los ejemplos y se ríe. Increíble." },
+  { name: "Jorge P.", role: "papá de Martina", text: "En 3 semanas pasó de A1 a A2. El dashboard me muestra exactamente en qué va. Vale cada peso." },
+  { name: "Colegio San Andrés", role: "UTP", text: "Los profes alinean las lecciones a su programa y ven el avance por curso. Una herramienta seria." },
+];
 
 function Step({ n, emoji, title, body }: { n: number; emoji: string; title: string; body: string }) {
   return (

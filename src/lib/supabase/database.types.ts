@@ -46,6 +46,9 @@ export interface Database {
           payment_failed_at: string | null;
           marketing_opt_out: boolean;
           discount_code: string | null;
+          plan_expires_at: string | null;
+          referral_code: string | null;
+          referred_by: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -305,6 +308,29 @@ export interface Database {
           reason: string;
         };
         Update: Partial<Database["public"]["Tables"]["contact_messages"]["Row"]>;
+      };
+      hotmart_entitlements: {
+        Row: {
+          id: string;
+          email: string;
+          plan: string;
+          plus: boolean;
+          months: number | null;
+          transaction: string | null;
+          status: "pending" | "applied" | "refunded";
+          created_at: string;
+          applied_at: string | null;
+        };
+        Insert: Partial<Database["public"]["Tables"]["hotmart_entitlements"]["Row"]> & {
+          email: string;
+          plan: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["hotmart_entitlements"]["Row"]>;
+      };
+      hotmart_events: {
+        Row: { id: string; received_at: string };
+        Insert: { id: string; received_at?: string };
+        Update: Partial<{ id: string; received_at: string }>;
       };
       battle_challenges: {
         Row: {
