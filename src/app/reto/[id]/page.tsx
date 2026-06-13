@@ -64,13 +64,23 @@ export default async function RetoPage({ params }: PageProps) {
   const { data: { user } } = await supabase.auth.getUser();
   let kids: Array<{ id: string; name: string; emoji: string; avatar_url: string | null; color_hex: string }> = [];
   if (user) {
-    const { data } = await supabase
-      .from("kid_profiles")
-      .select("id, name, emoji, avatar_url, color_hex")
-      .is("archived_at", null)
-      .order("created_at", { ascending: true })
-      .limit(6);
-    kids = data ?? [];
+    // Filtro EXPLÍCITO por familia (defensa en profundidad sobre RLS): solo los
+    // perfiles PROPIos pueden aceptar el reto, nunca los de otra familia.
+    const { data: family } = await supabase
+      .from("families")
+      .select("id")
+      .eq("owner_user_id", user.id)
+      .single();
+    if (family) {
+      const { data } = await supabase
+        .from("kid_profiles")
+        .select("id, name, emoji, avatar_url, color_hex")
+        .eq("family_id", family.id)
+        .is("archived_at", null)
+        .order("created_at", { ascending: true })
+        .limit(6);
+      kids = data ?? [];
+    }
   }
 
   return (
