@@ -31,18 +31,27 @@ export default async function AdminPage() {
   if (!verifyAdminSession(cookie, user.id)) return <TotpGate mode="challenge" />;
 
   /* ── Datos (service role; ya pasamos el guard) ─────────────── */
-  const [{ data: families = [] }, { data: codes = [] }, { data: registry = [] }, { data: leads = [] }] =
-    await Promise.all([
-      svc.from("families")
-        .select("id, owner_user_id, family_name, plan, org_type, trial_ends_at, payment_failed_at, discount_code, created_at")
-        .order("created_at", { ascending: false })
-        .limit(500),
-      svc.from("discount_codes").select("*").order("created_at", { ascending: false }).limit(100),
-      svc.from("trial_registry").select("email, first_trial_at, retrial_authorized")
-        .order("first_trial_at", { ascending: false }).limit(50),
-      svc.from("school_leads").select("id, institution_name, contact_name, email, phone, num_students, status, created_at")
-        .order("created_at", { ascending: false }).limit(50),
-    ]);
+  const [
+    { data: families = [] },
+    { data: codes = [] },
+    { data: registry = [] },
+    { data: leads = [] },
+    { data: entitlements },
+    { data: rewards },
+  ] = await Promise.all([
+    svc.from("families")
+      .select("id, owner_user_id, family_name, plan, org_type, trial_ends_at, payment_failed_at, discount_code, referred_by, created_at")
+      .order("created_at", { ascending: false })
+      .limit(500),
+    svc.from("discount_codes").select("*").order("created_at", { ascending: false }).limit(100),
+    svc.from("trial_registry").select("email, first_trial_at, retrial_authorized")
+      .order("first_trial_at", { ascending: false }).limit(50),
+    svc.from("school_leads").select("id, institution_name, contact_name, email, phone, num_students, status, created_at")
+      .order("created_at", { ascending: false }).limit(50),
+    // Canal de afiliados (degradan a [] si la migración 0016/0017 no está aplicada).
+    svc.from("hotmart_entitlements").select("plan, status").eq("status", "applied").limit(2000),
+    svc.from("referral_rewards").select("method").limit(2000),
+  ]);
 
   // Correos de los dueños de cada cuenta.
   const emailById = new Map<string, string>();
@@ -67,6 +76,19 @@ export default async function AdminPage() {
     trialsTotal: (registry ?? []).length,
     expired: fams.filter((f) => f.org_type === "family" && (f.plan === "expired" || (f.plan === "trial" && new Date(f.trial_ends_at).getTime() <= now))).length,
     paymentIssues: fams.filter((f) => f.payment_failed_at).length,
+  };
+
+  // ── Canal de afiliados / referidos ──────────────────────────
+  const ents = entitlements ?? [];
+  const channel = {
+    // Ventas de afiliado (Hotmart) ya aplicadas, por producto.
+    hotmartStarter: ents.filter((e) => e.plan === "family_yearly").length,
+    hotmartPro: ents.filter((e) => e.plan === "family_plus").length,
+    hotmartLifetime: ents.filter((e) => e.plan === "family_lifetime").length,
+    hotmartTotal: ents.length,
+    // Referidos: familias que llegaron con un código + meses regalados.
+    referredSignups: fams.filter((f) => f.referred_by).length,
+    rewardsGranted: (rewards ?? []).length,
   };
 
   // % de cada código (para mostrar el descuento aplicado en la tabla de cuentas).
@@ -131,6 +153,17 @@ export default async function AdminPage() {
         <Stat label="Trials históricos" value={stats.trialsTotal} color="text-neon-green" />
         <Stat label="Expiradas" value={stats.expired} color="text-ink-dim" />
         <Stat label="Pagos con falla" value={stats.paymentIssues} color="text-neon-red" />
+      </div>
+
+      {/* Canal de afiliados / referidos */}
+      <div className="text-xs font-bold uppercase tracking-widest text-neon-green mb-2">📣 Canal de afiliados</div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+        <Stat label="Ventas Hotmart" value={channel.hotmartTotal} color="text-neon-green" />
+        <Stat label="↳ Starter $47" value={channel.hotmartStarter} color="text-ink-dim" />
+        <Stat label="↳ Pro Family $127" value={channel.hotmartPro} color="text-ink-dim" />
+        <Stat label="↳ Lifetime $349" value={channel.hotmartLifetime} color="text-ink-dim" />
+        <Stat label="Referidos llegados" value={channel.referredSignups} color="text-neon-cyan" />
+        <Stat label="Meses regalados" value={channel.rewardsGranted} color="text-neon-cyan" />
       </div>
 
       <AdminPanel accounts={accounts} codes={codeRows} registry={registryRows} leads={leadRows} />

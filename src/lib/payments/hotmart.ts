@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { rewardReferrerOnConversion } from "@/lib/payments/referrals";
 
 /**
  * Hotmart — fulfillment del canal de afiliados.
@@ -83,6 +84,8 @@ export async function grantHotmartPurchase(
         email, plan: args.product.plan, plus: args.product.plus, months: args.product.months,
         transaction: args.transaction ?? null, status: "applied", applied_at: new Date().toISOString(),
       });
+      // Premia al referente si esta familia llegó por un referido.
+      await rewardReferrerOnConversion(svc, fam.id);
       return "applied";
     }
   }
@@ -143,6 +146,9 @@ export async function claimHotmartEntitlements(
     .update({ status: "applied", applied_at: new Date().toISOString() })
     .eq("email", lower)
     .eq("status", "pending");
+
+  // Premia al referente si esta familia llegó por un referido.
+  await rewardReferrerOnConversion(svc, fam.id);
 
   return true;
 }

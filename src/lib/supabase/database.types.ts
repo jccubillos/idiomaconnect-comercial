@@ -332,6 +332,23 @@ export interface Database {
         Insert: { id: string; received_at?: string };
         Update: Partial<{ id: string; received_at: string }>;
       };
+      referral_rewards: {
+        Row: {
+          id: string;
+          referrer_family_id: string;
+          referred_family_id: string;
+          referral_code: string;
+          method: "extended" | "pending_credit";
+          reward_days: number;
+          created_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["referral_rewards"]["Row"]> & {
+          referrer_family_id: string;
+          referred_family_id: string;
+          referral_code: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["referral_rewards"]["Row"]>;
+      };
       battle_challenges: {
         Row: {
           id: string;

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
 import { verifyLemonSqueezySignature } from "@/lib/payments/verify-webhook";
 import { VARIANT_TO_PLAN } from "@/lib/payments/lemonsqueezy";
+import { rewardReferrerOnConversion } from "@/lib/payments/referrals";
 import { log } from "@/lib/logging/logger";
 
 export const runtime = "nodejs";
@@ -98,6 +99,8 @@ export async function POST(req: Request) {
       log.error("payments.webhook.lifetime_failed", { familyId, error: lifeErr.message });
       return NextResponse.json({ error: lifeErr.message }, { status: 500 });
     }
+    // Premia al referente si esta familia llegó por un referido.
+    await rewardReferrerOnConversion(supabase, familyId);
     log.info("payments.webhook.lifetime_activated", { familyId });
     return NextResponse.json({ received: true });
   }
@@ -166,6 +169,11 @@ export async function POST(req: Request) {
   if (error) {
     log.error("payments.webhook.db_update_failed", { familyId, error: error.message });
     return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  // Premia al referente cuando el referido pasa a un plan PAGADO (idempotente).
+  if (plan && plan !== "expired") {
+    await rewardReferrerOnConversion(supabase, familyId);
   }
 
   log.info("payments.webhook.processed", { eventName, familyId, plan });
