@@ -36,7 +36,7 @@ export default async function ProfilesPage() {
   // que cada cuenta solo vea SUS propios perfiles, sin depender solo de RLS.
   const { data: kids = [] } = await supabase
     .from("kid_profiles")
-    .select("id, name, emoji, avatar_url, color_hex, total_xp, cefr_level, hobbies")
+    .select("id, name, emoji, avatar_url, color_hex, total_xp, cefr_level")
     .eq("family_id", family.id)
     .is("archived_at", null)
     .order("created_at", { ascending: true });
@@ -100,9 +100,7 @@ export default async function ProfilesPage() {
                 >
                   {kid.total_xp} XP · {kid.cefr_level} {tier.name}
                 </div>
-                {kid.hobbies && (
-                  <p className="text-xs text-ink-dim mb-4 line-clamp-1">{kid.hobbies}</p>
-                )}
+                <div className="mb-4" />
                 <Link href={`/worlds?kid=${kid.id}`}>
                   <NeonButton variant="primary" className="w-full">
                     ¡Soy {kid.name}!

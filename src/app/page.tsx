@@ -360,7 +360,6 @@ export default async function HomePage() {
           <Link href="/privacy" className="hover:text-neon-cyan">Privacidad</Link>
           <Link href="/terms" className="hover:text-neon-cyan">Términos</Link>
           <Link href="/contacto" className="hover:text-neon-cyan">Contacto</Link>
-          <Link href="/afiliados" className="hover:text-neon-cyan">Afiliados</Link>
         </div>
         <div>© 2026 IdiomaConnect · Hecho en 🇨🇱</div>
       </footer>

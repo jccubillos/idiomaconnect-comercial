@@ -14,7 +14,10 @@ const tabs = [
 export function BottomNav() {
   const pathname = usePathname();
   const params = useSearchParams();
-  const kidId = params.get("kid");
+  // El contexto del niño puede venir como ?kid=<id> (la mayoría de pantallas) o
+  // dentro de la ruta /profile/<id>. Lo tomamos de ambos para que "Worlds" y
+  // "Perfil" nunca pierdan al niño y reboten a Inicio.
+  const kidId = params.get("kid") ?? pathname?.match(/^\/profile\/([^/]+)/)?.[1] ?? null;
 
   // Visible en TODAS las pantallas de práctica y navegación del niño.
   const showOn = [

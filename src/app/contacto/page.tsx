@@ -26,8 +26,8 @@ export default function ContactoPage() {
 
       <p className="text-center text-xs text-ink-dim mt-6">
         También puedes escribirnos directo a{" "}
-        <a href="mailto:hola@idiomaconnect.com" className="text-neon-cyan underline">
-          hola@idiomaconnect.com
+        <a href="mailto:appidiomaconnect@gmail.com" className="text-neon-cyan underline">
+          appidiomaconnect@gmail.com
         </a>
       </p>
     </main>

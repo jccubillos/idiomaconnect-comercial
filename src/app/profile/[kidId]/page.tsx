@@ -15,10 +15,21 @@ export default async function ProfileDetailPage({ params }: { params: { kidId: s
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
+  // Filtro EXPLÍCITO por familia (defensa en profundidad sobre RLS): este perfil
+  // SOLO puede verlo la familia dueña. Sin esto, una falla de RLS podría exponer
+  // el perfil (y la personalización) de otra familia.
+  const { data: family } = await supabase
+    .from("families")
+    .select("id")
+    .eq("owner_user_id", user.id)
+    .single();
+  if (!family) redirect("/profiles");
+
   const { data: kid } = await supabase
     .from("kid_profiles")
     .select("*")
     .eq("id", params.kidId)
+    .eq("family_id", family.id)
     .single();
   if (!kid) redirect("/profiles");
 
@@ -73,9 +84,7 @@ export default async function ProfileDetailPage({ params }: { params: { kidId: s
               />
             </div>
             <h2 className="text-2xl font-extrabold mb-1">{kid.name}</h2>
-            <p className="text-sm text-ink-dim mb-3">
-              {kid.emoji} {kid.hobbies ?? "Sin hobbies"}
-            </p>
+            <p className="text-sm text-ink-dim mb-3">{kid.emoji}</p>
             <div
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full"
               style={{

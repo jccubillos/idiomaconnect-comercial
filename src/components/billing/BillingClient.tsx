@@ -53,7 +53,7 @@ function BillingInner({ sub }: { sub: SubInfo | null }) {
     }
     setError(
       "El sistema de pagos está en su configuración final y se activará muy pronto. " +
-      "Mientras tanto puedes usar la prueba gratis, o escribirnos a hola@idiomaconnect.com para contratar.",
+      "Mientras tanto puedes usar la prueba gratis, o escribirnos a appidiomaconnect@gmail.com para contratar.",
     );
     setLoading(null);
   }
@@ -87,14 +87,14 @@ function BillingInner({ sub }: { sub: SubInfo | null }) {
             ) : (
               <p className="text-xs text-ink-dim">
                 Para cambios en tu suscripción escríbenos a{" "}
-                <a href="mailto:hola@idiomaconnect.com" className="text-neon-cyan underline">hola@idiomaconnect.com</a>.
+                <a href="mailto:appidiomaconnect@gmail.com" className="text-neon-cyan underline">appidiomaconnect@gmail.com</a>.
               </p>
             )}
 
             {portalIssue && (
               <p className="text-xs text-neon-red mt-4">
                 No pudimos abrir el portal de pagos en este momento. Intenta de nuevo en unos
-                minutos o escríbenos a hola@idiomaconnect.com.
+                minutos o escríbenos a appidiomaconnect@gmail.com.
               </p>
             )}
 

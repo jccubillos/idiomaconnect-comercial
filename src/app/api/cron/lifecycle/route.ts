@@ -203,7 +203,7 @@ export async function GET(req: Request) {
           ? dunningSchoolEmail({
               schoolName: f.family_name,
               retentionDate: retention,
-              contactEmail: "hola@idiomaconnect.com",
+              contactEmail: "appidiomaconnect@gmail.com",
             })
           : dunningFamilyEmail({ familyName: f.family_name, retentionDate: retention, billingUrl });
 

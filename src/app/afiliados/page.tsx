@@ -7,7 +7,9 @@ export const metadata: Metadata = {
   title: "Programa de Afiliados — Gana 50% por venta",
   description:
     "Promociona IdiomaConnect, la app de inglés para niños, y gana hasta 50% de comisión por cada venta. Productos desde US$47.",
-  robots: { index: true, follow: true },
+  // Página NO LISTADA: se comparte por link directo a prospectos (y vía Hotmart),
+  // pero no se indexa ni aparece para los clientes de la app.
+  robots: { index: false, follow: false },
 };
 
 const PRODUCTS = [
@@ -72,12 +74,16 @@ export default function AfiliadosPage() {
       <GlassCard strong className="p-6 text-center border border-neon-purple/40">
         <h3 className="text-xl font-extrabold mb-2">¿Listo para ganar con cada familia que aprende inglés?</h3>
         <p className="text-sm text-ink-dim mb-5">
-          Escríbenos y te enviamos el kit completo de afiliado (banners, guiones de video, textos
-          para correo y acceso de prueba para que conozcas la app).
+          Postula al programa. Revisamos tu perfil y, si encajas, te enviamos en privado el
+          kit completo de afiliado (banners, guiones de video, textos para correo) y un acceso
+          de prueba para que conozcas la app por dentro.
         </p>
-        <a href="mailto:afiliados@idiomaconnect.com?subject=Quiero%20ser%20afiliado%20de%20IdiomaConnect">
-          <NeonButton variant="primary" size="lg">Quiero el kit de afiliado</NeonButton>
-        </a>
+        <Link href="/contacto?motivo=afiliado">
+          <NeonButton variant="primary" size="lg">Postular como afiliado</NeonButton>
+        </Link>
+        <p className="text-[11px] text-ink-dim mt-3">
+          El kit y los materiales son exclusivos para afiliados aprobados.
+        </p>
       </GlassCard>
     </main>
   );
