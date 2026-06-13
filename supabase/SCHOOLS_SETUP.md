@@ -82,16 +82,20 @@ En la ficha de cada curso (`/teacher/course/…`), el profesor puede definir un 
 
 ---
 
-## Precios (definidos por JC, 2026-06-11)
+## Precios (actualizados por JC, 2026-06-12 · modelo afiliados/internacional)
 
 Cobro **por alumno / año** en USD, con descuento por volumen:
 
 | Tramo de alumnos | Precio por alumno / año |
 |---|---|
-| 50 – 200 | **USD 9,99** (~CLP 9.500) |
-| 201 – 500 | **USD 9,25** (~CLP 8.800) |
-| 501 – 1.500 | **USD 8,75** (~CLP 8.300) |
-| 1.500+ | **USD 8,50** (~CLP 8.100) |
+| 1 – 50 | **USD 39** |
+| 51 – 200 | **USD 34** |
+| 201 – 500 | **USD 31** |
+| 500+ | **USD 28** |
+
+> Nota: precios pensados para el mercado internacional (B2B ed-tech). Para colegios
+> chilenos puede ofrecerse una tarifa local negociada. Margen muy alto: el costo de
+> IA por alumno/año es ~USD 2-4 (con caché de audio), así que cada alumno deja >85%.
 
 - **Contratación mínima:** anual (idealmente alineada al año escolar, marzo–diciembre).
 - **Piloto:** se habilita **desde el dashboard de administración** (no autoservicio):
