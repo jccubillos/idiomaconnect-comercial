@@ -36,13 +36,24 @@ export default function AddKidPage() {
       .from("families").select("id").eq("owner_user_id", user.id).single();
     if (!family) { setError("Familia no encontrada"); setLoading(false); return; }
 
+    // Cupo de niños del plan (Mensual/Anual 2 · Familiar/Perpetuo 6). Si la
+    // columna aún no existe (migración 0018 pendiente), se respeta el tope de 6.
+    let cap = 6;
+    const { data: capRow } = await supabase
+      .from("families").select("max_kids").eq("id", family.id).single();
+    if (capRow?.max_kids != null) cap = capRow.max_kids;
+
     const { count } = await supabase
       .from("kid_profiles")
       .select("id", { count: "exact", head: true })
       .eq("family_id", family.id)
       .is("archived_at", null);
-    if ((count ?? 0) >= 6) {
-      setError("Tu plan permite hasta 6 perfiles.");
+    if ((count ?? 0) >= cap) {
+      setError(
+        cap <= 2
+          ? `Tu plan incluye ${cap} ${cap === 1 ? "niño" : "niños"}. Para agregar más, cambia al plan Anual Familiar (6 niños).`
+          : `Tu plan permite hasta ${cap} perfiles.`,
+      );
       setLoading(false);
       return;
     }

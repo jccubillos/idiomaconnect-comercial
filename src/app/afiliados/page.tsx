@@ -6,16 +6,15 @@ import { NeonButton } from "@/components/ui/NeonButton";
 export const metadata: Metadata = {
   title: "Programa de Afiliados — Gana 50% por venta",
   description:
-    "Promociona IdiomaConnect, la app de inglés para niños, y gana hasta 50% de comisión por cada venta. Productos desde US$47.",
+    "Promociona IdiomaConnect, la app de inglés para niños, y gana hasta 50% de comisión por cada venta. Productos desde US$69.",
   // Página NO LISTADA: se comparte por link directo a prospectos (y vía Hotmart),
   // pero no se indexa ni aparece para los clientes de la app.
   robots: { index: false, follow: false },
 };
 
 const PRODUCTS = [
-  { name: "English Fast Starter", price: 47, access: "6 meses · 1 niño", commission: 23.5 },
-  { name: "English Pro Family 12", price: 127, access: "12 meses · hasta 6 niños", commission: 63.5, star: true },
-  { name: "English Lifetime Legacy", price: 349, access: "De por vida · hasta 6 niños", commission: 174.5 },
+  { name: "English Starter", price: 69, access: "6 meses · 1 niño", commission: 34.5 },
+  { name: "English Pro Family", price: 297, access: "12 meses · hasta 6 niños", commission: 148.5, star: true },
 ];
 
 export default function AfiliadosPage() {
@@ -37,14 +36,14 @@ export default function AfiliadosPage() {
 
       {/* Por qué vende */}
       <section className="grid md:grid-cols-3 gap-4 mb-10">
-        <Why emoji="💸" title="50% por venta" body="La comisión más alta de la categoría. Hasta US$174 por una sola venta Lifetime." />
+        <Why emoji="💸" title="50% por venta" body="La comisión más alta de la categoría. Hasta US$148 por una sola venta Pro Family." />
         <Why emoji="🔥" title="Producto viral" body="Reto a un amigo y Duelo Familiar: contenido que se graba solo para reels y TikTok." />
         <Why emoji="🎯" title="Nicho enorme" body="Millones de familias hispanohablantes quieren que sus hijos aprendan inglés." />
       </section>
 
       {/* Productos y comisiones */}
       <h2 className="text-2xl font-extrabold text-center mb-6">Tus comisiones</h2>
-      <div className="grid md:grid-cols-3 gap-4 mb-4">
+      <div className="grid md:grid-cols-2 gap-4 mb-4 max-w-2xl mx-auto">
         {PRODUCTS.map((p) => (
           <GlassCard key={p.name} strong={p.star} glowColor={p.star ? "cyan" : undefined} className={`p-5 text-center flex flex-col ${p.star ? "border-2 border-neon-cyan/60" : ""}`}>
             {p.star && <div className="text-[10px] font-bold uppercase tracking-widest text-neon-cyan mb-1">⭐ El que más vende</div>}

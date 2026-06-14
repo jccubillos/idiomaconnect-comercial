@@ -9,7 +9,7 @@ export default function TermsPage() {
   return (
     <main className="min-h-dvh px-5 py-12 max-w-3xl mx-auto relative z-10 prose prose-invert">
       <h1>Términos de Servicio</h1>
-      <p><em>Última actualización: 11 de junio de 2026</em></p>
+      <p><em>Última actualización: 13 de junio de 2026</em></p>
 
       <h2>1. Aceptación</h2>
       <p>
@@ -37,9 +37,10 @@ export default function TermsPage() {
 
       <h2>4. Suscripciones y pagos</h2>
       <ul>
-        <li>Planes familiares: <strong>USD 9,99/mes</strong>, <strong>USD 89/año</strong>,
-          <strong> Plus USD 129/año</strong> (incluye herramientas exclusivas) o
-          <strong> Vitalicio USD 299</strong> en pago único (hasta 6 perfiles en todos los casos).
+        <li>Planes familiares: <strong>USD 12,99/mes</strong> (hasta 2 niños),
+          <strong> USD 119/año</strong> (hasta 2 niños), <strong>Anual Familiar USD 199/año</strong>
+          (hasta 6 niños, incluye herramientas exclusivas) o <strong>Perpetuo Familiar USD 549</strong>
+          en pago único (hasta 6 niños, 5 años de acceso).
           Los precios pueden incluir impuestos según tu país.</li>
         <li>Los pagos son procesados por <strong>Lemon Squeezy</strong> como comercializador oficial
           (Merchant of Record), quien emite la boleta o factura correspondiente.</li>
@@ -64,18 +65,22 @@ export default function TermsPage() {
           y luego se eliminan definitivamente.</li>
       </ul>
 
-      <h2>5 bis. Plan Vitalicio (&quot;de por vida&quot;)</h2>
+      <h2>5 bis. Plan Perpetuo Familiar (5 años)</h2>
       <ul>
-        <li>El Plan Vitalicio se adquiere mediante un <strong>pago único</strong> y otorga acceso al
-          plan familiar Plus, incluidas las actualizaciones y nuevas funcionalidades que se
-          incorporen al plan familiar, <strong>durante toda la vida comercial del servicio</strong>.</li>
-        <li>&quot;De por vida&quot; se refiere a la <strong>vida del servicio IdiomaConnect</strong>, no a la del
-          usuario. Si el servicio cesara definitivamente sus operaciones transcurridos al menos
-          24 meses desde la compra, no se generará derecho a reembolso ni indemnización.</li>
+        <li>El Plan Perpetuo Familiar se adquiere mediante un <strong>pago único</strong> y otorga acceso
+          al plan Anual Familiar (incluidas sus herramientas exclusivas y las actualizaciones que se
+          incorporen a dicho plan) por un período de <strong>5 años (60 meses)</strong> contados desde
+          la compra, para hasta 6 perfiles del mismo núcleo familiar.</li>
+        <li>Cumplidos los 5 años, el acceso del plan finaliza. El cliente podrá <strong>renovar</strong> el
+          servicio; en su calidad de cliente Perpetuo, la renovación tiene un <strong>70% de
+          descuento</strong> sobre el precio del plan vigente en ese momento.</li>
         <li>La licencia es <strong>personal e intransferible</strong>, para una (1) cuenta familiar y hasta
           6 perfiles del mismo núcleo familiar. No puede revenderse ni compartirse fuera de él.</li>
         <li>Está sujeto a la política de <strong>uso justo</strong>: aplican los mismos límites diarios de
           uso razonable que al resto de los planes, para proteger la calidad del servicio.</li>
+        <li>Si el servicio cesara definitivamente sus operaciones antes de cumplirse el período de
+          5 años, se estará a lo dispuesto en la legislación de protección al consumidor respecto
+          del período contratado y no prestado.</li>
         <li>No comprende servicios de terceros que sean descontinuados por sus proveedores ni
           productos futuros que IdiomaConnect comercialice como servicios separados del plan
           familiar (por ejemplo, planes institucionales).</li>

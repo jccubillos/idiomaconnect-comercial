@@ -46,10 +46,10 @@ export interface LeadRow {
 
 const PLAN_LABEL: Record<string, string> = {
   trial: "Prueba",
-  family_monthly: "Familiar mensual",
-  family_yearly: "Familiar anual",
-  family_plus: "Familiar Plus",
-  family_lifetime: "Vitalicia 👑",
+  family_monthly: "Mensual",
+  family_yearly: "Anual",
+  family_plus: "Anual Familiar",
+  family_lifetime: "Perpetuo 👑",
   school: "Colegio",
   expired: "Expirada",
 };
@@ -110,10 +110,10 @@ function paymentLabel(a: AccountRow): string {
     if (a.plan === "trial") return "Piloto (sin pago)";
     return "—";
   }
-  if (a.plan === "family_monthly") return "US$9,99/mes";
-  if (a.plan === "family_yearly") return "US$89/año";
-  if (a.plan === "family_plus") return "US$129/año";
-  if (a.plan === "family_lifetime") return "US$299 (pago único)";
+  if (a.plan === "family_monthly") return "US$12,99/mes";
+  if (a.plan === "family_yearly") return "US$119/año";
+  if (a.plan === "family_plus") return "US$199/año";
+  if (a.plan === "family_lifetime") return "US$549 (5 años)";
   return "—";
 }
 

@@ -24,6 +24,19 @@ export interface FamilyAccess {
 /** Planes pagados con acceso completo a la app. */
 const PAID_PLANS = new Set(["family_monthly", "family_yearly", "family_plus", "family_lifetime", "school"]);
 
+/**
+ * Cupos de niños por plan DIRECTO (lista de precios oficial, junio 2026):
+ *   · Mensual / Anual          → 2 niños
+ *   · Anual Familiar / Perpetuo → 6 niños
+ * Los productos de Hotmart fijan su propio cupo aparte (Starter 1, Pro 6).
+ * El padre/madre es admin de la cuenta y NO ocupa cupo.
+ */
+export function seatsForPlan(plan: string): number {
+  if (plan === "family_plus" || plan === "family_lifetime") return 6;
+  if (plan === "family_monthly" || plan === "family_yearly") return 2;
+  return 6; // school / trial / fallback: sin restricción nueva
+}
+
 interface FamilyLike {
   plan: string;
   trial_ends_at: string | null;

@@ -49,6 +49,7 @@ export interface Database {
           plan_expires_at: string | null;
           referral_code: string | null;
           referred_by: string | null;
+          max_kids: number;
           created_at: string;
           updated_at: string;
         };
@@ -316,6 +317,7 @@ export interface Database {
           plan: string;
           plus: boolean;
           months: number | null;
+          max_kids: number | null;
           transaction: string | null;
           status: "pending" | "applied" | "refunded";
           created_at: string;

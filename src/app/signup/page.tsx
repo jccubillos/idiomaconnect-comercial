@@ -105,10 +105,10 @@ function SignupForm() {
           <p className="text-sm text-ink-dim mb-6">
             Estás contratando el{" "}
             <b className="text-neon-cyan">
-              {buyPlan === "monthly" && "plan mensual (US$9,99/mes)"}
-              {buyPlan === "yearly" && "plan anual (US$89/año)"}
-              {buyPlan === "plus" && "plan Plus anual (US$129/año)"}
-              {buyPlan === "lifetime" && "plan Vitalicio (US$299, pago único)"}
+              {buyPlan === "monthly" && "plan Mensual (US$12,99/mes · 2 niños)"}
+              {buyPlan === "yearly" && "plan Anual (US$119/año · 2 niños)"}
+              {buyPlan === "plus" && "plan Anual Familiar (US$199/año · 6 niños)"}
+              {buyPlan === "lifetime" && "plan Perpetuo Familiar (US$549, pago único · 5 años)"}
             </b>
             . Primero crea tu cuenta (1 minuto) y luego pasas al pago seguro.
           </p>

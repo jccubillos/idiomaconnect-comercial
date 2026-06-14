@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
 import { verifyLemonSqueezySignature } from "@/lib/payments/verify-webhook";
 import { VARIANT_TO_PLAN } from "@/lib/payments/lemonsqueezy";
+import { seatsForPlan } from "@/lib/billing/access";
 import { rewardReferrerOnConversion } from "@/lib/payments/referrals";
 import { log } from "@/lib/logging/logger";
 
@@ -83,25 +84,30 @@ export async function POST(req: Request) {
   let plan: "family_monthly" | "family_yearly" | "family_plus" | "family_lifetime" | "expired" | null = null;
   const variantId = String(attrs.variant_id ?? "");
 
-  // VITALICIO: es un pago único (sin suscripción) → llega como order_created.
+  // PERPETUO FAMILIAR: pago único (sin suscripción) → llega como order_created.
+  // Da 5 AÑOS de acceso Familiar (6 niños), no "de por vida" (acota el costo de IA).
   if (eventName === "order_created" && event.meta?.custom_data?.plan === "lifetime") {
+    const perpetuoExpiry = new Date();
+    perpetuoExpiry.setFullYear(perpetuoExpiry.getFullYear() + 5);
     const { error: lifeErr } = await supabase
       .from("families")
       .update({
         plan: "family_lifetime",
+        plan_expires_at: perpetuoExpiry.toISOString(),
+        max_kids: 6,
         payment_provider: "lemonsqueezy",
         payment_customer_id: attrs.customer_id ? String(attrs.customer_id) : undefined,
-        subscription_status: "lifetime",
+        subscription_status: "perpetuo",
         payment_failed_at: null,
       })
       .eq("id", familyId);
     if (lifeErr) {
-      log.error("payments.webhook.lifetime_failed", { familyId, error: lifeErr.message });
+      log.error("payments.webhook.perpetuo_failed", { familyId, error: lifeErr.message });
       return NextResponse.json({ error: lifeErr.message }, { status: 500 });
     }
     // Premia al referente si esta familia llegó por un referido.
     await rewardReferrerOnConversion(supabase, familyId);
-    log.info("payments.webhook.lifetime_activated", { familyId });
+    log.info("payments.webhook.perpetuo_activated", { familyId });
     return NextResponse.json({ received: true });
   }
 
@@ -141,7 +147,11 @@ export async function POST(req: Request) {
     payment_customer_id: attrs.customer_id ? String(attrs.customer_id) : undefined,
     subscription_status: String(attrs.status ?? ""),
   };
-  if (plan) update.plan = plan;
+  if (plan) {
+    update.plan = plan;
+    // Fija el cupo de niños del plan contratado (Mensual/Anual 2 · Familiar 6).
+    if (plan !== "expired") update.max_kids = seatsForPlan(plan);
+  }
 
   // Ancla de COBRANZA (dunning): al fallar un pago se fija payment_failed_at
   // (si no estaba ya fijado, para no reiniciar la cadencia de correos);

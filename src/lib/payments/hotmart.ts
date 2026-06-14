@@ -13,24 +13,24 @@ export interface HotmartProductMap {
   plan: "family_yearly" | "family_plus" | "family_lifetime";
   plus: boolean;
   months: number | null; // null = de por vida
+  /** Cupo de niños del paquete (Starter 1, Pro Family 6). */
+  maxKids: number;
   label: string;
 }
 
 /**
  * Mapa producto Hotmart → acceso. Los IDs se configuran por env vars
- * (HOTMART_PRODUCT_STARTER, _PRO, _LIFETIME) cuando JC cree los productos.
- *   · Starter   → acceso base, 6 meses
- *   · Pro Family → acceso Plus, 12 meses (producto estrella)
- *   · Lifetime  → acceso Plus, de por vida
+ * (HOTMART_PRODUCT_STARTER, _PRO) cuando JC cree los productos.
+ * Lista de precios oficial (junio 2026), solo canal afiliados:
+ *   · English Starter    → acceso base, 6 meses, 1 niño  (US$69)
+ *   · English Pro Family → acceso Plus, 12 meses, 6 niños (US$297, estrella)
  */
 export function hotmartProductMap(): Record<string, HotmartProductMap> {
   const map: Record<string, HotmartProductMap> = {};
   const starter = process.env.HOTMART_PRODUCT_STARTER;
   const pro = process.env.HOTMART_PRODUCT_PRO;
-  const lifetime = process.env.HOTMART_PRODUCT_LIFETIME;
-  if (starter) map[starter] = { plan: "family_yearly", plus: false, months: 6, label: "English Fast Starter" };
-  if (pro) map[pro] = { plan: "family_plus", plus: true, months: 12, label: "English Pro Family 12" };
-  if (lifetime) map[lifetime] = { plan: "family_lifetime", plus: true, months: null, label: "English Lifetime Legacy" };
+  if (starter) map[starter] = { plan: "family_yearly", plus: false, months: 6, maxKids: 1, label: "English Starter" };
+  if (pro) map[pro] = { plan: "family_plus", plus: true, months: 12, maxKids: 6, label: "English Pro Family" };
   return map;
 }
 
@@ -75,6 +75,7 @@ export async function grantHotmartPurchase(
         .update({
           plan: args.product.plan,
           plan_expires_at: expiresAt,
+          max_kids: args.product.maxKids,
           payment_provider: "hotmart",
           payment_failed_at: null,
           subscription_status: expiresAt ? "hotmart_active" : "lifetime",
@@ -82,6 +83,7 @@ export async function grantHotmartPurchase(
         .eq("id", fam.id);
       await svc.from("hotmart_entitlements").insert({
         email, plan: args.product.plan, plus: args.product.plus, months: args.product.months,
+        max_kids: args.product.maxKids,
         transaction: args.transaction ?? null, status: "applied", applied_at: new Date().toISOString(),
       });
       // Premia al referente si esta familia llegó por un referido.
@@ -108,11 +110,11 @@ export async function claimHotmartEntitlements(
   email: string,
 ): Promise<boolean> {
   const lower = email.trim().toLowerCase();
-  let pending: Array<{ id: string; plan: string; months: number | null }> = [];
+  let pending: Array<{ id: string; plan: string; months: number | null; max_kids: number | null }> = [];
   try {
     const { data } = await svc
       .from("hotmart_entitlements")
-      .select("id, plan, months")
+      .select("id, plan, months, max_kids")
       .eq("email", lower)
       .eq("status", "pending");
     pending = data ?? [];
@@ -136,6 +138,7 @@ export async function claimHotmartEntitlements(
     .update({
       plan: best.plan,
       plan_expires_at: expiryFromMonths(best.months),
+      max_kids: best.max_kids ?? 6,
       payment_provider: "hotmart",
       subscription_status: best.months == null ? "lifetime" : "hotmart_active",
     })

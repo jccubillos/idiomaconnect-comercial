@@ -78,7 +78,7 @@ export default async function HomePage() {
           </Link>
         </div>
         <p className="text-sm font-bold text-neon-green mb-2">
-          Plan anual: desde US$7,42/mes para hasta 6 niños
+          Plan Familiar: 6 niños desde US$2,76 por niño al mes
         </p>
         <p className="text-xs text-ink-dim">
           Cancela cuando quieras · datos cifrados ·{" "}
@@ -126,7 +126,7 @@ export default async function HomePage() {
           </h2>
         </div>
         <div className="grid md:grid-cols-3 gap-4">
-          <Step n={1} emoji="👨‍👩‍👧" title="Cuenta familiar" body="Te registras como padre/madre. Una sola suscripción cubre hasta 6 niños." />
+          <Step n={1} emoji="👨‍👩‍👧" title="Cuenta familiar" body="Te registras como padre/madre. Un plan para tu familia: hasta 6 niños con el plan Familiar." />
           <Step n={2} emoji="📝" title="Onboarding personalizado" body="Cuéntanos: nombres, hobbies, mascotas, hermanos. Toma 3 minutos." />
           <Step n={3} emoji="🎮" title="Aprende todos los días" body="Lecciones que mencionan a tu familia real. 15 modos de práctica distintos." />
         </div>
@@ -188,7 +188,7 @@ export default async function HomePage() {
         <div className="flex flex-wrap justify-center gap-4 mb-8 text-center">
           <Stat3 value="4.8★" label="Valoración de familias" />
           <Stat3 value="+1.000" label="Niños aprendiendo" />
-          <Stat3 value="17" label="Modos de práctica" />
+          <Stat3 value="15" label="Modos de práctica" />
           <Stat3 value="A1→C2" label="Todos los niveles" />
         </div>
         <div className="grid md:grid-cols-3 gap-4">
@@ -217,11 +217,11 @@ export default async function HomePage() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
           <GlassCard className="p-5 text-center flex flex-col">
             <div className="text-xs uppercase tracking-widest text-ink-dim mb-2">Mensual</div>
-            <div className="text-3xl font-extrabold">$9.99</div>
+            <div className="text-3xl font-extrabold">$12.99</div>
             <div className="text-xs text-ink-dim mb-4">USD / mes</div>
             <ul className="text-xs text-ink-dim space-y-1 mb-5 text-left mx-auto">
-              <li>✓ Hasta 6 perfiles</li>
-              <li>✓ 17 herramientas de práctica</li>
+              <li>✓ Hasta 2 niños</li>
+              <li>✓ 15 modos de práctica</li>
               <li>✓ Dashboard de padres</li>
             </ul>
             <div className="mt-auto">
@@ -231,14 +231,14 @@ export default async function HomePage() {
 
           <GlassCard className="p-5 text-center relative flex flex-col">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest bg-white/15 text-on-surface px-2.5 py-0.5 rounded-full whitespace-nowrap">
-              Ahorras 26%
+              Ahorras 23%
             </div>
             <div className="text-xs uppercase tracking-widest text-ink-dim mb-2">Anual</div>
-            <div className="text-3xl font-extrabold">$89</div>
+            <div className="text-3xl font-extrabold">$119</div>
             <div className="text-xs text-ink-dim mb-1">USD / año</div>
-            <div className="text-xs font-bold text-neon-green mb-3">Sale a $7,42/mes</div>
+            <div className="text-xs font-bold text-neon-green mb-3">Sale a $9,92/mes</div>
             <ul className="text-xs text-ink-dim space-y-1 mb-5 text-left mx-auto">
-              <li>✓ Todo lo del mensual</li>
+              <li>✓ Hasta 2 niños</li>
               <li>✓ Casi 3 meses de regalo</li>
             </ul>
             <div className="mt-auto">
@@ -250,18 +250,18 @@ export default async function HomePage() {
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest bg-neon-cyan text-surface px-2.5 py-0.5 rounded-full whitespace-nowrap">
               ⭐ Recomendado
             </div>
-            <div className="text-xs uppercase tracking-widest text-neon-cyan mb-2">Plus anual</div>
-            <div className="text-4xl font-extrabold">$129</div>
-            <div className="text-xs text-ink-dim mb-1">USD / año</div>
-            <div className="text-xs font-bold text-neon-green mb-3">Sale a $10,75/mes</div>
+            <div className="text-xs uppercase tracking-widest text-neon-cyan mb-2">Anual Familiar</div>
+            <div className="text-4xl font-extrabold">$199</div>
+            <div className="text-xs text-ink-dim mb-1">USD / año · hasta 6 niños</div>
+            <div className="text-xs font-bold text-neon-green mb-3">Solo $2,76 por niño al mes</div>
             <ul className="text-xs text-ink-dim space-y-1 mb-5 text-left mx-auto">
-              <li>✓ Todo lo del anual</li>
+              <li>✓ Hasta <b>6 niños</b> (el mejor precio por hijo)</li>
               <li>🏆 <b>Arena Global</b>: compite con niños de todo Chile</li>
               <li>⚔️ <b>Reto a un amigo</b> por WhatsApp</li>
               <li>🥊 <b>Duelo Familiar</b>: padres vs hijos</li>
             </ul>
             <div className="mt-auto">
-              <Link href="/signup?plan=plus"><NeonButton variant="primary" className="w-full">Contratar Plus</NeonButton></Link>
+              <Link href="/signup?plan=plus"><NeonButton variant="primary" className="w-full">Contratar Familiar</NeonButton></Link>
             </div>
           </GlassCard>
 
@@ -269,16 +269,17 @@ export default async function HomePage() {
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest bg-neon-purple text-surface px-2.5 py-0.5 rounded-full whitespace-nowrap">
               👑 Mejor inversión
             </div>
-            <div className="text-xs uppercase tracking-widest text-neon-purple mb-2">Vitalicia</div>
-            <div className="text-4xl font-extrabold">$299</div>
-            <div className="text-xs text-ink-dim mb-3">USD · pago único</div>
+            <div className="text-xs uppercase tracking-widest text-neon-purple mb-2">Perpetuo Familiar</div>
+            <div className="text-4xl font-extrabold">$549</div>
+            <div className="text-xs text-ink-dim mb-3">USD · pago único · 6 niños</div>
             <ul className="text-xs text-ink-dim space-y-1 mb-5 text-left mx-auto">
-              <li>✓ Plus <b>para siempre</b></li>
-              <li>✓ Todas las actualizaciones y herramientas futuras</li>
-              <li>✓ Sin renovaciones ni cobros nuevos</li>
+              <li>✓ <b>5 años</b> de acceso Familiar completo</li>
+              <li>✓ Todas las herramientas Plus incluidas</li>
+              <li>✓ Sin renovaciones por 5 años</li>
+              <li>✓ Al 6.º año, renuevas con <b>70% de descuento</b></li>
             </ul>
             <div className="mt-auto">
-              <Link href="/signup?plan=lifetime"><NeonButton variant="ghost-cyan" size="sm" className="w-full">Contratar de por vida</NeonButton></Link>
+              <Link href="/signup?plan=lifetime"><NeonButton variant="ghost-cyan" size="sm" className="w-full">Contratar Perpetuo</NeonButton></Link>
             </div>
           </GlassCard>
         </div>
@@ -342,10 +343,10 @@ export default async function HomePage() {
           Dale a tus hijos un tutor de inglés que los conoce
         </h2>
         <p className="text-ink-dim mb-6">
-          Hasta 6 niños con una sola suscripción · desde US$7,42/mes con el plan anual.
+          Hasta 6 niños con el plan Anual Familiar · US$199/año (solo US$2,76 por niño al mes).
         </p>
-        <Link href="/signup?plan=yearly">
-          <NeonButton size="lg" variant="primary">💎 Contratar plan anual</NeonButton>
+        <Link href="/signup?plan=plus">
+          <NeonButton size="lg" variant="primary">💎 Contratar plan Familiar</NeonButton>
         </Link>
         <p className="text-xs text-ink-dim mt-4">
           ¿Aún con dudas?{" "}
@@ -441,29 +442,29 @@ const JSONLD_APP = {
   offers: [
     {
       "@type": "Offer",
-      name: "Plan Familiar Mensual",
-      price: "9.99",
+      name: "Plan Mensual (2 niños)",
+      price: "12.99",
       priceCurrency: "USD",
       category: "subscription",
     },
     {
       "@type": "Offer",
-      name: "Plan Familiar Anual",
-      price: "89",
+      name: "Plan Anual (2 niños)",
+      price: "119",
       priceCurrency: "USD",
       category: "subscription",
     },
     {
       "@type": "Offer",
-      name: "Plan Familiar Plus Anual",
-      price: "129",
+      name: "Plan Anual Familiar (6 niños)",
+      price: "199",
       priceCurrency: "USD",
       category: "subscription",
     },
     {
       "@type": "Offer",
-      name: "Plan Familiar Vitalicio (pago único)",
-      price: "299",
+      name: "Plan Perpetuo Familiar — 5 años (pago único, 6 niños)",
+      price: "549",
       priceCurrency: "USD",
     },
   ],
