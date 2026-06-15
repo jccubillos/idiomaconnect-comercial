@@ -39,6 +39,22 @@ Historia/Reel. Para armar la historia con Lumi:
 > Para el banner cuadrado y el horizontal con Lumi conviene una versión de Lumi en
 > **PNG transparente** (solo el personaje). Con eso armo esos dos formatos con Lumi al lado del texto.
 
+## Prueba social (sobre la foto de "Niño celebrando")
+
+- `overlay-prueba-social-1080x1080.svg` = capa de texto (logo + "4,8★ · +1.000 niños" +
+  botón), fondo transparente con degradados arriba y abajo para que el texto se lea sobre
+  la foto de los niños festejando.
+
+Receta: en Canva 1080×1080 → foto `CONTENIDO GRAFICO/Niño celebrando/...` de fondo →
+`overlay-prueba-social-1080x1080.svg` encima → exporta PNG.
+
+## Tus carpetas de assets (en tu PC, NO en el repo)
+- `Lumi/` — poses de la mascota (saludo, celebración, pulgar arriba, guiño, etc.).
+- `CONTENIDO GRAFICO/` — Duelo Familiar (fotos), Fondo neón abstracto, Niño celebrando.
+
+Estas carpetas están en `.gitignore` (no se suben al repo de deploy); úsalas como fuente
+para componer en Canva con las capas/banners de esta carpeta `docs/afiliados/`.
+
 ## Imágenes a generar (con IA) — ver `PROMPTS_IMAGENES.md`
 La parte de **ilustración y foto** (mascota Lumi, foto de familia, fondo neón, niño
 celebrando) se genera con los prompts de ese archivo. Luego puedes:
