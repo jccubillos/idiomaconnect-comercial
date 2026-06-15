@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0A0E1A"/>
+      <stop offset="100%" stop-color="#101A38"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#C464FF"/>
+      <stop offset="100%" stop-color="#5B9DFF"/>
+    </linearGradient>
+    <linearGradient id="cta" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#39FF14"/>
+      <stop offset="100%" stop-color="#14D6A0"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <symbol id="bolt" viewBox="0 0 24 24"><path d="M13 2 L3 14 h7 l-1 8 11-13 h-7 z"/></symbol>
+  </defs>
+
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+  <use href="#bolt" x="320" y="300" width="440" height="440" fill="#00EEFC" opacity="0.06"/>
+
+  <use href="#bolt" x="360" y="120" width="60" height="60" fill="#7AA8FF" opacity="0.55" filter="url(#glow)"/>
+  <use href="#bolt" x="360" y="120" width="60" height="60" fill="url(#brand)"/>
+  <text x="434" y="166" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="700" fill="url(#brand)">IdiomaConnect</text>
+  <rect x="470" y="200" width="140" height="5" rx="2" fill="#00EEFC"/>
+
+  <text x="540" y="470" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="70" font-weight="800" fill="#F2F5FF">El tutor de inglés</text>
+  <text x="540" y="552" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="70" font-weight="800" fill="#F2F5FF">con IA para tus <tspan fill="#00EEFC">hijos</tspan></text>
+
+  <text x="540" y="652" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="36" fill="#AEB8C9">Personalizado · divertido · 8 a 18 años</text>
+
+  <rect x="270" y="818" width="540" height="104" rx="52" fill="#39FF14" opacity="0.4" filter="url(#glow)"/>
+  <rect x="270" y="818" width="540" height="104" rx="52" fill="url(#cta)"/>
+  <text x="540" y="886" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="700" fill="#06270C">Prueba gratis · 7 días</text>
+
+  <text x="540" y="990" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="32" fill="#6E7891">idiomaconnect.com</text>
+</svg>
