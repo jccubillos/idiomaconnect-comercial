@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/admin", "/parent", "/account/", "/worlds", "/profiles", "/school-admin", "/teacher", "/aula", "/billing"],
+        disallow: ["/api/", "/admin", "/parent", "/account/", "/worlds", "/profiles", "/school-admin", "/teacher", "/aula", "/billing", "/demo", "/afiliados"],
       },
     ],
     sitemap: "https://idiomaconnect.com/sitemap.xml",

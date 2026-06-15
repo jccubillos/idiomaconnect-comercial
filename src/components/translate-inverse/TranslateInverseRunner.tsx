@@ -9,7 +9,7 @@ import { NeonButton } from "@/components/ui/NeonButton";
 import { EvalResult, type ProductionEvalLite } from "@/components/production/EvalResult";
 import type { TranslateItem } from "@/lib/groq/writing-prompts";
 
-export function TranslateInverseRunner({ kid }: { kid: { id: string; name: string; color_hex: string } }) {
+export function TranslateInverseRunner({ kid, worldKey }: { kid: { id: string; name: string; color_hex: string }; worldKey?: string }) {
   const [phase, setPhase] = useState<"loading" | "play" | "scoring" | "review" | "done" | "error">("loading");
   const [items, setItems] = useState<TranslateItem[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +25,7 @@ export function TranslateInverseRunner({ kid }: { kid: { id: string; name: strin
       const r = await fetch("/api/translate-inverse/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ kidId: kid.id, count: 5 }),
+        body: JSON.stringify({ kidId: kid.id, count: 5, world: worldKey }),
       });
       if (cancelled) return;
       if (!r.ok) { const j = await r.json().catch(() => ({})); setError(j.error ?? "Falló"); setPhase("error"); return; }
@@ -63,7 +63,7 @@ export function TranslateInverseRunner({ kid }: { kid: { id: string; name: strin
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            kidId: kid.id, lessonType: "translate_inverse", worldKey: "writing",
+            kidId: kid.id, lessonType: "translate_inverse", worldKey: worldKey ?? "writing",
             topic: "Translate ES→EN", skill: "writing", scorePct: avg, xpGained: xp,
             attempts: 1, durationSeconds: Math.round((Date.now() - startedAt) / 1000),
           }),

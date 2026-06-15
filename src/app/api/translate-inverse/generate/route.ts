@@ -8,7 +8,7 @@ import { enforceLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
-const Body = z.object({ kidId: z.string().uuid(), count: z.number().int().min(3).max(8).default(5) });
+const Body = z.object({ kidId: z.string().uuid(), count: z.number().int().min(3).max(8).default(5), world: z.string().optional() });
 
 export async function POST(req: Request) {
   const body = await parseBody(req, Body);
@@ -23,12 +23,18 @@ export async function POST(req: Request) {
 
   const { data: kid } = await supabase.from("kid_profiles").select("*").eq("id", body.kidId).single();
   if (!kid) return NextResponse.json({ error: "Kid not found" }, { status: 404 });
+  // Si la actividad viene del mundo del colegio, las oraciones giran en torno al tema del curso.
+  let theme: string | undefined;
+  if (body.world === "school_world" && kid.course_id) {
+    const { data: course } = await supabase.from("courses").select("current_theme").eq("id", kid.course_id).single();
+    theme = course?.current_theme ?? undefined;
+  }
   const cefr = getCefrInfo(kid.total_xp);
   const r = await generateTranslateItems({
     name: kid.name, gender: null, ageDesc: "adolescente",
     grade: kid.grade, hobbies: kid.hobbies, tone: kid.tone,
     familyMembers: [], cefrCode: cefr.code, cefrName: cefr.name, recentTopics: [],
-  }, body.count);
+  }, body.count, theme);
   if (!r.ok) return NextResponse.json({ error: r.error }, { status: 502 });
   return NextResponse.json({ items: r.data.items });
 }

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { Avatar } from "@/components/ui/Avatar";
@@ -101,15 +101,32 @@ export default async function SchoolWorldPage({ searchParams }: PageProps) {
     .slice(0, 3);
   const myBattleBest = bestBattleById.has(kid.id) ? Math.round(bestBattleById.get(kid.id)!) : null;
 
+  // ⚔️ Desafíos DIRECTOS recibidos de compañeros (pendientes, no vencidos).
+  // La tabla es solo-servidor; el target ya está validado como kid del usuario.
+  let incomingChallenges: Array<{ id: string; challenge_id: string; challenger_name: string; challenger_score: number }> = [];
+  try {
+    const svc = createServiceClient();
+    const { data } = await svc
+      .from("course_challenge_targets")
+      .select("id, challenge_id, challenger_name, challenger_score")
+      .eq("target_kid_id", kid.id)
+      .gt("expires_at", new Date().toISOString())
+      .order("created_at", { ascending: false })
+      .limit(10);
+    incomingChallenges = data ?? [];
+  } catch { /* migración 0019 pendiente → sin desafíos */ }
+
   const tools = enabledToolsFor(course?.enabled_modes as string[] | null);
   const lessonTool = tools.find((t) => t.key === "lesson");
   const otherTools = tools.filter((t) => t.key !== "lesson");
 
   // Actividades que etiquetan su XP con el mundo del colegio (cuentan para la
-  // racha, la liga y la misión). Las demás guardan en su mundo propio.
+  // racha, la liga y la misión) y, cuando aplica, usan el tema del curso en su
+  // contenido (v3: escritura/habla). Las demás guardan en su mundo propio.
   const TAGS_SCHOOL_WORLD = new Set([
     "/lesson", "/battle", "/flashcards", "/sentence-builder", "/story-fill",
     "/pronunciation", "/listen-id", "/memory-match", "/minimal-pairs", "/shadow-speaking",
+    "/conversation", "/speaking-journal", "/translate-inverse", "/describe-scene",
   ]);
   const withKid = (route: string) =>
     TAGS_SCHOOL_WORLD.has(route)
@@ -184,6 +201,31 @@ export default async function SchoolWorldPage({ searchParams }: PageProps) {
                 : "Cada XP que gana CUALQUIER compañero en este mundo suma a la meta del curso."}
             </p>
           </GlassCard>
+        )}
+
+        {/* ⚔️ Desafíos directos recibidos de compañeros del curso */}
+        {incomingChallenges.length > 0 && (
+          <section className="mb-6">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-ink-dim mb-3">
+              ⚔️ Te retaron tus compañeros
+            </h2>
+            <div className="space-y-2">
+              {incomingChallenges.map((c) => (
+                <Link key={c.id} href={`/reto/${c.challenge_id}/jugar?kid=${kid.id}`} prefetch={false}>
+                  <GlassCard className="p-4 flex items-center gap-3 border border-neon-red/40 hover:border-neon-red transition-colors mb-2">
+                    <span className="text-2xl">⚔️</span>
+                    <div className="flex-1">
+                      <div className="font-bold text-sm">{c.challenger_name} te retó</div>
+                      <div className="text-xs text-ink-dim">
+                        Sacó {c.challenger_score}% — ¿lo superas con las mismas palabras?
+                      </div>
+                    </div>
+                    <span className="text-xs text-neon-red font-bold">Jugar →</span>
+                  </GlassCard>
+                </Link>
+              ))}
+            </div>
+          </section>
         )}
 
         {/* Lección del curso — la herramienta central */}

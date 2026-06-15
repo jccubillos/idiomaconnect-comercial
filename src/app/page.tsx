@@ -257,7 +257,7 @@ export default async function HomePage() {
             <ul className="text-xs text-ink-dim space-y-1 mb-5 text-left mx-auto">
               <li>✓ Hasta <b>6 niños</b> (el mejor precio por hijo)</li>
               <li>🏆 <b>Arena Global</b>: compite con niños de todo Chile</li>
-              <li>⚔️ <b>Reto a un amigo</b> por WhatsApp</li>
+              <li>⚔️ <b>Reto a un amigo</b></li>
               <li>🥊 <b>Duelo Familiar</b>: padres vs hijos</li>
             </ul>
             <div className="mt-auto">

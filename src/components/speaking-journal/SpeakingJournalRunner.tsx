@@ -7,7 +7,7 @@ import { NeonButton } from "@/components/ui/NeonButton";
 import { EvalResult, type ProductionEvalLite } from "@/components/production/EvalResult";
 import type { JournalPrompt } from "@/lib/groq/writing-prompts";
 
-export function SpeakingJournalRunner({ kid }: { kid: { id: string; name: string; color_hex: string } }) {
+export function SpeakingJournalRunner({ kid, worldKey }: { kid: { id: string; name: string; color_hex: string }; worldKey?: string }) {
   const [phase, setPhase] = useState<"loading" | "ready" | "recording" | "scoring" | "done" | "error">("loading");
   const [prompt, setPrompt] = useState<JournalPrompt | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +25,7 @@ export function SpeakingJournalRunner({ kid }: { kid: { id: string; name: string
       const r = await fetch("/api/speaking-journal/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ kidId: kid.id }),
+        body: JSON.stringify({ kidId: kid.id, world: worldKey }),
       });
       if (cancelled) return;
       if (!r.ok) { const j = await r.json().catch(() => ({})); setError(j.error ?? "Falló"); setPhase("error"); return; }
@@ -83,7 +83,7 @@ export function SpeakingJournalRunner({ kid }: { kid: { id: string; name: string
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          kidId: kid.id, lessonType: "speaking_journal", worldKey: "journal",
+          kidId: kid.id, lessonType: "speaking_journal", worldKey: worldKey ?? "journal",
           topic: prompt?.prompt_en ?? "", skill: "speaking", scorePct: avg, xpGained: xp,
           attempts: 1, durationSeconds: Math.round((Date.now() - startedAt) / 1000),
         }),

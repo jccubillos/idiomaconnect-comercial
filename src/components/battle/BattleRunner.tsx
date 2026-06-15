@@ -40,6 +40,7 @@ export function BattleRunner({
   words,
   canChallenge,
   challenge,
+  classmates,
 }: {
   kid: KidMini;
   worldKey: string;
@@ -48,6 +49,8 @@ export function BattleRunner({
   canChallenge?: boolean;
   /** Si está JUGANDO un reto: datos del retador para comparar puntajes. */
   challenge?: { id: string; name: string; score: number };
+  /** Mundo colegio: compañeros del mismo curso a los que puede retar directo. */
+  classmates?: Array<{ id: string; name: string; emoji: string }>;
 }) {
   const [phase, setPhase] = useState<Phase>("learn");
   // Fase aprender
@@ -70,6 +73,10 @@ export function BattleRunner({
   const [retoLoading, setRetoLoading] = useState(false);
   const [retoError, setRetoError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  // ⚔️ Retar a un compañero de curso (mundo colegio)
+  const [sentTo, setSentTo] = useState<Set<string>>(new Set());
+  const [ccLoading, setCcLoading] = useState<string | null>(null);
+  const [ccError, setCcError] = useState<string | null>(null);
 
   const total = words.length;
   const currentIdx = queue[0];
@@ -282,6 +289,23 @@ export function BattleRunner({
       setRetoUrl(j.url);
     }
 
+    async function retarCompanero(targetId: string) {
+      setCcError(null);
+      setCcLoading(targetId);
+      const res = await fetch("/api/school/challenge", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ challengerKidId: kid.id, targetKidId: targetId, scorePct, words }),
+      });
+      const j = await res.json().catch(() => ({}));
+      setCcLoading(null);
+      if (!res.ok) {
+        setCcError(j.error ?? "No se pudo enviar el desafío.");
+        return;
+      }
+      setSentTo((prev) => new Set(prev).add(targetId));
+    }
+
     const shareText = `⚔️ ¡Te reto! Saqué ${scorePct}% en una Battle de inglés en IdiomaConnect. ¿Me ganas con las mismas palabras? 👉 ${retoUrl}`;
 
     return (
@@ -355,6 +379,37 @@ export function BattleRunner({
                   </div>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* ⚔️ Retar a un compañero de curso (mundo colegio) */}
+          {classmates && classmates.length > 0 && !challenge && (
+            <div className="mb-5 text-left">
+              <div className="text-xs font-bold uppercase tracking-widest text-neon-purple mb-2 text-center">
+                ⚔️ Reta a un compañero
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {classmates.map((c) => {
+                  const sent = sentTo.has(c.id);
+                  return (
+                    <NeonButton
+                      key={c.id}
+                      variant={sent ? "ghost-cyan" : "ghost-purple"}
+                      size="sm"
+                      className="w-full"
+                      disabled={sent || ccLoading === c.id}
+                      loading={ccLoading === c.id}
+                      onClick={() => retarCompanero(c.id)}
+                    >
+                      {sent ? `✓ ${c.name}` : `${c.emoji ?? "👤"} ${c.name}`}
+                    </NeonButton>
+                  );
+                })}
+              </div>
+              {ccError && <p className="text-xs text-neon-red mt-2 text-center">{ccError}</p>}
+              <p className="text-[11px] text-ink-dim mt-2 text-center">
+                Le llegará tu desafío con estas mismas palabras a su mundo del colegio.
+              </p>
             </div>
           )}
 

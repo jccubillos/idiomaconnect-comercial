@@ -10,7 +10,7 @@ import { getCefrInfo } from "@/lib/content/cefr";
 
 const CEFR_ORDER = ["A1", "A2", "B1", "B2", "C1", "C2"];
 
-export default async function ConversationPage({ searchParams }: { searchParams: { kid?: string; scenario?: string } }) {
+export default async function ConversationPage({ searchParams }: { searchParams: { kid?: string; scenario?: string; world?: string } }) {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
@@ -26,9 +26,12 @@ export default async function ConversationPage({ searchParams }: { searchParams:
 
   const cefr = getCefrInfo(kid.total_xp);
 
+  // Preserva el mundo (colegio) a través del selector de escenario.
+  const worldQS = searchParams.world ? `&world=${searchParams.world}` : "";
+
   // If a scenario is selected → run it. Otherwise show picker.
   if (searchParams.scenario) {
-    return <ConversationRunner kid={kid} scenarioKey={searchParams.scenario} />;
+    return <ConversationRunner kid={kid} scenarioKey={searchParams.scenario} worldKey={searchParams.world} />;
   }
 
   return (
@@ -54,7 +57,7 @@ export default async function ConversationPage({ searchParams }: { searchParams:
                 <div className="text-[10px] uppercase tracking-widest text-ink-dim">🔒 Req. {s.minCefr}</div>
               </GlassCard>
             ) : (
-              <Link key={s.key} href={`/conversation?kid=${kid.id}&scenario=${s.key}`}>
+              <Link key={s.key} href={`/conversation?kid=${kid.id}&scenario=${s.key}${worldQS}`}>
                 <GlassCard className="p-4 hover:scale-[1.02] transition-transform border border-white/10 hover:border-neon-purple/40">
                   <div className="text-3xl mb-2">{s.emoji}</div>
                   <h3 className="font-bold mb-1">{s.name}</h3>

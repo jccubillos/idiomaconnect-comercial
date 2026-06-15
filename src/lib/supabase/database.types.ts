@@ -371,6 +371,27 @@ export interface Database {
         };
         Update: Partial<Database["public"]["Tables"]["battle_challenges"]["Row"]>;
       };
+      course_challenge_targets: {
+        Row: {
+          id: string;
+          challenge_id: string;
+          course_id: string;
+          challenger_kid_id: string | null;
+          target_kid_id: string;
+          challenger_name: string;
+          challenger_score: number;
+          created_at: string;
+          expires_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["course_challenge_targets"]["Row"]> & {
+          challenge_id: string;
+          course_id: string;
+          target_kid_id: string;
+          challenger_name: string;
+          challenger_score: number;
+        };
+        Update: Partial<Database["public"]["Tables"]["course_challenge_targets"]["Row"]>;
+      };
       rate_limits: {
         Row: {
           key: string;

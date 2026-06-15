@@ -17,9 +17,10 @@ const JournalPromptSchema = z.object({
 });
 export type JournalPrompt = z.infer<typeof JournalPromptSchema>;
 
-export async function generateJournalPrompt(kid: KidPromptInput) {
+export async function generateJournalPrompt(kid: KidPromptInput, theme?: string) {
+  const themeLine = theme ? `\nTEMA DEL CURSO (úsalo como eje de la consigna): "${theme}".` : "";
   const system = `Genera un tema corto para que ${kid.name} (nivel ${kid.cefrCode}) hable 30-60 segundos en inglés.
-Hobbies: ${kid.hobbies ?? "general"}.
+Hobbies: ${kid.hobbies ?? "general"}.${themeLine}
 
 - 'prompt_en': pregunta o consigna en inglés (1 oración).
 - 'prompt_es': traducción al español.
@@ -37,12 +38,14 @@ const TranslateItemSchema = z.object({
 const TranslateSchema = z.object({ items: z.array(TranslateItemSchema).min(3).max(8) });
 export type TranslateItem = z.infer<typeof TranslateItemSchema>;
 
-export async function generateTranslateItems(kid: KidPromptInput, count: number) {
+export async function generateTranslateItems(kid: KidPromptInput, count: number, theme?: string) {
+  const themeLine = theme
+    ? `\n- TEMA DEL CURSO: las oraciones deben girar en torno a "${theme}".`
+    : "\n- Variedad de tiempos y temas (rutinas, opiniones, planes, descripciones).";
   const system = `Genera ${count} oraciones en español para que ${kid.name} (nivel ${kid.cefrCode})
 las traduzca al inglés.
 
-- Oraciones de 5-12 palabras, vocabulario apropiado al nivel.
-- Variedad de tiempos y temas (rutinas, opiniones, planes, descripciones).
+- Oraciones de 5-12 palabras, vocabulario apropiado al nivel.${themeLine}
 - 'en_reference': traducción correcta de referencia (puede haber otras válidas).
 
 Responde SOLO JSON: { "items": [{"es":"...","en_reference":"..."}] }`;
@@ -57,8 +60,9 @@ const SceneSchema = z.object({
 });
 export type ScenePrompt = z.infer<typeof SceneSchema>;
 
-export async function generateScene(kid: KidPromptInput) {
-  const system = `Genera una escena visual rica para que ${kid.name} (nivel ${kid.cefrCode}) la describa en inglés.
+export async function generateScene(kid: KidPromptInput, theme?: string) {
+  const themeLine = theme ? `\nTEMA DEL CURSO (la escena debe estar relacionada): "${theme}".` : "";
+  const system = `Genera una escena visual rica para que ${kid.name} (nivel ${kid.cefrCode}) la describa en inglés.${themeLine}
 
 - 'scene_es': descripción visual en español, 3-5 oraciones. Vívida pero apropiada al nivel.
 - 'scene_en_reference': descripción modelo en inglés (lo que sería un buen output del alumno).

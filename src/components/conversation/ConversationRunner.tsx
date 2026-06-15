@@ -17,9 +17,11 @@ const MAX_TURNS = 14;
 export function ConversationRunner({
   kid,
   scenarioKey,
+  worldKey,
 }: {
   kid: { id: string; name: string; color_hex: string };
   scenarioKey: string;
+  worldKey?: string;
 }) {
   const scenario = getScenario(scenarioKey);
   const [history, setHistory] = useState<Msg[]>([
@@ -99,7 +101,7 @@ export function ConversationRunner({
         body: JSON.stringify({
           kidId: kid.id,
           lessonType: "conversation",
-          worldKey: "chat",
+          worldKey: worldKey ?? "chat",
           topic: scenario?.name ?? null,
           skill: "speaking",
           scorePct: avg,
