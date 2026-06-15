@@ -65,8 +65,11 @@ export function postTrialEmail(args: {
       p(
         `⏳ <b>Importante:</b> los datos y avances se conservan hasta el <b>${fmtDate(retentionDate)}</b>. Después de esa fecha se eliminan definitivamente.`,
       ),
-      button(billingUrl, "Reactivar el aprendizaje"),
-      p(`Planes desde <b>US$9,92/mes</b> (anual) · opción Familiar para hasta 6 niños · cancela cuando quieras.`),
+      p(
+        `🎮 En la prueba tus hijos jugaron <b>Arena Global</b>, <b>Reto a un amigo</b> y <b>Duelo Familiar</b>. Esas herramientas vienen en el <b>plan Anual Familiar</b> (hasta 6 niños) — al contratarlo, las conservan. El Mensual y el Anual no las incluyen.`,
+      ),
+      button(billingUrl, "Quédate con el plan Familiar"),
+      p(`Planes desde <b>US$9,92/mes</b> (anual, 2 niños) · <b>Familiar</b> US$199/año para hasta 6 niños con todas las herramientas · cancela cuando quieras.`),
     ].join(""),
     marketingFooter(unsubscribeUrl),
   );
@@ -91,9 +94,9 @@ export function offer15Email(args: {
         p(`Hola <b>${familyName}</b>,`),
         p(`Durante la prueba gratis vimos un avance real: <b>${kidHighlights}</b>. ¡Eso no pasa en todas las familias!`),
         p(
-          `Para apoyar ese interés, te regalamos un <b>15% de descuento</b> en el plan anual, con el código personal <b>${code}</b> (válido por 30 días, 1 uso).`,
+          `Para que no pierdan el impulso —ni las herramientas que más disfrutaron (<b>Arena Global</b>, <b>Reto</b> y <b>Duelo Familiar</b>)— te regalamos un <b>15% de descuento</b> con el código personal <b>${code}</b> (válido por 30 días, 1 uso). Aplícalo al <b>plan Anual Familiar</b> y lo conservan todo.`,
         ),
-        button(promoUrl, "Usar mi 15% de descuento"),
+        button(promoUrl, "Usar mi 15% en el plan Familiar"),
         p(`Su progreso queda guardado hasta el <b>${fmtDate(retentionDate)}</b> — al suscribirte lo retoman intacto.`),
       ].join(""),
       marketingFooter(unsubscribeUrl),

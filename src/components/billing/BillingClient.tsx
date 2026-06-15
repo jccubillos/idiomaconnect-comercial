@@ -123,6 +123,10 @@ function BillingInner({ sub }: { sub: SubInfo | null }) {
                 No te preocupes: <b>el progreso de tus niños queda guardado por 30 días</b>.
                 Suscríbete y retoman exactamente donde quedaron — XP, niveles, rachas y trofeos intactos.
               </p>
+              <p className="text-xs text-ink-dim mt-2">
+                🎮 En la prueba jugaron <b>Arena Global, Reto y Duelo Familiar</b>. Solo el plan
+                <b> Anual Familiar</b> los conserva — el Mensual y el Anual no los incluyen.
+              </p>
             </div>
           )}
           {canceled && (
@@ -145,7 +149,8 @@ function BillingInner({ sub }: { sub: SubInfo | null }) {
           <GlassCard className="p-6 text-center">
             <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-2">Mensual</div>
             <div className="text-4xl font-extrabold mb-1">$12.99</div>
-            <div className="text-sm text-ink-dim mb-6">USD / mes · 2 niños</div>
+            <div className="text-sm text-ink-dim mb-1">USD / mes · 2 niños</div>
+            <p className="text-[10px] text-ink-dim mb-4">Sin Arena · Reto · Duelo</p>
             <NeonButton variant="ghost-cyan" loading={loading === "monthly"} onClick={() => startCheckout("monthly")} className="w-full">
               Contratar mensual
             </NeonButton>
@@ -157,7 +162,8 @@ function BillingInner({ sub }: { sub: SubInfo | null }) {
             </div>
             <div className="text-xs font-bold uppercase tracking-widest text-ink-dim mb-2">Anual</div>
             <div className="text-4xl font-extrabold mb-1">$119</div>
-            <div className="text-sm text-ink-dim mb-6">USD / año · 2 niños (~$9.92/mes)</div>
+            <div className="text-sm text-ink-dim mb-1">USD / año · 2 niños (~$9.92/mes)</div>
+            <p className="text-[10px] text-ink-dim mb-4">Sin Arena · Reto · Duelo</p>
             <NeonButton variant="ghost-cyan" loading={loading === "yearly"} onClick={() => startCheckout("yearly")} className="w-full">
               Contratar anual
             </NeonButton>
@@ -171,7 +177,7 @@ function BillingInner({ sub }: { sub: SubInfo | null }) {
             <div className="text-4xl font-extrabold mb-1">$199</div>
             <div className="text-sm text-ink-dim mb-2">USD / año · 6 niños ($2,76 c/u al mes)</div>
             <p className="text-[11px] text-ink-dim mb-4">
-              🏆 Arena Global · ⚔️ Reto a un amigo · 🥊 Duelo Familiar
+              ✓ Conserva lo de tu prueba: 🏆 Arena · ⚔️ Reto · 🥊 Duelo Familiar
             </p>
             <NeonButton variant="primary" loading={loading === "plus"} onClick={() => startCheckout("plus")} className="w-full">
               Contratar Familiar
