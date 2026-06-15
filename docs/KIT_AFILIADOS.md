@@ -6,7 +6,7 @@
 >
 > Comisión: **50% por venta. Sin tope.** Pagos vía Hotmart.
 > Acceso demo para grabar la app: **idiomaconnect.com/demo** (te lo activamos al aprobarte).
-> Dudas o material extra: **afiliados@idiomaconnect.com**
+> Dudas o material extra: **appidiomaconnect@gmail.com**
 
 ---
 
@@ -248,7 +248,7 @@ en Canva (gratis) con estas medidas y este texto:
 
 - **Colores de marca:** fondo oscuro, acentos neón (cian / verde / morado).
 - **Siempre incluye:** logo o nombre "IdiomaConnect" + un llamado a la acción claro.
-- Pide los logos y capturas oficiales a **afiliados@idiomaconnect.com**.
+- Pide los logos y capturas oficiales a **appidiomaconnect@gmail.com**.
 
 ---
 
